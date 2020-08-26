@@ -53,14 +53,15 @@
 	
 	<body class="animated fadeInDown">
 
-		<header id="header">
+		<!-- <header id="header">
 			<div id="logo-group">
 				<span id="logo"> <img src="<?php echo $this->assets; ?>img/logo.png" alt="SmartAdmin"> </span>
 			</div>
             <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> 
                 <a href="#" class="btn btn-info">Create account</a> 
             </span>
-		</header>
+		</header> -->
+		<?php $this->load->view(MEMBERPATH . 'header_nologin'); ?>
 
 		<div id="main" role="main">
 
