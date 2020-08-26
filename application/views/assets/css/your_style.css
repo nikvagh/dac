@@ -1,0 +1,229 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+body{
+   background: #fff;
+}
+
+#content{
+   min-height: 500px;
+}
+
+.text-italic{
+   font-style: italic;
+}
+.btn{
+   border-radius: 0px!important;
+}
+nav ul li.active,nav ul li:hover{
+   background: #00aeef!important;
+}
+nav ul li a{
+
+}
+
+.smart-style-1 #logo-group{
+   background: #e6e6e6!important;
+}
+
+img.online{
+   border:0px;
+}
+
+#logo{
+   /* margin-top:3px;
+   margin-left:3px; */
+   margin:3px;
+   text-align: center;
+}
+
+#logo-group>span{
+   height:40px;
+   width:214px;
+}
+#logo img{
+   padding: 3px;
+   height: 100%;
+   width: 70px;
+   margin: auto;
+}
+
+/* ============ */
+#extr-page #header #logo{
+   margin-top: 10px;
+}
+#extr-page #header #logo img{
+   width:65px;
+}
+
+/* =============== */
+.smart-style-1 .page-footer{
+   background: #e6e6e6;
+   border:none;
+}
+
+.page-footer{
+   color:#747474;
+}
+
+.bg-color-teal{
+   background: #00aeef!important;
+}
+.jarviswidget > header{
+   border:none;
+   height: 50px;
+}
+.jarviswidget > header h2{
+   font-weight: 300;
+   line-height: 50px;
+}
+.smart-form fieldset{
+   background: #e6e6e6;
+}
+.jarviswidget{
+   /* box-shadow: 0px 2px 12px -5px; */
+   /* box-shadow: 0 1px 2px rgba(0,0,0,0.05), 
+                0 2px 4px rgba(0,0,0,0.05), 
+                0 4px 8px rgba(0,0,0,0.05), 
+                0 8px 16px rgba(0,0,0,0.05),
+                0 16px 32px rgba(0,0,0,0.05), 
+                0 32px 64px rgba(0,0,0,0.05); */
+                
+   box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+}
+.jarviswidget > div{
+   /* border-width: 1px 1px 1px; */
+   border-width: 0px;
+}
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
+   border-top:0px;
+}
+
+.table > thead > tr > th{
+   border-bottom:0px;
+}
+.panel{
+   /* box-shadow: 0px 2px 12px -5px #000; */
+   box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+}
+.pricing-big .panel-heading{
+   border-radius: 0px;
+}
+.pricing-big .panel-footer {
+   border-radius: 0px;
+}
+
+.smart-style-1 nav ul ul li > a:hover{
+   background: #00aeef!important;
+}
+.smart-style-1 nav ul ul li > a{
+   text-shadow: none;
+}
+
+.bg-color-gray{
+   background: #e6e6e6!important ;
+}
+
+.box.with-shadow{
+   /* box-shadow: 0 1px 2px rgba(0,0,0,0.1), 
+                0 2px 4px rgba(0,0,0,0.1), 
+                0 4px 8px rgba(0,0,0,0.1), 
+                0 8px 16px rgba(0,0,0,0.1),
+                0 16px 32px rgba(0,0,0,0.1), 
+                0 32px 64px rgba(0,0,0,0.1); */
+
+   box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+   /* margin: 15px 0px; */
+}
+.box .box-header{
+   padding: 5px 15px;
+}
+.box .box-header h5{
+   font-size: 14px;
+}
+.box .box-body{
+   padding: 15px;
+}
+.box .box-footer{
+   padding: 15px;
+}
+
+.box-header-single{
+   padding:15px 10px;
+   margin-bottom: 15px;
+   font-size: 14px;
+   letter-spacing: 0;
+}
+
+.box-header h2{
+   font-size: 14px;
+   letter-spacing: 0;
+   margin: 10px 0;
+}
+
+.state-error + em {
+   display: block;
+   margin-top: 6px;
+   padding: 0 1px;
+   font-style: normal;
+   font-size: 11px;
+   line-height: 15px;
+   color: #D56161
+}
+
+.clearfix{
+   clear: both;
+}
+
+.invalid{
+   display: block;
+   margin-top: 6px;
+   padding: 0 1px;
+   font-style: normal;
+   font-size: 11px;
+   line-height: 15px;
+   color: #D56161;
+}
+
+.control-label{
+   font-weight: 600;
+}
+
+.tree li.parent_li>span{
+   padding: 10px;
+}
+.tree li.parent_li>span:hover{
+   background-color: #131d33;
+   border: 1px solid #131d33;
+}
