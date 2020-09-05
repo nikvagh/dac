@@ -160,7 +160,7 @@ class Mail {
 	        $mail->send();
 	        return true;
 	    } catch (Exception $e) {
-	        echo "Mailer Error: " . $mail->ErrorInfo;
+	        $error = "Mailer Error: " . $mail->ErrorInfo;
 	        return false;
 	    }
 

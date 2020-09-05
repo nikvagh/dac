@@ -209,8 +209,42 @@ div#appoitment {
             transform: rotate(0deg);
 }
 
+.btn-theme{
+    background:#00aeef!important;
+    color: #fff!important;
+    padding: 9px 25px!important;
+ }
+ .btn-theme:hover{
+    background: #fff none repeat scroll 0 0!important;
+    transition: all 0.4s ease 0s!important;
+    color: #131d33!important;
+    border: 1px solid #00aeef!important;
+ }
 
+ .message_popup{
+    position: absolute;
+    /* position: relative; */
+    width: 500px;
+    right: 0;
+    z-index: 2;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    top: 20%;
+ }
 
+.message_popup .alert{
+    border-radius: 0px;
+    border:0px;
+}
+
+ .alert-success{
+    background:#28a745!important;
+    color: #ffffff;
+ }
+ .alert-danger{
+    background:#e04c5a!important;
+    color: #ffffff;
+ }
 
 @media only screen and (max-width: 991px) {
     .border-left-hiw{
