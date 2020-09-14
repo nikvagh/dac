@@ -246,6 +246,20 @@ div#appoitment {
     color: #ffffff;
  }
 
+ .faq-page-sec .panel{
+    border-radius: 0;
+    margin-bottom:15px;
+ }
+
+.faq-page-sec .panel .panel-heading{
+    border-radius: 0;
+}
+
+.faq-page-sec .panel .panel-heading.active{
+    background: #00aeef;
+}
+
+
 @media only screen and (max-width: 991px) {
     .border-left-hiw{
         border-left: 0px;

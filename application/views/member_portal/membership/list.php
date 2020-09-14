@@ -70,7 +70,7 @@
 									<p><strong>Starting Date: </strong> <?php echo date('d M Y',strtotime($current_plan['start_date'])); ?></p>
 									<p><strong>Expire On: </strong> <?php echo date('d M Y',strtotime($current_plan['end_date'])); ?></p>
 								<?php }else{ ?>
-									<h4 class="semi-bold">Not Any Current Active </h4>
+									<h4 class="semi-bold">Not Any Active Package</h4>
 									<br/>
 								<?php } ?>
 

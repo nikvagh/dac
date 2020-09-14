@@ -51,22 +51,28 @@
 
                                         <div class="form-group">
                                             <label class="control-label">Email *</label>
-                                            <input type="text" name="email" placeholder="Email"  value="" class="form-control">
+                                            <input type="text" name="email" placeholder="Email"  value="<?php echo set_value('email'); ?>" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label">Phone *</label>
-                                            <input type="text" name="phone" placeholder="Phone" value="" class="form-control">
+                                            <input type="text" name="phone" placeholder="Phone" value="<?php echo set_value('phone'); ?>" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label">Password *</label>
-                                            <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+                                            <input type="password" name="password" id="password" placeholder="Password" value="<?php echo set_value('password'); ?>" class="form-control">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label">Confirm Password *</label>
-                                            <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" class="form-control">
+                                            <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" value="<?php echo set_value('passwordConfirm'); ?>" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Referral Code</label>
+                                            <input type="text" name="refer_code" id="refer_code" placeholder="Referral Code" class="form-control" value="<?php echo set_value('refer_code'); ?>">
+                                            <?php echo form_error('refer_code'); ?>
                                         </div>
 
                                     </div>

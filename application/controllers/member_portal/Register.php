@@ -12,10 +12,31 @@
             $data['title']="";
             
             if(isset($_POST['submit'])){
-                if ($this->profile->register()) {
-                    $this->session->set_flashdata('success', 'Registration Successfully. Login.');
-                    redirect(MEMBERPATH.'register');
+
+                $config = [
+                    [
+                            'field' => 'refer_code',
+                            'label' => 'Name',
+                            'rules' => 'callback_referral_code_check',
+                            'errors' => [
+                                    // 'required' => 'Amount is required fields',
+                            ],
+                    ]
+                ];
+                $this->form_validation->set_data($_POST);
+                $this->form_validation->set_rules($config);
+
+                if ($this->form_validation->run() == FALSE)
+                {
+                    $this->form_validation->set_error_delimiters('<em class="invalid">', '</em>');
+                    $this->load->view(MEMBERPATH.'register',$data);
+                }else{
+                    if ($this->profile->register()) {
+                        $this->session->set_flashdata('success', 'Registration Successfully. Login.');
+                        redirect(MEMBERPATH.'register');
+                    }
                 }
+
             }else{
                 $this->load->view(MEMBERPATH.'register',$data); 
             }
@@ -147,6 +168,24 @@
             }
         }
 
+        function referral_code_check(){
+            
+            $code = trim($this->input->post('refer_code'));
+
+            if($code != ""){
+                $this->db->select('member_id');
+                $this->db->where('refer_code',$this->input->post('refer_code'));
+                $query1 = $this->db->get('member');
+                if ($query1->num_rows() > 0) {
+                    return true;
+                }else{
+                    $this->form_validation->set_message('referral_code_check', 'Invalid Referral Code');
+                    return false;
+                }
+            }else{
+                return true;
+            }
+
+        }
 
     }
-?>

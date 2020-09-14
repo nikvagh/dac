@@ -50,7 +50,7 @@
 						<div class="flicker-photo">
 							<h2>Login</h2>
 							<a href="<?php echo base_url(); ?>sp_portal/register" target="_blank" class="user">Contractor</a>
-							<a href="<?php echo base_url(); ?>member_portal/register" target="_blank" class="manager">Drip Manager</a>
+							<a href="<?php echo base_url(); ?>member_portal/register" target="_blank" class="manager">Drip Member</a>
 							<!--- <ul>
 								<li><img src="img/g5.jpg" alt=""/></li>
 								<li><img src="img/g2.jpg" alt=""/></li>

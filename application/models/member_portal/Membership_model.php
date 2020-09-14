@@ -42,7 +42,7 @@
             $this->db->join("package p", "p.package_id = mtm.package_id", "left");
             // $this->db->where("mtm.end_date >= ", CURDATE()); 
             $this->db->where("date_format(mtm.end_date,'%Y-%m-%d') >= CURDATE()"); 
-            
+            $this->db->where("member_id",$this->session->userdata('id')); 
             
             // $this->db->group_by("p.package_id");
             // $this->db->order_by("package_id", "Desc");
@@ -184,6 +184,22 @@
                         'end_date'=>$end_date
                     );
                     if($this->db->insert('membership_to_member',$data_p)){
+
+                        if(check_for_credit()){
+                            $this->db->set('wallet_credit', 'wallet_credit+5', FALSE);
+                            $this->db->where('member_id', $_SESSION['loginData']->refer_from);
+                            $this->db->update('member');
+        
+                            $this->db->set('refer_valid_paid', 'N');
+                            $this->db->where('member_id', $_SESSION['loginData']->member_id);
+                            $this->db->update('member');
+        
+                            update_member_login_array();
+
+                            // echo "111";
+                            // exit;
+                        }
+
                         $success = 'Y';
                     }
                 }

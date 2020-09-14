@@ -52,8 +52,9 @@
 											<li class="active"><a href="<?php echo base_url(); ?>">Home</a></li>
 											<li><a href="<?php echo base_url(); ?>about">About</a></li>
 											<li><a href="<?php echo base_url(); ?>service">Services</a></li>
-											<li><a href="<?php echo base_url(); ?>account">My Account</a></li>
+											<!-- <li><a href="<?php echo base_url(); ?>account">My Account</a></li> -->
 											<li><a href="<?php echo base_url(); ?>contact">Contact</a></li>
+											<li><a href="<?php echo base_url(); ?>faq">FAQ</a></li>
 										</ul>
 									</nav>
 

@@ -90,7 +90,9 @@ if ( ! function_exists('checklogin'))
 			}
 		}
 	}
+}
 
+if ( ! function_exists('destroy_login_session')){
 	function destroy_login_session(){
 		echo "<pre>";
 		print_r($_SESSION);
@@ -98,7 +100,9 @@ if ( ! function_exists('checklogin'))
 		exit;
 
 	}
+}
 
+if ( ! function_exists('get_last_30_yr')){
 	function get_last_30_yr(){
 		$year = array();
 		for($i = 29; $i > -1; $i--){
@@ -111,7 +115,9 @@ if ( ! function_exists('checklogin'))
 		// exit;
 		return $year;
 	}
+}
 
+if ( ! function_exists('request_location')){
 	function request_location(){
 		return $request_location = array(
 			'Parking Lot',
@@ -121,7 +127,9 @@ if ( ! function_exists('checklogin'))
 			'Parking Garage'
 		);
 	}
+}
 
+if ( ! function_exists('notification_preference_list')){
 	function notification_preference_list(){
 		return array(
 			'Text',
@@ -129,5 +137,47 @@ if ( ! function_exists('checklogin'))
 			'Email'
 		);
 	}
+}
 
+if ( ! function_exists('random_str')){
+	function random_str($n) { 
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+		$randomString = ''; 
+
+		for ($i = 0; $i < $n; $i++) { 
+			$index = rand(0, strlen($characters) - 1); 
+			$randomString .= $characters[$index]; 
+		} 
+
+		return $randomString; 
+	} 
+}
+
+if (!function_exists('check_for_credit')){
+	function check_for_credit(){
+		$valid = "N";
+		if($_SESSION['loginData']->refer_valid_paid == 'Y'){
+			$valid = "Y";
+		}
+		
+		if($valid == "Y"){
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
+
+if (!function_exists('update_member_login_array')){
+	function update_member_login_array() { 
+		$ci =& get_instance();
+		$ci->db->select('*');
+		$ci->db->where('member_id',$_SESSION['loginData']->member_id);	
+		$query = $ci->db->get('member');
+		$result = array();
+		if ($query->num_rows() > 0) {
+			$result = $query->row_array();
+			$_SESSION['loginData'] = (object) $result;
+		}
+	}
 }

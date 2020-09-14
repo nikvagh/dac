@@ -16,6 +16,17 @@ class Profile_model extends CI_Model{
 		}
 		return $result;
         }
+
+        function get_user_by_refer_code($refer_code) {
+                $this->db->select('*');
+		$this->db->where('refer_code',$refer_code);	
+		$query = $this->db->get($this->table);
+		$result = array();
+		if ($query->num_rows() > 0) {
+		        $result = $query->row_array();
+		}
+		return $result;
+        }
         
         function get_vehicle(){
                 $this->db->select('*');
@@ -136,6 +147,14 @@ class Profile_model extends CI_Model{
                 $data['email'] = $this->input->post('email');
                 $data['phone'] = $this->input->post('phone');
                 $data['password'] = md5($this->input->post('password'));
+                $data['refer_code'] = random_str(6);
+                if(isset($_POST['refer_code']) &&  $_POST['refer_code'] != ""){
+                        $member = $this->get_user_by_refer_code($_POST['refer_code']);
+                        if(!empty($member)){
+                                $data['refer_from'] = $member['member_id'];
+                                $data['refer_valid_paid'] = 'Y';
+                        }
+                }
 
                 if($this->db->insert($this->table,$data)){
                         $member_id = $this->db->insert_id();

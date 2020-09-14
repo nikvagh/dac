@@ -128,8 +128,10 @@
             $data = array();
 
             $service_req = $_SESSION['service_request'];
+
             // echo "<pre>";
             // print_r($service_req);
+            // print_r($_SESSION);
             // echo "</pre>";
             // exit;
 
@@ -170,6 +172,19 @@
 
             if($this->db->insert('job_request',$data)){
                 $id = $this->db->insert_id();
+
+                if(check_for_credit()){
+                    $this->db->set('wallet_credit', 'wallet_credit+5', FALSE);
+                    $this->db->where('member_id', $_SESSION['loginData']->refer_from);
+                    $this->db->update('member');
+
+                    $this->db->set('refer_valid_paid', 'N');
+                    $this->db->where('member_id', $_SESSION['loginData']->member_id);
+                    $this->db->update('member');
+
+                    update_member_login_array();
+                }
+
                 if(isset($service_req['payment'])){
                     $pay_data = array();
                     $pay_data['job_request_id'] = $id;

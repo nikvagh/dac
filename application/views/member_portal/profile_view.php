@@ -111,16 +111,16 @@
 																State: &nbsp;&nbsp;<?php echo $profile['state']; ?>
 															</p>
 														</li>
-														<!-- <li>
-																	<p class="text-muted">
-																		<i class="fa fa-skype"></i>&nbsp;&nbsp;<span class="txt-color-darken">john12</span>
-																	</p>
-																</li> -->
-														<!-- <li>
-																	<p class="text-muted">
-																		<i class="fa fa-calendar"></i>&nbsp;&nbsp;<span class="txt-color-darken">Free after <a href="javascript:void(0);" rel="tooltip" title="" data-placement="top" data-original-title="Create an Appointment">4:30 PM</a></span>
-																	</p>
-																</li> -->
+														<li>
+															<p class="text-muted">
+																<i class="fa fa-tags"></i>&nbsp;&nbsp;<span class="">Referral code: <?php echo $profile['refer_code']; ?></span>
+															</p>
+														</li>
+														<li>
+															<p class="text-muted">
+																<i class="fa fa-dollar"></i>&nbsp;&nbsp;<span class="">Wallet Credit: $<?php echo $profile['wallet_credit']; ?></span>
+															</p>
+														</li>
 													</ul>
 													<br>
 												</div>

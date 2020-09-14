@@ -1,6 +1,6 @@
 <header id="header">
   <div id="logo-group">
-    <span id="logo"> <img src="<?php echo $this->assets; ?>img/logo.png"> </span>
+    <span id="logo"> <a href="<?php echo base_url(); ?>"><img src="<?php echo $this->assets; ?>img/logo.png"></a> </span>
   </div>
 
   <?php if(isset($member_register)){ ?>
