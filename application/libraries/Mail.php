@@ -161,7 +161,7 @@ class Mail {
 	        return true;
 	    } catch (Exception $e) {
 	        $error = "Mailer Error: " . $mail->ErrorInfo;
-	        return false;
+			return false;
 	    }
 
 	}
