@@ -317,7 +317,7 @@ switch (ENVIRONMENT)
  * And away we go...
  */
 
-// define('ADMINPATH', 'admin/');
+define('ADMIN', 'admin/');
 define('ADMINPATH', 'admin_portal/');
 define('MEMBERPATH', 'member_portal/');
 define('SPPATH', 'sp_portal/');

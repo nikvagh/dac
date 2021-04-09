@@ -90,6 +90,7 @@ class CI_Controller {
 		// $this->images = base_url().'application/views/images/';
 		$this->_assets = base_url().'application/views/_assets/';
 		$this->assets = base_url().'application/views/assets/';
+		$this->dash_assets = base_url().'application/views/assets/dashboard/';
 
 		$this->front = base_url().'application/views/front/';
 
