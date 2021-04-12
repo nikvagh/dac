@@ -70,7 +70,8 @@ $autoload['libraries'] = array(
     'form_validation',
     'system',
     'functions',
-    'cart'
+    'cart',
+    'layouts'
 );
 
 /*

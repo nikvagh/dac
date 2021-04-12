@@ -82,7 +82,8 @@ if ( ! function_exists('checklogin'))
 			if($userType == 'member'){
 				header('Location:'.base_url().MEMBERPATH.'login');
 			}elseif($userType == 'admin'){
-				header('Location:'.base_url().ADMINPATH.'login');
+				// header('Location:'.base_url().ADMINPATH.'login');
+				header('Location:'.base_url().ADMIN.'login');
 			}elseif($userType == 'sp'){
 				header('Location:'.base_url().SPPATH.'login');
 			}else{

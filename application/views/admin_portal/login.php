@@ -55,7 +55,7 @@
 
 		<header id="header">
 			<div id="logo-group">
-				<span id="logo"> <img src="<?php echo $this->assets; ?>img/logo.png" alt="SmartAdmin"> </span>
+				<span id="logo"> <img src="<?php echo $this->assets; ?>img/logo.png"> </span>
 			</div>
             <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> 
                 <a href="#" class="btn btn-info">Create account</a> 
@@ -97,7 +97,7 @@
                                     
                                     <section>
                                         <div class="note">
-											<a href="forgotpassword.html">Forgot password?</a>
+											<a href="">Forgot password?</a>
 										</div>
                                     </section>
                                     
