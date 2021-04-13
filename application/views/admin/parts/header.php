@@ -4,11 +4,30 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-6 col-7">
-                    <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
+                    <h6 class="h2 text-white d-inline-block mb-0"><?php echo $title; ?></h6>
                 </div>
                 <div class="col-lg-6 col-5 text-right">
-                    <!-- <a href="#" class="btn btn-sm btn-neutral">New</a> -->
-                    <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
+
+                    <?php if ($this->session->flashdata('success')): ?>
+                        <div class="alert alert-success fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-check"></i>
+                            <strong>Success</strong> <?php echo $this->session->flashdata('success');?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($this->session->flashdata('error')): ?>
+                        <div class="alert alert-danger fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-times"></i>
+                            <strong>Error!</strong> <?php echo $this->session->flashdata('success');?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if($page == 'category_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'category/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                        <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
+                    <?php } ?>
                 </div>
             </div>
 

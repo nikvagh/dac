@@ -71,7 +71,8 @@ $autoload['libraries'] = array(
     'system',
     'functions',
     'cart',
-    'layouts'
+    'layouts',
+    'upload'
 );
 
 /*

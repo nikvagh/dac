@@ -9,3 +9,13 @@
 .navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand > img{
     max-height:initial;
 }
+
+/* table head */
+.table .thead-dark th{
+    color:#fff;
+}
+
+/* datatable */
+.dataTables_wrapper .row:last-child{
+    padding:1.25rem 0;
+}
