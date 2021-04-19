@@ -1,46 +1,29 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CategoryModel extends CI_Model {
+class CoWorkerModel extends CI_Model {
     function __construct() {
-        $this->table = 'category';
-        $this->primaryKey = 'category_id';
+        $this->table = 'sp_employee';
+        $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="") {
         $this->db->select('*');
-        $this->db->order_by("category_id", "Desc");
+        $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
 
         $query = $this->db->get($this->table);
-
-        // $category = array();
-
-        // if ($query->num_rows() > 0) {
-            $category = $query->result();
-        // }
-        return $category;
+        $result = $query->result();
+        return $result;
     }
 
     function getDataById($id){
         $this->db->select('*');
-        $this->db->where('category_id',$id);
+        $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         return $query->row();
-    }
-
-    function get_product_data($categoryid){
-        $this->db->select('*');
-        $this->db->from('product');
-        $this->db->where('category_id',$categoryid);
-        $query=$this->db->get();
-        $product = array();
-        if ($query->num_rows() > 0) {
-            $product = $query->result_array();
-        }
-        return $product; 
     }
 
     function create(){
@@ -50,9 +33,9 @@ class CategoryModel extends CI_Model {
         // exit;
 
         if($this->input->post('status')){
-            $status = '0';
+            $status = 'Enable';
         }else{
-            $status = '1';
+            $status = 'Disable';
         }
 
         $image_name = "";
@@ -60,7 +43,7 @@ class CategoryModel extends CI_Model {
                 $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
                 $config['file_name'] = $image_name;
-                $config['upload_path'] = CATEGORY_IMG;
+                $config['upload_path'] = COWORKER_IMG;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
                 $this->upload->initialize($config);
@@ -71,11 +54,19 @@ class CategoryModel extends CI_Model {
         }
 
         $data = array(
-            'category_name'=>$this->input->post('category_name'),
-            'category_description'=>$this->input->post('description'),
-            'category_status'=>$status,
-            'image'=>$image_name
+            'sp_id'=>$this->input->post('sp_id'),
+            'name'=>$this->input->post('name'),
+            'email'=>$this->input->post('email'),
+            'phone'=>$this->input->post('phone'),
+            'start_time'=>$this->input->post('start_time'),
+            'end_time'=>$this->input->post('end_time'),
+            'experience'=>$this->input->post('experience'),
+            'description'=>$this->input->post('description'),
+            'image'=>$image_name,
+            'status'=>$status,
         );
+        $data['password'] = md5($this->input->post('password'));
+
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
         return $id;
@@ -84,6 +75,7 @@ class CategoryModel extends CI_Model {
     function update(){
         // echo "<pre>";
         // print_r($_POST);
+        // print_r($_FILES);
         // exit;
 
         if($this->input->post('status')){
@@ -96,14 +88,14 @@ class CategoryModel extends CI_Model {
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
 
             // remove old file
-            if(file_exists(CATEGORY_IMG.$this->input->post('image_old'))){
-                @unlink(CATEGORY_IMG.$this->input->post('image_old'));
+            if(file_exists(COWORKER_IMG.$this->input->post('image_old'))){
+                @unlink(COWORKER_IMG.$this->input->post('image_old'));
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
-
+            
             $config['file_name'] = $image_name;
-            $config['upload_path'] = CATEGORY_IMG;
+            $config['upload_path'] = COWORKER_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
             $this->upload->initialize($config);
@@ -113,23 +105,36 @@ class CategoryModel extends CI_Model {
             }
         }
 
-        // echo "fff";exit;
-
         $data = array(
-            'category_name'=>$this->input->post('category_name'),
-            'category_description'=>$this->input->post('description'),
-            'category_status'=>$status,
-            'image'=>$image_name
+            'sp_id'=>$this->input->post('sp_id'),
+            'name'=>$this->input->post('name'),
+            'email'=>$this->input->post('email'),
+            'phone'=>$this->input->post('phone'),
+            'start_time'=>$this->input->post('start_time'),
+            'end_time'=>$this->input->post('end_time'),
+            'experience'=>$this->input->post('experience'),
+            'description'=>$this->input->post('description'),
+            'image'=>$image_name,
+            'status'=>$status,
         );
-        $this->db->set($data)->where('category_id',$this->input->post('id'));
+
+        if($this->input->post('password') && $this->input->post('password') != ""){
+            $data['password'] = md5($this->input->post('password'));
+        }
+
+        $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
+
+        // echo $this->db->last_query();
+        // exit;
         return true;
     }
 
     function st_update(){
-        $this->db->set('category_status', $this->input->post('publish'));
-        $this->db->where('category_id', $this->input->post('id'));
+        $this->db->set('status', $this->input->post('publish'));
+        $this->db->where('id', $this->input->post('id'));
         $query = $this->db->update($this->table);
+
         if($query){
            return true;
         }else{
@@ -138,14 +143,14 @@ class CategoryModel extends CI_Model {
     }
 
     function delete(){
-        $category = $this->getDataById($this->input->post('id'));
+        $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(CATEGORY_IMG.$category->image)){
-            @unlink(CATEGORY_IMG.$category->image);
+        if(file_exists(COWORKER_IMG.$row->image)){
+            @unlink(COWORKER_IMG.$row->image);
         }
 
-        $this->db->where('category_id', $this->input->post('id'));
+        $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;
         }else{

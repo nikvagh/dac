@@ -1,46 +1,49 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CategoryModel extends CI_Model {
+class ServiceModel extends CI_Model {
     function __construct() {
-        $this->table = 'category';
-        $this->primaryKey = 'category_id';
+        $this->table = 'service';
+        $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('*');
-        $this->db->order_by("category_id", "Desc");
+        $this->db->select('s.*');
+        $this->db->from('service as s');
+        $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
 
-        $query = $this->db->get($this->table);
+        $query = $this->db->get();
+        $result = $query->result();
 
-        // $category = array();
+        foreach($result as $key=>$val){
+            $query = $this->db->select('c.*')->from('service_category as sc')->join('category as c','c.category_id=sc.category_id','left')->where('sc.service_id',$val->id)->get();
+            $result[$key]->categories = $query->result();
+            $result[$key]->category_names = array_map(function($e) { return is_object($e) ? $e->category_name : $e['category_name']; }, $result[$key]->categories );
+        }
 
-        // if ($query->num_rows() > 0) {
-            $category = $query->result();
-        // }
-        return $category;
+        // echo "<pre>";print_r($result);exit;
+        return $result;
     }
 
     function getDataById($id){
         $this->db->select('*');
-        $this->db->where('category_id',$id);
+        $this->db->where('id',$id);
         $query = $this->db->get($this->table);
-        return $query->row();
-    }
+        $row = $query->row();
 
-    function get_product_data($categoryid){
-        $this->db->select('*');
-        $this->db->from('product');
-        $this->db->where('category_id',$categoryid);
-        $query=$this->db->get();
-        $product = array();
-        if ($query->num_rows() > 0) {
-            $product = $query->result_array();
+        $categories = (object) [];
+        if(!empty($row)){
+            $query = $this->db->select('c.*')->from('service_category as sc')->join('category as c','c.category_id=sc.category_id','left')->where('sc.service_id',$row->id)->get();
+            $categories = $query->result();
         }
-        return $product; 
+
+        $row->categories = $categories;
+        $row->category_ids = array_map(function($e) { return is_object($e) ? $e->category_id : $e['category_id']; }, $categories);
+        // $row->category_ids = array_column($categories,'category_id');
+        return $row;
     }
 
     function create(){
@@ -50,9 +53,9 @@ class CategoryModel extends CI_Model {
         // exit;
 
         if($this->input->post('status')){
-            $status = '0';
+            $status = 'Enable';
         }else{
-            $status = '1';
+            $status = 'Disable';
         }
 
         $image_name = "";
@@ -60,7 +63,7 @@ class CategoryModel extends CI_Model {
                 $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
                 $config['file_name'] = $image_name;
-                $config['upload_path'] = CATEGORY_IMG;
+                $config['upload_path'] = SERVICE_IMG;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
                 $this->upload->initialize($config);
@@ -71,19 +74,33 @@ class CategoryModel extends CI_Model {
         }
 
         $data = array(
-            'category_name'=>$this->input->post('category_name'),
-            'category_description'=>$this->input->post('description'),
-            'category_status'=>$status,
-            'image'=>$image_name
+            'name'=>$this->input->post('name'),
+            'amount'=>$this->input->post('amount'),
+            'duration'=>$this->input->post('duration'),
+            'description'=>$this->input->post('description'),
+            'image'=>$image_name,
+            'status'=>$status,
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
+        // ================================
+
+        foreach($this->input->post('categories') as $val){
+            $data = array(
+                'service_id'=>$id,
+                'category_id'=>$val
+            );
+            $this->db->insert('service_category',$data);
+        }
+
+        
         return $id;
     }
 
     function update(){
         // echo "<pre>";
         // print_r($_POST);
+        // print_r($_FILES);
         // exit;
 
         if($this->input->post('status')){
@@ -96,14 +113,14 @@ class CategoryModel extends CI_Model {
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
 
             // remove old file
-            if(file_exists(CATEGORY_IMG.$this->input->post('image_old'))){
-                @unlink(CATEGORY_IMG.$this->input->post('image_old'));
+            if(file_exists(SERVICE_IMG.$this->input->post('image_old'))){
+                @unlink(SERVICE_IMG.$this->input->post('image_old'));
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
-
+            
             $config['file_name'] = $image_name;
-            $config['upload_path'] = CATEGORY_IMG;
+            $config['upload_path'] = SERVICE_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
             $this->upload->initialize($config);
@@ -113,23 +130,40 @@ class CategoryModel extends CI_Model {
             }
         }
 
-        // echo "fff";exit;
-
         $data = array(
-            'category_name'=>$this->input->post('category_name'),
-            'category_description'=>$this->input->post('description'),
-            'category_status'=>$status,
-            'image'=>$image_name
+            'name'=>$this->input->post('name'),
+            'amount'=>$this->input->post('amount'),
+            'duration'=>$this->input->post('duration'),
+            'description'=>$this->input->post('description'),
+            'image'=>$image_name,
+            'status'=>$status,
         );
-        $this->db->set($data)->where('category_id',$this->input->post('id'));
+        $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
+
+        // ============================
+
+        $this->db->where('service_id', $this->input->post('id'));
+        $this->db->delete('service_category');
+
+        foreach($this->input->post('categories') as $val){
+            $data = array(
+                'service_id'=>$this->input->post('id'),
+                'category_id'=>$val
+            );
+            $this->db->insert('service_category',$data);
+        }
+
+        // echo $this->db->last_query();
+        // exit;
         return true;
     }
 
     function st_update(){
-        $this->db->set('category_status', $this->input->post('publish'));
-        $this->db->where('category_id', $this->input->post('id'));
+        $this->db->set('status', $this->input->post('publish'));
+        $this->db->where('id', $this->input->post('id'));
         $query = $this->db->update($this->table);
+
         if($query){
            return true;
         }else{
@@ -138,14 +172,14 @@ class CategoryModel extends CI_Model {
     }
 
     function delete(){
-        $category = $this->getDataById($this->input->post('id'));
+        $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(CATEGORY_IMG.$category->image)){
-            @unlink(CATEGORY_IMG.$category->image);
+        if(file_exists(SERVICE_IMG.$row->image)){
+            @unlink(SERVICE_IMG.$row->image);
         }
 
-        $this->db->where('category_id', $this->input->post('id'));
+        $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;
         }else{

@@ -324,6 +324,10 @@ define('SPPATH', 'sp_portal/');
 
 define('UPLOADS', 'uploads/');
 define('CATEGORY_IMG', UPLOADS.'category/');
+define('SP_IMG', UPLOADS.'serviceProvider/');
+define('COWORKER_IMG', UPLOADS.'coWorker/');
+define('SERVICE_IMG', UPLOADS.'service/');
+
 define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');
 define('INVOICE_PATH', UPLOADS.'invoice/');

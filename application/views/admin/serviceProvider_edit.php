@@ -10,40 +10,52 @@
             </div>
             <div class="card-body">
                 <form id="form1" action="" method="post" enctype="multipart/form-data">
-                    <!-- <div class="pl-lg-4"> -->
+                    <h6 class="heading-small text-muted mb-4">Company information</h6>
+                    <div class="pl-lg-4">
                         <div class="row">
-                            <div class="col-lg-6">
+
+                            <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="form-control-label">Name *</label>
-                                    <input type="text" name="category_name" class="form-control" placeholder="Category Name" value="<?php echo $form_data->category_name; ?>">
-                                    <span class="error text-danger validation-message" data-field="category_name"></span>
+                                    <label class="form-control-label">Company Name *</label>
+                                    <input type="text" name="company_name" class="form-control" placeholder="Company Name" value="<?php echo $form_data->company_name; ?>">
+                                    <span class="error text-danger validation-message" data-field="company_name"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Email *</label>
+                                    <input type="text" name="email" class="form-control" placeholder="Email" value="<?php echo $form_data->email; ?>">
+                                    <span class="error text-danger validation-message" data-field="email"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Phone *</label>
+                                    <input type="text" name="phone_day" class="form-control" placeholder="Phone" value="<?php echo $form_data->phone_day; ?>">
+                                    <span class="error text-danger validation-message" data-field="phone_day"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-10 file-box-wrapper">
                                         <div class="form-group">
                                             <label class="form-control-label">Image</label>
                                             <label class="file-box">
                                                 <span class="name-box">Drag or Select Files</span>
-                                                <input type="hidden" name="image_old" id="image_old" value="<?php echo $form_data->image; ?>"/>
+                                                <input type="hidden" name="image_old" id="image_old" value="<?php echo $form_data->profile; ?>"/>
                                                 <input type="file" name="image" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 d-flex align-items-center pre-img-box">
-                                        <img src="<?php echo base_url(CATEGORY_IMG.$form_data->image); ?>" id="" class="img-fluid" />
+                                        <img src="<?php echo base_url(SP_IMG.$form_data->profile); ?>" id="" class="img-fluid" />
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label">Description</label>
-                                    <textarea rows="4" class="form-control" placeholder="Enter Description..." name="description"><?php echo $form_data->category_description; ?></textarea>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="row">
@@ -58,12 +70,14 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="id" value="<?php echo $form_data->category_id; ?>">
+
+                    </div>
                     <!-- </div> -->
+                    <input type="hidden" name="id" value="<?php echo $form_data->sp_id; ?>">
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'category'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(ADMIN.'serviceProvider'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="edit_data()">Submit</button>
             </div>
         </div>

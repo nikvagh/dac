@@ -11,25 +11,58 @@
             <!-- Collapse -->
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
+                <?php $activeTab = $this->uri->segment(2); ?>
+
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?php echo base_url(ADMIN.'dashboard'); ?>">
+                        <a class="nav-link <?php if($activeTab == 'dashboard'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'dashboard'); ?>">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo base_url(ADMIN.'category'); ?>">
+                        <a class="nav-link <?php if($activeTab == 'category'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'category'); ?>">
                             <i class="fas fa-paste text-danger"></i>
                             <span class="nav-link-text">Category</span>
                         </a>
                     </li>
+
+                    <?php 
+                        $serviceProvider_t = false;
+                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $serviceProvider_t = true; } 
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($serviceProvider_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#serviceProviderMenu" class="collapsed">
+                            <i class="fas fa-building text-dark"></i>
+                            <span class="nav-link-text">Service Provider</span>
+                        </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($serviceProvider_t){ echo 'show'; } ?>" id="serviceProviderMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'serviceProvider'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'serviceProvider'); ?>">
+                                    <i class="fas fa-building text-dark"></i>
+                                    <span class="nav-link-text">Service Provider</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
+                                    <i class="fas fa-user text-dark"></i>
+                                    <span class="nav-link-text">Co-Workers</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link <?php if($activeTab == 'service'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'service'); ?>">
                             <i class="fas fa-concierge-bell text-dark"></i>
                             <span class="nav-link-text">Service</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="">
                             <i class="fas fa-percentage text-warning"></i>

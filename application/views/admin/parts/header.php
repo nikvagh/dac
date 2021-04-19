@@ -3,13 +3,12 @@
     <div class="container-fluid">
         <div class="header-body">
             <div class="row align-items-center py-4">
-                <div class="col-lg-6 col-7">
+                <div class="col-lg-3 col-3">
                     <h6 class="h2 text-white d-inline-block mb-0"><?php echo $title; ?></h6>
                 </div>
-                <div class="col-lg-6 col-5 text-right">
-
+                <div class="col-lg-6 col-6">
                     <?php if ($this->session->flashdata('success')): ?>
-                        <div class="alert alert-success fade in">
+                        <div class="alert alert-default mb-0 fadeOut">
                             <button class="close" data-dismiss="alert">×</button>
                             <i class="fa-fw fa fa-check"></i>
                             <strong>Success</strong> <?php echo $this->session->flashdata('success');?>
@@ -17,16 +16,26 @@
                     <?php endif; ?>
                     
                     <?php if ($this->session->flashdata('error')): ?>
-                        <div class="alert alert-danger fade in">
+                        <div class="alert alert-danger mb-0 fadeOut">
                             <button class="close" data-dismiss="alert">×</button>
                             <i class="fa-fw fa fa-times"></i>
                             <strong>Error!</strong> <?php echo $this->session->flashdata('success');?>
                         </div>
                     <?php endif; ?>
-
+                </div>
+                <div class="col-lg-3 col-3 text-right">
                     <?php if($page == 'category_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'category/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                         <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
+                    <?php } ?>
+                    <?php if($page == 'serviceProvider_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'serviceProvider/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'coWorker_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'coWorker/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'service_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'service/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
                 </div>
             </div>

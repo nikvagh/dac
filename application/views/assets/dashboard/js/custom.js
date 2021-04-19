@@ -12,6 +12,11 @@
 // 	}
 // });
 
+setTimeout(function (event) {
+	$(".alert.fadeOut").fadeOut();
+}, 2000);
+
+
 function preview(input) {
 
 	if (input.files && input.files[0]) {
@@ -63,4 +68,54 @@ function delete_items(frm,id){
 	$("#id").val(id);
 	$("#action").val("delete");
 	$("#"+frm).submit();
+}
+
+
+function confirmPublishStatus(frm, id, publish)
+{
+	// console.log(frm);
+	// console.log(id);
+	// console.log(item_name);
+	// return false;
+
+	// '<div class="modal-header">'+
+	// 	'<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>'+
+	// 	'<h4 class="modal-title"> Status Confirmation</h4>'+
+	// '</div>'+
+
+	// var html  = '<div class="modal-dialog">'+
+	// 				'<div class="modal-content">'+
+	// 					'<div class="modal-body">'+
+	// 						'<div id="modal_error"></div>'+
+	// 						'<p>Are you sure to change status? </p>'+
+	// 					'</div>'+
+				
+	// 					'<div class="modal-footer with-border">'+
+	// 						'<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>'+
+	// 						'<button class="btn btn-success btn-flat send_btn" onclick="change_status(\''+frm+'\',\''+id+'\',\''+publish+'\')"> Change</button>'+
+	// 					'</div>'+
+	// 				'</div>'+
+	// 			'</div>';
+
+	// $('#confirm_model').html(html);
+	// $('#confirm_model').modal('show');
+
+	change_status(frm,id,publish);
+}
+
+function change_status(frm,id,publish){
+	// console.log(frm);
+	// return false;
+
+	$("#id").val(id);
+	$("#action").val("change_publish");
+	$("#publish").val(publish);
+	$("#"+frm).submit();
+}
+
+
+function resubmit_false(){
+	if (window.history.replaceState) {
+		window.history.replaceState(null, null, window.location.href);
+	}
 }
