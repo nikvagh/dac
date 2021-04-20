@@ -38,7 +38,7 @@
 }
 
 /* select2 */
-.select2-container--default .select2-selection--single{
+.select2-container--default .select2-selection--single,.select2-container--default .select2-selection--multiple{
     border: 1px solid #dee2e6;
 }
 .select2-container .select2-selection--single{
@@ -49,4 +49,7 @@
     color:#8898aa;
     font-size: .875rem;
     line-height: 1.5;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    border-right: 0px;
 }

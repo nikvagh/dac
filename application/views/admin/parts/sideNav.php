@@ -64,24 +64,27 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link <?php if($activeTab == 'offer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'offer'); ?>">
                             <i class="fas fa-percentage text-warning"></i>
                             <span class="nav-link-text">Offer</span>
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="icons.html">
-                            <i class="ni ni-planet text-orange"></i>
-                            <span class="nav-link-text">Icons</span>
+                            <i class="ni ni-watch-time text-success"></i>
+                            <span class="nav-link-text">Appointment</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="map.html">
-                            <i class="ni ni-pin-3 text-primary"></i>
-                            <span class="nav-link-text">Google</span>
+                            <i class="ni ni-calendar-grid-58 text-indigo"></i>
+                            <span class="nav-link-text">Calendar</span>
                         </a>
                     </li>
+
+                    <!-- 
                     <li class="nav-item">
                         <a class="nav-link" href="profile.html">
                             <i class="ni ni-single-02 text-yellow"></i>

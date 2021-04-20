@@ -13,27 +13,35 @@
                     <!-- <h6 class="heading-small text-muted mb-4">Company information</h6> -->
                     <!-- <div class="pl-lg-4"> -->
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Name *</label>
-                                    <input type="text" name="name" class="form-control" placeholder="Name" value="">
-                                    <span class="error text-danger validation-message" data-field="name"></span>
+                                    <label class="form-control-label">Code *</label>
+                                    <input type="text" name="code" class="form-control" placeholder="Code" value="">
+                                    <span class="error text-danger validation-message" data-field="code"></span>
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Amount *</label>
-                                    <input type="text" name="amount" class="form-control" placeholder="Amount" value="">
-                                    <span class="error text-danger validation-message" data-field="amount"></span>
+                                    <label class="form-control-label">Discount * (In %)</label>
+                                    <input type="text" name="discount" class="form-control" placeholder="Discount" value="">
+                                    <span class="error text-danger validation-message" data-field="discount"></span>
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Duration * (In Minutes)</label>
-                                    <input type="text" name="duration" class="form-control" placeholder="Duration" value="">
-                                    <span class="error text-danger validation-message" data-field="duration"></span>
+                                    <label class="form-control-label">Start date *</label>
+                                    <input type="text" name="start_date" id="start_date" class="form-control" placeholder="Start date" value="" autocomplete="off">
+                                    <span class="error text-danger validation-message" data-field="start_date"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">End date *</label>
+                                    <input type="text" name="end_date" id="end_date" class="form-control" placeholder="End date" value="" autocomplete="off">
+                                    <span class="error text-danger validation-message" data-field="end_date"></span>
                                 </div>
                             </div>
 
@@ -76,26 +84,25 @@
                                 </div>
                             </div>
 
-                        </div>
-
-                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Status *</label>
-                                    <br/>
-                                    <label class="custom-toggle">
-                                        <input type="checkbox" name="status" checked>
-                                        <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                    </label>
+                                    <label class="form-control-label">Services *</label>
+                                    <select name="services[]" id="services" class="form-control select2" multiple>
+                                        <!-- <option hidden="hidden" value="">--select--</option> -->
+                                        <?php foreach($services as $key=>$val){ ?>
+                                            <option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <span class="error text-danger validation-message" data-field="services[]"></span>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     <!-- </div> -->
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'service'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(ADMIN.'offer'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="create_data()">Submit</button>
             </div>
         </div>

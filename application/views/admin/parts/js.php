@@ -16,22 +16,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
 <?php if(isset($page)){ ?>
-    <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' ){ ?>
+    <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' ){ ?>
         <!-- dataTable -->
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
     <?php } ?>
 
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
-            $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit'){ ?>
+            $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' ){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' ){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit'){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 <?php } ?>
@@ -68,13 +68,14 @@
             });
     <?php } ?>
 
-    <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list")){ ?>
+    <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list")){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
                         next: '<i class="fa fa-angle-right"></i>',
                         previous: '<i class="fa fa-angle-left"></i>'
-                    }
+                    },
+                    emptyTable: "No data available in table"
                 }
             });
     <?php } ?>
@@ -358,6 +359,94 @@
             var returnData;
             $.ajax({
                 type: "post", url: admin_base+'service/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'offer_add' || $page == 'offer_edit'){ ?>
+        $('.select2').select2();
+
+        $('#start_date').datetimepicker({
+            format:'Y-m-d',
+            onShow:function( ct ){
+                this.setOptions({
+                    maxDate:$('#end_date').val()?jQuery('#end_date').val():false
+                })
+            },
+            timepicker:false,
+            onChangeDateTime:function(){
+                $("#end_date").val('');
+            }
+        });
+        $('#end_date').datetimepicker({
+            format:'Y-m-d',
+            onShow:function( ct ){
+                this.setOptions({
+                    minDate:$('#start_date').val()?jQuery('#start_date').val():false
+                })
+            },
+            timepicker:false
+        });
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'offer/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'offer';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'offer/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'offer';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'offer/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }
