@@ -71,7 +71,7 @@ function delete_items(frm,id){
 }
 
 
-function confirmPublishStatus(frm, id, publish)
+function confirmPublishStatus(frm, id, publish, isElement)
 {
 	// console.log(frm);
 	// console.log(id);
@@ -100,16 +100,23 @@ function confirmPublishStatus(frm, id, publish)
 	// $('#confirm_model').html(html);
 	// $('#confirm_model').modal('show');
 
+	if (isElement !== undefined){
+		publish = publish.value;
+	}
+
 	change_status(frm,id,publish);
 }
 
 function change_status(frm,id,publish){
+
 	// console.log(frm);
+	// console.log(id);
+	// console.log(publish);
 	// return false;
 
 	$("#id").val(id);
-	$("#action").val("change_publish");
 	$("#publish").val(publish);
+	$("#action").val("change_publish");
 	$("#"+frm).submit();
 }
 

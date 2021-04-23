@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
 <?php if(isset($page)){ ?>
-    <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' ){ ?>
+    <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || $page == 'appointment_list' ){ ?>
         <!-- dataTable -->
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -27,12 +27,20 @@
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' ){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit'){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
+                $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <?php } ?>
+
+    <?php if($page == 'calendar_list'){ ?>
+        <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+        <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+        <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+        <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
     <?php } ?>
 <?php } ?>
 
@@ -68,7 +76,8 @@
             });
     <?php } ?>
 
-    <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list")){ ?>
+    <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list" || 
+                $page == "appointment_list")){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -468,4 +477,131 @@
         }
 
     <?php } ?>
+
+    <?php if($page == 'appointment_add' || $page == 'appointment_edit'){ ?>
+        $('.select2').select2();
+
+        $('#date').datetimepicker({
+            'timepicker':false,
+            'format':'Y-m-d',
+            'step':15,
+        });
+
+        $('#time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15
+        });
+
+        function create_data(){
+            // var formData = $('form').serialize();
+            // console.log(validation(formData));
+            // return false;
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'appointment/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'appointment';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'appointment/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'appointment';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'appointment/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'calendar_list'){ ?>
+        var Calendar = tui.Calendar;
+        var calendar = new Calendar('#calendar', {
+            // options here
+            taskView: true,
+            defaultView: 'month',
+            scheduleView: true,
+            // week: {
+            //     daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            //     startDayOfWeek: 0,
+            //     narrowWeekend: true
+            // },
+            calendars: [],
+            useCreationPopup: false,
+            useDetailPopup: false,
+            // template:templates
+        });
+
+        calendar.createSchedules([
+            {
+                id: '1',
+                calendarId: '1',
+                title: 'my schedule',
+                category: 'time',
+                dueDateClass: '',
+                start: '2021-04-18T22:30:00+09:00',
+                end: '2021-04-20T02:30:00+09:00'
+            },
+            {
+                id: '2',
+                calendarId: '1',
+                title: 'second schedule',
+                category: 'time',
+                dueDateClass: '',
+                start: '2021-04-25T17:30:00+09:00',
+                end: '2021-04-28T17:31:00+09:00'
+            }
+        ]);
+
+    <?php } ?>
+
+// You can get calendar instance
+// var calendarInstance = $calEl.data('tuiCalendar');
+
+// calendarInstance.createSchedules([...]);
 </script>

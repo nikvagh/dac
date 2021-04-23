@@ -40,6 +40,9 @@
                     <?php if($page == 'offer_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'offer/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
+                    <?php if($page == 'appointment_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'appointment/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
                 </div>
             </div>
 

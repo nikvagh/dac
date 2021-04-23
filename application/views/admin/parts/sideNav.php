@@ -71,14 +71,14 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="icons.html">
+                        <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
                             <i class="ni ni-watch-time text-success"></i>
                             <span class="nav-link-text">Appointment</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="map.html">
+                        <a class="nav-link <?php if($activeTab == 'calendar'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'calendar'); ?>">
                             <i class="ni ni-calendar-grid-58 text-indigo"></i>
                             <span class="nav-link-text">Calendar</span>
                         </a>
