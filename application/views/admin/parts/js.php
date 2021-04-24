@@ -32,7 +32,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-                $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
+                $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -41,6 +41,10 @@
         <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
         <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
         <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+    <?php } ?>
+
+    <?php if($page == 'notificationTemplate_list'){ ?>
+        <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <?php } ?>
 <?php } ?>
 
@@ -597,6 +601,115 @@
                 end: '2021-04-28T17:31:00+09:00'
             }
         ]);
+
+    <?php } ?>
+
+    <?php if($page == 'notification_add'){ ?>
+        $('.select2').select2();
+
+        function create_data(){
+            // var formData = $('form').serialize();
+            // console.log(validation(formData));
+            // return false;
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'notification/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'notification';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'notification/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'notificationTemplate_list'){ ?>
+
+        CKEDITOR.replace(document.getElementById('mail_content_UserAppointmentBook'));
+        CKEDITOR.replace(document.getElementById('mail_content_AppointmentCancel'));
+        CKEDITOR.replace(document.getElementById('mail_content_AppointmentReject'));
+        CKEDITOR.replace(document.getElementById('mail_content_UserVerification'));
+        CKEDITOR.replace(document.getElementById('mail_content_AppointmentComplete'));
+        CKEDITOR.replace(document.getElementById('mail_content_ForgotPassword'));
+        CKEDITOR.replace(document.getElementById('mail_content_WorkerAppointmentBook'));
+
+        function create_data(){
+            // var formData = $('form').serialize();
+            // console.log(validation(formData));
+            // return false;
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'notificationTemplate/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'notificationTemplate';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'notificationTemplate/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
 
     <?php } ?>
 

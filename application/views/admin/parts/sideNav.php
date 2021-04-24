@@ -83,14 +83,21 @@
                             <span class="nav-link-text">Calendar</span>
                         </a>
                     </li>
-
-                    <!-- 
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
-                            <i class="ni ni-single-02 text-yellow"></i>
-                            <span class="nav-link-text">Profile</span>
+                        <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
+                            <i class="ni ni-notification-70 text-yellow"></i>
+                            <span class="nav-link-text">Notification</span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
+                            <i class="ni ni-ruler-pencil text-warning"></i>
+                            <span class="nav-link-text">Notification Template</span>
+                        </a>
+                    </li>
+
+                    <!-- 
                     <li class="nav-item">
                         <a class="nav-link" href="tables.html">
                             <i class="ni ni-bullet-list-67 text-default"></i>

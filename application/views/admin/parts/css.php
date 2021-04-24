@@ -26,7 +26,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-            $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
+            $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add'){ ?>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <?php } ?>
 
