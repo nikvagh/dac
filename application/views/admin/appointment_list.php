@@ -14,7 +14,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="sort">#</th>
-                                    <th scope="col" class="sort">User</th>
+                                    <th scope="col" class="sort">Customer</th>
                                     <th scope="col" class="sort">Service Provider</th>
                                     <th scope="col" class="sort">Date</th>
                                     <th scope="col" class="sort">Duration</th>

@@ -6,7 +6,7 @@
             $this->load->model('CategoryModel','Category');
             $this->load->model('ServiceStatusModel','ServiceStatus');
             $this->load->model('ServiceModel','Service');
-            $this->load->model('UserModel','User');
+            $this->load->model('CustomerModel','Customer');
             $this->load->model('ServiceProviderModel','Sp');
             checkLogin('admin');
         }
@@ -49,7 +49,7 @@
             $content['categories'] = $this->Category->get_list();
             $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
-            $content['users'] = $this->User->get_list();
+            $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
 
             $views["content"] = ["path"=>ADMIN.'appointment_add',"data"=>$content];
@@ -63,7 +63,7 @@
             $content['categories'] = $this->Category->get_list();
             $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
-            $content['users'] = $this->User->get_list();
+            $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
             // echo "<pre>";print_r($content);
             // exit;
@@ -77,7 +77,7 @@
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);
             // exit;
-            $this->form_validation->set_rules('user_id', 'User', 'required');
+            $this->form_validation->set_rules('customer_id', 'Customer', 'required');
             $this->form_validation->set_rules('category_id', 'Category', 'required');
             $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
             $this->form_validation->set_rules('services[]', 'Services', 'required');

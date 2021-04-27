@@ -30,13 +30,13 @@
 
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label class="form-control-label">Users *</label>
-                                <select name="users[]" id="users" class="form-control select2" multiple>
-                                    <?php foreach($users as $key=>$val){ ?>
+                                <label class="form-control-label">Customers *</label>
+                                <select name="customers[]" id="customers" class="form-control select2" multiple>
+                                    <?php foreach($customers as $key=>$val){ ?>
                                         <option value="<?php echo $val->id; ?>"><?php echo $val->firstname.' '.$val->lastname; ?></option>
                                     <?php } ?>
                                 </select>
-                                <span class="error text-danger validation-message" data-field="users[]"></span>
+                                <span class="error text-danger validation-message" data-field="customers[]"></span>
                             </div>
                         </div>
                     </div>

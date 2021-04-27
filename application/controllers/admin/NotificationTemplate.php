@@ -30,6 +30,13 @@
             
             $content['list'] = $this->Nt->get_list();
             $content['title'] = "Notification Template";
+            if(isset($_GET['tab'])){
+                $content['tab'] = $_GET['tab'];
+            }else{
+                $content['tab'] = 'UserAppointmentBook';
+            }
+
+            // echo "<pre>";print_r($content); exit;
             $views["content"] = ["path"=>ADMIN.'notificationTemplate_list',"data"=>$content];
             $layout['page'] = 'notificationTemplate_list';
 
@@ -39,7 +46,6 @@
 
         function add(){
             $content['title'] = "Notification Template";
-            $content['categories'] = $this->Category->get_list();
             $views["content"] = ["path"=>ADMIN.'notificationTemplate_add',"data"=>$content];
             $layout['page'] = 'notificationTemplate_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
@@ -48,7 +54,6 @@
         function edit($id = 0){
             $content['title'] = "Notification Template";
             $content['form_data'] = $this->Nt->getDataById($id);
-            $content['categories'] = $this->Category->get_list();
             // echo "<pre>";print_r($content);
             // exit;
 
@@ -61,10 +66,7 @@
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);
             // exit;
-            $this->form_validation->set_rules('name', 'Name', 'required');
-            $this->form_validation->set_rules('amount', 'Amount', 'required|numeric');
-            $this->form_validation->set_rules('duration', 'Duration', 'required|numeric');
-            $this->form_validation->set_rules('categories[]', 'Categories', 'required');
+            $this->form_validation->set_rules('title', 'Title', 'required');
             if ($this->form_validation->run()) {
                 // header("Content-type:application/json");
                 echo json_encode(['status'=>200]);
@@ -82,9 +84,10 @@
         }
 
         public function update(){
+            // echo "<pre>";print_r($_POST);exit;
             if ($this->Nt->update()) {
                 $this->session->set_flashdata('success', 'Notification Template information has been saved successfully.');
-                echo json_encode(['status'=>200]);
+                echo json_encode(['status'=>200,'result'=>['tab'=>$this->input->post('heading_code')]]);
             }
         }
 

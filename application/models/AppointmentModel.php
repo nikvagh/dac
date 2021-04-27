@@ -8,9 +8,9 @@ class AppointmentModel extends CI_Model {
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('a.*,sp.company_name,u.id as user_id,u.firstname,u.lastname');
+        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname');
         $this->db->from('appointment as a')
-            ->join('user as u','u.id = a.user_id','left')
+            ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')
             ->join('category as c','c.category_id = a.category_id','left');
         $this->db->order_by("a.id", "Desc");
@@ -42,7 +42,7 @@ class AppointmentModel extends CI_Model {
 
     function getDataById($id){
         $this->db->select('a.*')
-            ->join('user as u','u.id = a.user_id','left')
+            ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')
             ->join('category as c','c.category_id = a.category_id','left');
         $this->db->where('a.id',$id);
@@ -74,7 +74,7 @@ class AppointmentModel extends CI_Model {
         // echo "<pre>";print_r($_POST); exit;
 
         $data = array(
-            'user_id'=>$this->input->post('user_id'),
+            'customer_id'=>$this->input->post('customer_id'),
             'category_id'=>$this->input->post('category_id'),
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),
@@ -101,7 +101,7 @@ class AppointmentModel extends CI_Model {
         // echo "<pre>";print_r($_POST); exit;
 
         $data = array(
-            'user_id'=>$this->input->post('user_id'),
+            'customer_id'=>$this->input->post('customer_id'),
             'category_id'=>$this->input->post('category_id'),
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),

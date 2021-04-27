@@ -53,36 +53,16 @@ class NotificationTemplateModel extends CI_Model {
     function update(){
         // echo "<pre>"; print_r($_POST); print_r($_FILES); exit;
 
-        if($this->input->post('status')){
-            $status = '0';
-        }else{
-            $status = '1';
-        }
-
-        $image_name = $this->input->post('image_old');
-
         $data = array(
-            'sp_id'=>$this->input->post('sp_id'),
-            'name'=>$this->input->post('name'),
-            'email'=>$this->input->post('email'),
-            'phone'=>$this->input->post('phone'),
-            'start_time'=>$this->input->post('start_time'),
-            'end_time'=>$this->input->post('end_time'),
-            'experience'=>$this->input->post('experience'),
-            'description'=>$this->input->post('description'),
-            'image'=>$image_name,
-            'status'=>$status,
+            'title'=>$this->input->post('title'),
+            'subject'=>$this->input->post('subject'),
+            'notification_content'=>$this->input->post('notification_content'),
+            'mail_content'=>$this->input->post('mail_content')
         );
 
-        if($this->input->post('password') && $this->input->post('password') != ""){
-            $data['password'] = md5($this->input->post('password'));
-        }
-
-        $this->db->set($data)->where('id',$this->input->post('id'));
+        $this->db->set($data)->where('heading_code',$this->input->post('heading_code'));
         $this->db->update($this->table);
 
-        // echo $this->db->last_query();
-        // exit;
         return true;
     }
 

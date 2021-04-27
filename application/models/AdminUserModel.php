@@ -1,41 +1,32 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class UserModel extends CI_Model {
+class AdminUserModel extends CI_Model {
     function __construct() {
-        $this->table = 'user';
+        $this->table = 'admin';
         $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('u.*');
-        $this->db->from('user as u');
-        // $this->db->order_by("id", "Desc");
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->order_by("admin_id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
 
         $query = $this->db->get();
         $result = $query->result();
+
         // echo "<pre>";print_r($result);exit;
         return $result;
     }
 
     function getDataById($id){
         $this->db->select('*');
-        $this->db->where('id',$id);
+        $this->db->where('admin_id',$id);
         $query = $this->db->get($this->table);
         $row = $query->row();
-
-        $categories = (object) [];
-        if(!empty($row)){
-            $query = $this->db->select('c.*')->from('service_category as sc')->join('category as c','c.category_id=sc.category_id','left')->where('sc.service_id',$row->id)->get();
-            $categories = $query->result();
-        }
-
-        $row->categories = $categories;
-        $row->category_ids = array_map(function($e) { return is_object($e) ? $e->category_id : $e['category_id']; }, $categories);
-        // $row->category_ids = array_column($categories,'category_id');
         return $row;
     }
 
@@ -56,7 +47,7 @@ class UserModel extends CI_Model {
                 $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
                 $config['file_name'] = $image_name;
-                $config['upload_path'] = SERVICE_IMG;
+                $config['upload_path'] = ADMIN_IMG;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
                 $this->upload->initialize($config);
@@ -67,26 +58,15 @@ class UserModel extends CI_Model {
         }
 
         $data = array(
-            'name'=>$this->input->post('name'),
-            'amount'=>$this->input->post('amount'),
-            'duration'=>$this->input->post('duration'),
-            'description'=>$this->input->post('description'),
-            'image'=>$image_name,
+            'username'=>$this->input->post('username'),
+            'password'=>$this->input->post('password'),
+            'phone'=>$this->input->post('phone'),
+            'email'=>$this->input->post('email'),
+            'profile'=>$image_name,
             'status'=>$status,
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
-        // ================================
-
-        foreach($this->input->post('categories') as $val){
-            $data = array(
-                'service_id'=>$id,
-                'category_id'=>$val
-            );
-            $this->db->insert('service_category',$data);
-        }
-
-        
         return $id;
     }
 
@@ -97,23 +77,23 @@ class UserModel extends CI_Model {
         // exit;
 
         if($this->input->post('status')){
-            $status = '0';
+            $status = 'Enable';
         }else{
-            $status = '1';
+            $status = 'Disable';
         }
 
         $image_name = $this->input->post('image_old');
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
 
             // remove old file
-            if(file_exists(SERVICE_IMG.$this->input->post('image_old'))){
-                @unlink(SERVICE_IMG.$this->input->post('image_old'));
+            if(file_exists(ADMIN_IMG.$this->input->post('image_old'))){
+                @unlink(ADMIN_IMG.$this->input->post('image_old'));
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
             
             $config['file_name'] = $image_name;
-            $config['upload_path'] = SERVICE_IMG;
+            $config['upload_path'] = ADMIN_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
             $this->upload->initialize($config);
@@ -124,28 +104,19 @@ class UserModel extends CI_Model {
         }
 
         $data = array(
-            'name'=>$this->input->post('name'),
-            'amount'=>$this->input->post('amount'),
-            'duration'=>$this->input->post('duration'),
-            'description'=>$this->input->post('description'),
-            'image'=>$image_name,
+            'username'=>$this->input->post('username'),
+            'phone'=>$this->input->post('phone'),
+            'email'=>$this->input->post('email'),
+            'profile'=>$image_name,
             'status'=>$status,
         );
-        $this->db->set($data)->where('id',$this->input->post('id'));
-        $this->db->update($this->table);
 
-        // ============================
-
-        $this->db->where('service_id', $this->input->post('id'));
-        $this->db->delete('service_category');
-
-        foreach($this->input->post('categories') as $val){
-            $data = array(
-                'service_id'=>$this->input->post('id'),
-                'category_id'=>$val
-            );
-            $this->db->insert('service_category',$data);
+        if($this->input->post('password') && $this->input->post('password') != ""){
+            $data['password'] = md5($this->input->post('password'));
         }
+
+        $this->db->set($data)->where('admin_id',$this->input->post('id'));
+        $this->db->update($this->table);
 
         // echo $this->db->last_query();
         // exit;
@@ -154,7 +125,7 @@ class UserModel extends CI_Model {
 
     function st_update(){
         $this->db->set('status', $this->input->post('publish'));
-        $this->db->where('id', $this->input->post('id'));
+        $this->db->where('admin_id', $this->input->post('id'));
         $query = $this->db->update($this->table);
 
         if($query){
@@ -168,14 +139,11 @@ class UserModel extends CI_Model {
         $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(SERVICE_IMG.$row->image)){
-            @unlink(SERVICE_IMG.$row->image);
+        if(file_exists(ADMIN_IMG.$row->profile)){
+            @unlink(ADMIN_IMG.$row->profile);
         }
-
-        $this->db->where('service_id', $this->input->post('id'));
-        $this->db->delete('service_category');
         
-        $this->db->where('id', $this->input->post('id'));
+        $this->db->where('admin_id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;
         }else{

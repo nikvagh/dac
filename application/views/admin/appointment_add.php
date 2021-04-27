@@ -14,10 +14,10 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">User *</label>
-                                <select name="user_id" id="user_id" class="form-control select2">
+                                <label class="form-control-label">Customer *</label>
+                                <select name="customer_id" id="customer_id" class="form-control select2">
                                     <option hidden="hidden" value="">--select--</option>
-                                    <?php foreach($users as $key=>$val){ ?>
+                                    <?php foreach($customers as $key=>$val){ ?>
                                         <option value="<?php echo $val->id; ?>"><?php echo $val->firstname.' '.$val->lastname; ?></option>
                                     <?php } ?>
                                 </select>

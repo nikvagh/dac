@@ -4,7 +4,7 @@
             parent::__construct();
             $this->load->model('NotificationModel','Notification');
             $this->load->model('CategoryModel','Category');
-            $this->load->model('UserModel','User');
+            $this->load->model('CustomerModel','Customer');
             checkLogin('admin');
         }
 
@@ -30,7 +30,7 @@
             // }
             
             $content['list'] = $this->Notification->get_list();
-            $content['users'] = $this->User->get_list();
+            $content['customers'] = $this->Customer->get_list();
             $content['title'] = "Notification";
             $views["content"] = ["path"=>ADMIN.'notification_add',"data"=>$content];
             $layout['page'] = 'notification_add';
@@ -65,7 +65,7 @@
             // exit;
             $this->form_validation->set_rules('title', 'Title', 'required');
             $this->form_validation->set_rules('message', 'Message', 'required');
-            $this->form_validation->set_rules('users[]', 'Users', 'required');
+            $this->form_validation->set_rules('customers[]', 'Customers', 'required');
             if ($this->form_validation->run()) {
                 // header("Content-type:application/json");
                 echo json_encode(['status'=>200]);

@@ -43,6 +43,12 @@
                     <?php if($page == 'appointment_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'appointment/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
+                    <?php if($page == 'adminUser_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'adminUser/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'customer_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'customer/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
                 </div>
             </div>
 

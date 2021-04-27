@@ -97,13 +97,21 @@
                         </a>
                     </li>
 
-                    <!-- 
                     <li class="nav-item">
-                        <a class="nav-link" href="tables.html">
-                            <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">Tables</span>
+                        <a class="nav-link <?php if($activeTab == 'adminUser'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'adminUser'); ?>">
+                            <i class="ni ni-active-40 text-gray"></i>
+                            <span class="nav-link-text">Admin</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'customer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'customer'); ?>">
+                            <i class="ni ni-single-02 text-primary"></i>
+                            <span class="nav-link-text">Customer</span>
+                        </a>
+                    </li>
+
+                    <!-- 
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="login.html">
                             <i class="ni ni-key-25 text-info"></i>
