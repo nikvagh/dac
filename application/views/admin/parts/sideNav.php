@@ -109,15 +109,14 @@
                             <span class="nav-link-text">Customer</span>
                         </a>
                     </li>
-
-                    <!-- 
-                    
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">
-                            <i class="ni ni-key-25 text-info"></i>
-                            <span class="nav-link-text">Login</span>
+                        <a class="nav-link <?php if($activeTab == 'faq'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'faq'); ?>">
+                            <i class="ni ni-like-2 text-dark"></i>
+                            <span class="nav-link-text">FAQ</span>
                         </a>
                     </li>
+
+                    <!-- 
                     <li class="nav-item">
                         <a class="nav-link" href="register.html">
                             <i class="ni ni-circle-08 text-pink"></i>
