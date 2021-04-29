@@ -63,9 +63,19 @@
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Role *</label>
+                                    <select class="form-control" name="role">
+                                        <option value="">--select--</option>
+                                        <?php foreach($roles as $key=>$val){ ?>
+                                            <option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <span class="error text-danger validation-message" data-field="role"></span>
+                                </div>
+                            </div>
 
-                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Status *</label>

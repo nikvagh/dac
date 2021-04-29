@@ -52,6 +52,9 @@
                     <?php if($page == 'faq_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'faq/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
+                    <?php if($page == 'role_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'role/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
                 </div>
             </div>
 

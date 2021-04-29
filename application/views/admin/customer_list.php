@@ -39,7 +39,7 @@
                                         <td>
                                             <label class="custom-toggle">
                                                 <?php 
-                                                    if($val->status == 'Enable'){ 
+                                                    if($val->status == 'Enable'){
                                                         $checked = "checked";
                                                         $publish_st = "Disable";
                                                     }else{

@@ -116,13 +116,14 @@
                         </a>
                     </li>
 
-                    <!-- 
                     <li class="nav-item">
-                        <a class="nav-link" href="register.html">
+                        <a class="nav-link <?php if($activeTab == 'role'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'role'); ?>">
                             <i class="ni ni-circle-08 text-pink"></i>
-                            <span class="nav-link-text">Register</span>
+                            <span class="nav-link-text">Role</span>
                         </a>
                     </li>
+
+                    <!--
                     <li class="nav-item">
                         <a class="nav-link" href="upgrade.html">
                             <i class="ni ni-send text-dark"></i>

@@ -17,7 +17,7 @@
 
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
-            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list'){ ?>
+            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -34,7 +34,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-                $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add'){ ?>
+                $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -83,7 +83,7 @@
     <?php } ?>
 
     <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list" || 
-            $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list')){ ?>
+            $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list'  || $page == 'role_list')){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -721,7 +721,6 @@
     <?php } ?>
 
     <?php if($page == 'adminUser_add' || $page == 'adminUser_edit'){ ?>
-        $('.select2').select2();
 
         function create_data(){
             // var formData = $('form').serialize();
@@ -903,6 +902,67 @@
             var returnData;
             $.ajax({
                 type: "post", url: admin_base+'faq/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'role_add' || $page == 'role_edit'){ ?>
+
+        $('.select2').select2();
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'role/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'role';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'role/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'role';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'role/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }

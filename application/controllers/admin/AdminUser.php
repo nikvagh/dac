@@ -3,6 +3,7 @@
         function __construct(){
             parent::__construct();
             $this->load->model('AdminUserModel','AdminUser');
+            $this->load->model('RoleModel','Role');
             checkLogin('admin');
         }
 
@@ -37,6 +38,7 @@
 
         function add(){
             $content['title'] = "Admin";
+            $content['roles'] = $this->Role->get_list();
             $views["content"] = ["path"=>ADMIN.'adminUser_add',"data"=>$content];
             $layout['page'] = 'adminUser_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
@@ -44,6 +46,7 @@
 
         function edit($id = 0){
             $content['title'] = "Admin";
+            $content['roles'] = $this->Role->get_list();
             $content['form_data'] = $this->AdminUser->getDataById($id);
             // echo "<pre>";print_r($content);
             // exit;
@@ -58,6 +61,7 @@
             // $this->form_validation->set_data($_POST);
             // exit;
             $this->form_validation->set_rules('username', 'Username', 'required');
+            $this->form_validation->set_rules('role', 'Role', 'required');
             $this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             if($_POST['action'] == 'add'){
