@@ -25,7 +25,7 @@
 
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
             $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-            $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit'){ ?>
+            $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'settings_list'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
@@ -34,7 +34,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-                $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add'){ ?>
+            $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add' || $page == 'settings_list'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -45,7 +45,7 @@
         <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
     <?php } ?>
 
-    <?php if($page == 'notificationTemplate_list'){ ?>
+    <?php if($page == 'notificationTemplate_list' || $page == 'settings_list'){ ?>
         <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <?php } ?>
 <?php } ?>
@@ -963,6 +963,71 @@
             var returnData;
             $.ajax({
                 type: "post", url: admin_base+'role/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'settings_list'){ ?>
+
+        $('.select2').select2();
+
+        // CKEDITOR.replace(document.getElementById('mail_content_UserAppointmentBook'));
+        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentCancel'));
+        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentReject'));
+        // CKEDITOR.replace(document.getElementById('mail_content_UserVerification'));
+        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentComplete'));
+        // CKEDITOR.replace(document.getElementById('mail_content_ForgotPassword'));
+        // CKEDITOR.replace(document.getElementById('mail_content_WorkerAppointmentBook'));
+
+        function edit_data(settingType){
+            // var formData = $('form').serialize();
+            // for (instance in CKEDITOR.instances)
+            // {
+            //     CKEDITOR.instances[instance].updateElement();
+            // }
+
+            var formData = new FormData(document.getElementById("form1_"+settingType));
+            formData.append ('action', 'edit');
+            formData.append ('settingType', settingType);
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'settings/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data.result.tab);
+                        // return false;
+
+                        if(data.status == 200){
+                            window.location.href = admin_base+'settings?tab='+data.result.tab;
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'settings/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }

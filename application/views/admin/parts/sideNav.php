@@ -122,14 +122,12 @@
                             <span class="nav-link-text">Role</span>
                         </a>
                     </li>
-
-                    <!--
                     <li class="nav-item">
-                        <a class="nav-link" href="upgrade.html">
-                            <i class="ni ni-send text-dark"></i>
-                            <span class="nav-link-text">Upgrade</span>
+                        <a class="nav-link <?php if($activeTab == 'settings'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'settings'); ?>">
+                            <i class="ni ni-settings-gear-65 text-dark"></i>
+                            <span class="nav-link-text">Settings</span>
                         </a>
-                    </li> -->
+                    </li>
                 </ul>
                 <!-- Navigation -->
                 <!-- <ul class="navbar-nav mb-md-3">

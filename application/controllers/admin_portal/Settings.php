@@ -8,14 +8,14 @@
 		}		
 
 		function index()
-		{	
+		{
         	$data['settings'] = TRUE;
 			$data['title'] = "Settings";
 			$this->load->view(ADMINPATH.'settings', $data);
 		}
 
 		function update()
-		{	
+		{
 			$data['title'] = "Settings";
 			if(isset($_POST['submit'])){
 				$settings_arr = array("company_name", "company_address", "company_mobile", "company_email", "site_name", "company_copyright", "service_provider_content", "");
@@ -38,5 +38,4 @@
 		}
 
 	}
-
 ?>
