@@ -55,7 +55,6 @@
                         </ul>
                     </li>
 
-
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'service'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'service'); ?>">
                             <i class="fas fa-concierge-bell text-dark"></i>
@@ -128,6 +127,34 @@
                             <span class="nav-link-text">Settings</span>
                         </a>
                     </li>
+
+                    <?php 
+                        $crm_t = false;
+                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $crm_t = true; }
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#crmMenu" class="collapsed">
+                            <i class="ni ni-planet text-primary"></i>
+                            <span class="nav-link-text">CRM</span>
+                        </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($crm_t){ echo 'show'; } ?>" id="crmMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'package'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'package'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Package</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
+                                    <i class="fas fa-dot-circle text-yellow"></i>
+                                    <span class="nav-link-text">Co-Workers</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
                 </ul>
                 <!-- Navigation -->
                 <!-- <ul class="navbar-nav mb-md-3">

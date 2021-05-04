@@ -17,7 +17,7 @@
 
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
-            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list'){ ?>
+            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list' || $page == 'package_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -25,7 +25,8 @@
 
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
             $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-            $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'settings_list'){ ?>
+            $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'settings_list' || $page == 'package_add' || 
+            $page == 'package_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
@@ -995,14 +996,14 @@
         // CKEDITOR.replace(document.getElementById('mail_content_UserVerification'));
         // CKEDITOR.replace(document.getElementById('mail_content_AppointmentComplete'));
         // CKEDITOR.replace(document.getElementById('mail_content_ForgotPassword'));
-        // CKEDITOR.replace(document.getElementById('mail_content_WorkerAppointmentBook'));
+        CKEDITOR.replace(document.getElementById('privacy_policy'));
 
         function edit_data(settingType){
             // var formData = $('form').serialize();
-            // for (instance in CKEDITOR.instances)
-            // {
-            //     CKEDITOR.instances[instance].updateElement();
-            // }
+            for (instance in CKEDITOR.instances)
+            {
+                CKEDITOR.instances[instance].updateElement();
+            }
 
             var formData = new FormData(document.getElementById("form1_"+settingType));
             formData.append ('action', 'edit');

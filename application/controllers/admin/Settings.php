@@ -13,6 +13,11 @@
 		{
 			$content['title'] = "Settings";
 			$content['currency_list'] = $this->Country->get_currency_list();
+			if(isset($_GET['tab'])){
+                $content['tab'] = $_GET['tab'];
+            }else{
+                $content['tab'] = 'companyCoreSetting';
+            }
 			$views["content"] = ["path"=>ADMIN.'settings_list',"data"=>$content];
             $layout['page'] = 'settings_list';
             $this->layouts->view($views,'admin_dashboard',$layout);
@@ -55,7 +60,23 @@
 					// header("Content-type:application/json");
 					echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
 				}
-			} 
+			}
+			
+			if($_POST['settingType'] == 'paymentSetting'){
+				echo json_encode(['status'=>200]);
+			}
+
+			if($_POST['settingType'] == 'userVerificationSetting'){
+				echo json_encode(['status'=>200]);
+			}
+
+			if($_POST['settingType'] == 'notificationSetting'){
+				echo json_encode(['status'=>200]);
+			}
+
+			if($_POST['settingType'] == 'privacyPolicy'){
+				echo json_encode(['status'=>200]);
+			}
         }
 
 		function update()

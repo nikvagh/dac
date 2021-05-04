@@ -64,7 +64,6 @@ class SettingsModel extends CI_Model {
                 }
             }
 
-
             // $company_logo_name = $this->input->post('company_logo_old');
             if(isset($_FILES['company_logo']['name']) && $_FILES['company_logo']['name'] != ""){
 
@@ -113,9 +112,91 @@ class SettingsModel extends CI_Model {
                 $this->db->where('config_name', 'company_favicon');
                 $this->db->update('web_config', $settings_data);
             }
-
             
+        }
 
+        if($_POST['settingType'] == 'paymentSetting'){
+            $settings_arr = array("service_paid_locally","paypal","stripe","razorpay","flutterwave","paystack","paypal_environment_sandbox", "paypal_environment_production", "stripe_published_key", "stripe_secret_key", "razorpay_key", "flutterwave_public_key", "paystack_public_key");
+
+            $success = "N";
+            for($i=0; $i < count($settings_arr); $i++)
+            {
+                // "service_paid_locally","paypal","stripe","razorpay","flutterwave","paystack"
+                if(in_array($settings_arr[$i],["service_paid_locally","paypal","stripe","razorpay","flutterwave","paystack"])){
+                    if($this->input->post($settings_arr[$i])){
+                        $settings_data = array('config_value' =>  'Yes');
+                    }else{
+                        $settings_data = array('config_value' =>  'No');
+                    }
+                }else{
+                    $settings_data = array('config_value' =>  $this->input->post($settings_arr[$i]));
+                }
+
+                $this->db->where('config_name', $settings_arr[$i]);
+                if($query = $this->db->update('web_config', $settings_data)){
+                    $success = "Y";
+                }
+            }
+        }
+
+        if($_POST['settingType'] == 'userVerificationSetting'){
+            $settings_arr = array("user_verification","user_verify_by_sms","user_verify_by_email","twilio_account_id","twilio_auth_token","twilio_phone_number");
+
+            $success = "N";
+            for($i=0; $i < count($settings_arr); $i++)
+            {
+                if(in_array($settings_arr[$i],["user_verification","user_verify_by_sms","user_verify_by_email"])){
+                    if($this->input->post($settings_arr[$i])){
+                        $settings_data = array('config_value' =>  'Yes');
+                    }else{
+                        $settings_data = array('config_value' =>  'No');
+                    }
+                }else{
+                    $settings_data = array('config_value' =>  $this->input->post($settings_arr[$i]));
+                }
+
+                $this->db->where('config_name', $settings_arr[$i]);
+                if($query = $this->db->update('web_config', $settings_data)){
+                    $success = "Y";
+                }
+            }
+        }
+
+        if($_POST['settingType'] == 'notificationSetting'){
+            $settings_arr = array("push_notification","mail_notification","onesignal_app_id","onesignal_auth_key","onesignal_rest_api_key","project_number","mail_host","mail_port","mail_username","mail_password","mail_encryption","mail_from_address");
+
+            $success = "N";
+            for($i=0; $i < count($settings_arr); $i++)
+            {
+                if(in_array($settings_arr[$i],["push_notification","mail_notification"])){
+                    if($this->input->post($settings_arr[$i])){
+                        $settings_data = array('config_value' =>  'Yes');
+                    }else{
+                        $settings_data = array('config_value' =>  'No');
+                    }
+                }else{
+                    $settings_data = array('config_value' =>  $this->input->post($settings_arr[$i]));
+                }
+
+                $this->db->where('config_name', $settings_arr[$i]);
+                if($query = $this->db->update('web_config', $settings_data)){
+                    $success = "Y";
+                }
+            }
+        }
+
+        if($_POST['settingType'] == 'privacyPolicy'){
+            $settings_arr = array("privacy_policy");
+
+            $success = "N";
+            for($i=0; $i < count($settings_arr); $i++)
+            {
+                $settings_data = array('config_value' =>  $this->input->post($settings_arr[$i]));
+                $this->db->where('config_name', $settings_arr[$i]);
+                if($query = $this->db->update('web_config', $settings_data)){
+                    $success = "Y";
+                }
+            }
         }
 
         return true;

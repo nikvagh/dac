@@ -182,3 +182,16 @@ if (!function_exists('update_member_login_array')){
 		}
 	}
 }
+
+
+if (!function_exists('package_validity_converter')){
+	function package_validity_converter($validity_str) {
+		$result['one_str'] = "";
+		
+		if($validity_str != ""){
+			$validity_ary = explode(':',$validity_str);
+			
+		}
+		return $result;
+	}
+}
