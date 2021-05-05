@@ -8,7 +8,6 @@
                 </div>
 
                 <form name="dataTableForm" id="dataTableForm" action="<?=base_url().ADMIN;?>appointment" method="post" enctype="multipart/form-data">
-                    <!-- Light table -->
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush dataTable table-hover">
                             <thead class="thead-dark">
@@ -20,7 +19,7 @@
                                     <th scope="col" class="sort">Duration</th>
                                     <th scope="col" class="sort">Amount</th>
                                     <th scope="col" class="sort">Service At</th>
-                                    <th scope="col" class="sort">Status</th>
+                                    <!-- <th scope="col" class="sort">Status</th> -->
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -34,17 +33,17 @@
                                         <td><?php echo $val->duration; ?></td>
                                         <td><?php echo $val->amount; ?></td>
                                         <td><?php echo $val->service_at; ?></td>
-                                        <td>
+                                        <!-- <td>
                                             <select name="status" id="" onChange="confirmPublishStatus('dataTableForm',<?php echo $val->id ?>,this,'Y')" class="form-control">
                                                 <?php foreach($statuses as $key1=>$val1){ ?>
                                                     <option value="<?php echo $val1->id; ?>" <?php if($val1->id == $val->status_id){ echo "selected"; } ?>><?php echo $val1->status_txt; ?></option>
                                                 <?php } ?>
                                             </select>
-                                        </td>
+                                        </td> -->
                                         <td>
-                                            <!-- <a href="<?php echo base_url(ADMIN.'appointment/view/'.$val->id) ?>" class="btn btn-sm bg-yellow">View</a> -->
-                                            <a href="<?php echo base_url(ADMIN.'appointment/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
-                                            <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Appointment')" class="btn btn-sm btn-danger text-white">Delete</a>
+                                            <a href="<?php echo base_url(ADMIN.'dispatch/view/'.$val->id) ?>" class="btn btn-sm bg-yellow">Details</a>
+                                            <!-- <a href="<?php echo base_url(ADMIN.'dispatch/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a> -->
+                                            <!-- <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Appointment')" class="btn btn-sm btn-danger text-white">Delete</a> -->
                                         </td>
                                     </tr>
                                 <?php } ?>

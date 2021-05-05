@@ -333,7 +333,6 @@ define('CUSTOMER_IMG', UPLOADS.'customer/');
 define('SYSTEM_IMG', UPLOADS.'system/');
 define('PACKAGE_IMG', UPLOADS.'package/');
 
-
 define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');
 define('INVOICE_PATH', UPLOADS.'invoice/');

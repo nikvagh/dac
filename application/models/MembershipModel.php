@@ -1,16 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class PackageModel extends CI_Model {
+class MembershipModel extends CI_Model {
     function __construct() {
-        $this->table = 'package';
+        $this->table = 'customer_membership';
         $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('s.*');
-        $this->db->from('package as s');
-        $this->db->order_by("id", "Desc");
+        $this->db->select('cm.*,c.firstname,c.lastname,c.username,c.email,c.phone,p.name as package_name,p.validity');
+        $this->db->from('customer_membership as cm');
+        $this->db->join('customer c','c.id=cm.customer_id','left')
+                ->join('package as p','p.id=cm.package_id','left');
+        $this->db->order_by("cm.id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
@@ -19,9 +21,13 @@ class PackageModel extends CI_Model {
         $result = $query->result();
 
         foreach($result as $key=>$val){
-            $query = $this->db->select('s.*')->from('package_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.package_id',$val->id)->get();
-            $result[$key]->services = $query->result();
-            $result[$key]->service_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services );
+        //     $query = $this->db->select('s.*')->from('membership_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.membership_id',$val->id)->get();
+        //     $result[$key]->services = $query->result();
+        //     $result[$key]->service_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services );
+            // echo date('Y-m-d');
+            // exit;
+
+            $result[$key]->validity_status = get_membership_validity_status($val->start_date,$val->end_date);
         }
 
         // echo "<pre>";print_r($result);exit;
@@ -36,7 +42,7 @@ class PackageModel extends CI_Model {
 
         $services = (object) [];
         if(!empty($row)){
-            $query = $this->db->select('s.*')->from('package_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.package_id',$row->id)->get();
+            $query = $this->db->select('s.*')->from('membership_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.membership_id',$row->id)->get();
             $services = $query->result();
         }
 
@@ -86,10 +92,10 @@ class PackageModel extends CI_Model {
 
         foreach($this->input->post('services') as $val){
             $data = array(
-                'package_id'=>$id,
+                'membership_id'=>$id,
                 'service_id'=>$val
             );
-            $this->db->insert('package_service',$data);
+            $this->db->insert('membership_service',$data);
         }
 
         return $id;
@@ -141,15 +147,15 @@ class PackageModel extends CI_Model {
 
         // ============================
 
-        $this->db->where('package_id', $this->input->post('id'));
-        $this->db->delete('package_service');
+        $this->db->where('membership_id', $this->input->post('id'));
+        $this->db->delete('membership_service');
 
         foreach($this->input->post('services') as $val){
             $data = array(
-                'package_id'=>$this->input->post('id'),
+                'membership_id'=>$this->input->post('id'),
                 'service_id'=>$val
             );
-            $this->db->insert('package_service',$data);
+            $this->db->insert('membership_service',$data);
         }
 
         // echo $this->db->last_query();
@@ -173,12 +179,12 @@ class PackageModel extends CI_Model {
         $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(PACKAGE_IMG.$row->image)){
-            @unlink(PACKAGE_IMG.$row->image);
-        }
+        // if(file_exists(PACKAGE_IMG.$row->image)){
+        //     @unlink(PACKAGE_IMG.$row->image);
+        // }
 
-        $this->db->where('package_id', $this->input->post('id'));
-        $this->db->delete('package_service');
+        $this->db->where('membership_id', $this->input->post('id'));
+        $this->db->delete('membership_service');
         
         $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
@@ -187,41 +193,5 @@ class PackageModel extends CI_Model {
             return false;
         }
     }
-    
-    function deleteselected(){
-        
-        $arrcat = $this->input->post('u_list');
 
-        for ($m = 0; $m < count($arrcat); $m++) {
-            
-            $product_data=$this->get_product_data($arrcat[$m]);
-            
-            for ($n = 0; $n < count($product_data); $n++) {
-                $pro_images=explode(',', $product_data[$n]['product_image']);
-                
-                for ($i = 0; $i < count($pro_images); $i++) {
-                    echo PRODUCTPICPATH. $pro_images[$i];
-                    if (file_exists(PRODUCTPICPATH. $pro_images[$i])){
-
-                        @unlink(PRODUCTPICPATH . $pro_images[$i]);
-                        $sizes = array(50=>50,253=>285,99=>136);
-                        foreach ($sizes as $key => $val) {
-                            if (PRODUCTPICPATH ."thumb/" . $key. "x" . $val."_".$pro_images[$i]){
-                                @unlink(PRODUCTPICPATH ."thumb/" . $key . "x" . $val."_".$pro_images[$i]);
-                            }
-                        }
-                    }
-                }
-                $this->db->where('category_id',$product_data[$n]['category_id']);
-                $query = $this->db->delete('product');
-            }
-           
-        }
-        
-        $this->db->where_in('category_id', $this->input->post('u_list'));
-        if ($query = $this->db->delete($this->table))
-            return true;
-        else
-            return false;
-    }
 }

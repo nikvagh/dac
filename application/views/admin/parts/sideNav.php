@@ -34,20 +34,20 @@
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
                         <a class="nav-link <?php if($serviceProvider_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#serviceProviderMenu" class="collapsed">
-                            <i class="fas fa-building text-dark"></i>
+                            <i class="fas fa-building text-pink"></i>
                             <span class="nav-link-text">Service Provider</span>
                         </a>
                         <ul class="nav nav-treeView sub-menu collapse <?php if($serviceProvider_t){ echo 'show'; } ?>" id="serviceProviderMenu">
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'serviceProvider'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'serviceProvider'); ?>">
-                                    <i class="fas fa-building text-dark"></i>
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'serviceProvider'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Service Provider</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
-                                    <i class="fas fa-user text-dark"></i>
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'coWorker'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Co-Workers</span>
                                 </a>
                             </li>
@@ -69,19 +69,20 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
                             <i class="ni ni-watch-time text-success"></i>
                             <span class="nav-link-text">Appointment</span>
                         </a>
-                    </li>
+                    </li> -->
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'calendar'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'calendar'); ?>">
                             <i class="ni ni-calendar-grid-58 text-indigo"></i>
                             <span class="nav-link-text">Calendar</span>
                         </a>
-                    </li>
+                    </li> -->
+
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
                             <i class="ni ni-notification-70 text-yellow"></i>
@@ -130,7 +131,7 @@
 
                     <?php 
                         $crm_t = false;
-                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $crm_t = true; }
+                        if($activeTab == 'package' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch'){ $crm_t = true; }
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
                         <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#crmMenu" class="collapsed">
@@ -146,9 +147,30 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
-                                    <i class="fas fa-dot-circle text-yellow"></i>
-                                    <span class="nav-link-text">Co-Workers</span>
+                                <a class="nav-link <?php if($activeTab == 'membership'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'membership'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'membership'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Membership</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'appointment'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">All Appointment</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'dispatch'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'dispatch'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'dispatch'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Dispatch New Job</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'calendar'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'calendar'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'calendar'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Calendar</span>
                                 </a>
                             </li>
 

@@ -1,5 +1,5 @@
 <?php
-    class Appointment extends CI_Controller{
+    class Dispatch extends CI_Controller{
         function __construct(){
             parent::__construct();
             $this->load->model('AppointmentModel','Appointment');
@@ -8,22 +8,21 @@
             $this->load->model('ServiceModel','Service');
             $this->load->model('CustomerModel','Customer');
             $this->load->model('ServiceProviderModel','Sp');
-            $this->load->model('PackageModel','Package');
             checkLogin('admin');
         }
 
         function index(){
-            $data['title'] = "Appointment";
+            $data['title']="Dispatch Job";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Appointment->st_update()) {
                     $this->session->set_flashdata('success', 'Appointment status has been update successfully.');
-                    redirect(ADMIN.'appointment');
+                    redirect(ADMIN.'dispatch');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "delete"){
                 if ($result = $this->Appointment->delete()) {
                     $this->session->set_flashdata('success', 'Appointment deleted successfully.');
-                    redirect(ADMIN.'appointment');
+                    redirect(ADMIN.'dispatch');
                 }
             }
             // elseif ($this->input->post('action') == "deleteselected") {
@@ -32,37 +31,37 @@
             //         redirect('membership');
             //     }
             // }
-            
+                
             $where = ['status_id'=>1];
-            $content['list'] = $this->Appointment->get_list($where);
+            $content['list'] = $this->Appointment->get_list('','',$where);
             $content['statuses'] = $this->ServiceStatus->get_list();
-            $content['title'] = "Appointment";
+            $content['title'] = "Dispatch Job";
 
             // echo "<pre>";print_r($content);exit;
-            $views["content"] = ["path"=>ADMIN.'appointment_list',"data"=>$content];
-            $layout['page'] = 'appointment_list';
+            $views["content"] = ["path"=>ADMIN.'dispatch_list',"data"=>$content];
+            $layout['page'] = 'dispatch_list';
 
             $this->layouts->view($views,'admin_dashboard',$layout);
             // $this->load->view(ADMIN.'category/list',$data);
         }
 
         function add(){
-            $content['title'] = "Appointment";
-            $content['packages'] = $this->Package->get_list();
+            $content['title'] = "Dispatch Job";
+            $content['categories'] = $this->Category->get_list();
             $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
             $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
 
-            $views["content"] = ["path"=>ADMIN.'appointment_add',"data"=>$content];
-            $layout['page'] = 'appointment_add';
+            $views["content"] = ["path"=>ADMIN.'dispatch_add',"data"=>$content];
+            $layout['page'] = 'dispatch_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
         function edit($id = 0){
-            $content['title'] = "Appointment";
+            $content['title'] = "Dispatch Job";
             $content['form_data'] = $this->Appointment->getDataById($id);
-            $content['packages'] = $this->Package->get_list();
+            $content['categories'] = $this->Category->get_list();
             $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
             $content['customers'] = $this->Customer->get_list();
@@ -70,8 +69,24 @@
             // echo "<pre>";print_r($content);
             // exit;
 
-            $views["content"] = ["path"=>ADMIN.'appointment_edit',"data"=>$content];
-            $layout['page'] = 'appointment_edit';
+            $views["content"] = ["path"=>ADMIN.'dispatch_edit',"data"=>$content];
+            $layout['page'] = 'dispatch_edit';
+            $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        function view($id = 0){
+            $content['title'] = "Job";
+            $content['form_data'] = $this->Appointment->getDataById($id);
+            $content['categories'] = $this->Category->get_list();
+            $content['sps'] = $this->Sp->get_list();
+            $content['services'] = $this->Service->get_list();
+            $content['customers'] = $this->Customer->get_list();
+            $content['statuses'] = $this->ServiceStatus->get_list();
+            // echo "<pre>";print_r($content);
+            // exit;
+
+            $views["content"] = ["path"=>ADMIN.'dispatch_view',"data"=>$content];
+            $layout['page'] = 'dispatch_view';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
@@ -80,7 +95,7 @@
             // $this->form_validation->set_data($_POST);
             // exit;
             $this->form_validation->set_rules('customer_id', 'Customer', 'required');
-            $this->form_validation->set_rules('package_id', 'Package', 'required');
+            $this->form_validation->set_rules('category_id', 'Category', 'required');
             $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
             $this->form_validation->set_rules('services[]', 'Services', 'required');
             $this->form_validation->set_rules('date', 'Date', 'required');

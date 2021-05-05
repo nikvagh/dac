@@ -1,25 +1,24 @@
 <?php
-    class Package extends CI_Controller{
+    class Membership extends CI_Controller{
         function __construct(){
             parent::__construct();
-            $this->load->model('PackageModel','Package');
-            $this->load->model('ServiceModel','Service');
+            $this->load->model('MembershipModel','Membership');
             checkLogin('admin');
         }
 
         function index(){
-            $data['package_manage'] = TRUE;
-            $data['title']="Package";
+            $data['membership_manage'] = TRUE;
+            $data['title']="Membership";
 
             if($this->input->post('action') == "change_publish"){
-                if ($result = $this->Package->st_update()) {
-                    $this->session->set_flashdata('success', 'Package status has been update successfully.');
-                    redirect(ADMIN.'package');
+                if ($result = $this->Membership->st_update()) {
+                    $this->session->set_flashdata('success', 'Membership status has been update successfully.');
+                    redirect(ADMIN.'membership');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "delete"){
-                if ($result = $this->Package->delete()) {
-                    $this->session->set_flashdata('success', 'Package deleted successfully.');
-                    redirect(ADMIN.'package');
+                if ($result = $this->Membership->delete()) {
+                    $this->session->set_flashdata('success', 'Membership deleted successfully.');
+                    redirect(ADMIN.'membership');
                 }
             }
             // elseif ($this->input->post('action') == "deleteselected") {
@@ -29,33 +28,32 @@
             //     }
             // }
             
-            $content['list'] = $this->Package->get_list();
-            $content['title'] = "Package";
-            $views["content"] = ["path"=>ADMIN.'package_list',"data"=>$content];
-            $layout['page'] = 'package_list';
+            $content['list'] = $this->Membership->get_list();
+            $content['title'] = "Membership";
+            $views["content"] = ["path"=>ADMIN.'membership_list',"data"=>$content];
+            $layout['page'] = 'membership_list';
 
             $this->layouts->view($views,'admin_dashboard',$layout);
-            // $this->load->view(ADMIN.'package/list',$data);
+            // $this->load->view(ADMIN.'membership/list',$data);
         }
 
         function add(){
-            $content['title'] = "Package";
+            $content['title'] = "Membership";
             $content['services'] = $this->Service->get_list();
-            $views["content"] = ["path"=>ADMIN.'package_add',"data"=>$content];
-            $layout['page'] = 'package_add';
+            $views["content"] = ["path"=>ADMIN.'membership_add',"data"=>$content];
+            $layout['page'] = 'membership_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
         function edit($id = 0){
-            $content['title'] = "Package";
-            $content['form_data'] = $form_data = $this->Package->getDataById($id);
-            $content['validity'] = package_validity_converter($form_data->validity);
+            $content['title'] = "Membership";
+            $content['form_data'] = $form_data = $this->Membership->getDataById($id);
             $content['services'] = $this->Service->get_list();
             // echo "<pre>";print_r($content);
             // exit;
 
-            $views["content"] = ["path"=>ADMIN.'package_edit',"data"=>$content];
-            $layout['page'] = 'package_edit';
+            $views["content"] = ["path"=>ADMIN.'membership_edit',"data"=>$content];
+            $layout['page'] = 'membership_edit';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
@@ -74,21 +72,21 @@
         }
 
         public function create(){
-            if ($this->Package->create()) {
-                $this->session->set_flashdata('success', 'Package information has been saved successfully.');
+            if ($this->Membership->create()) {
+                $this->session->set_flashdata('success', 'Membership information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }
 
         public function update(){
-            if ($this->Package->update()) {
-                $this->session->set_flashdata('success', 'Package information has been saved successfully.');
+            if ($this->Membership->update()) {
+                $this->session->set_flashdata('success', 'Membership information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }
 
         public function delete(){
-            if ($this->Package->delete()) {
+            if ($this->Membership->delete()) {
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
             }

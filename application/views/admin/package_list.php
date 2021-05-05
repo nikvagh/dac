@@ -34,7 +34,13 @@
                                             <?php } ?>
                                         </td>
                                         <td><?php echo $val->amount; ?></td>
-                                        <td><?php echo $val->validity; ?></td>
+                                        <td>
+                                            <?php 
+                                                $pack_ary = package_validity_converter($val->validity);
+                                                echo $val->validity.' ['.$pack_ary['txt'].'] ';
+                                                // echo $pack_ary['total_days'];
+                                            ?>
+                                        </td>
                                         <td><?php echo implode(', ',$val->service_names); ?></td>
                                         <td>
                                             <label class="custom-toggle">

@@ -7,12 +7,19 @@ class AppointmentModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="",$where = []) {
         $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
-            ->join('sp','sp.sp_id = a.sp_id','left')
-            ->join('category as c','c.category_id = a.category_id','left');
+            ->join('sp','sp.sp_id = a.sp_id','left');
+            // ->join('package as p','p.id = sp.package_id','left');
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                $this->db->where($key,$val);
+            }
+        }
+
         $this->db->order_by("a.id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
@@ -24,6 +31,7 @@ class AppointmentModel extends CI_Model {
         foreach($result as $key=>$val){
 
             $query = $this->db->select('s.*')->from('appointment_service as as')->join('service as s','s.id=as.service_id','left')->where('as.appointment_id',$val->id)->get();
+
             $result[$key]->services = $query->result();
             $result[$key]->service_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services);
 
@@ -43,8 +51,9 @@ class AppointmentModel extends CI_Model {
     function getDataById($id){
         $this->db->select('a.*')
             ->join('customer as cr','cr.id = a.customer_id','left')
-            ->join('sp','sp.sp_id = a.sp_id','left')
-            ->join('category as c','c.category_id = a.category_id','left');
+            ->join('sp','sp.sp_id = a.sp_id','left');
+            // ->join('package as p','p.id = sp.package_id','left');
+
         $this->db->where('a.id',$id);
         $query = $this->db->get($this->table.' as a');
         $row = $query->row();
@@ -75,7 +84,7 @@ class AppointmentModel extends CI_Model {
 
         $data = array(
             'customer_id'=>$this->input->post('customer_id'),
-            'category_id'=>$this->input->post('category_id'),
+            'package_id'=>$this->input->post('package_id'),
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),
             'time'=>$this->input->post('time'),
@@ -102,7 +111,7 @@ class AppointmentModel extends CI_Model {
 
         $data = array(
             'customer_id'=>$this->input->post('customer_id'),
-            'category_id'=>$this->input->post('category_id'),
+            'package_id'=>$this->input->post('package_id'),
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),
             'time'=>$this->input->post('time'),
@@ -110,6 +119,9 @@ class AppointmentModel extends CI_Model {
         );
         $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
+
+        // echo $this->db->last_query();
+        // exit;
 
         // ============================
 

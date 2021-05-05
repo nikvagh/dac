@@ -27,14 +27,14 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Category *</label>
-                                <select name="category_id" id="category_id" class="form-control select2">
+                                <label class="form-control-label">package_id *</label>
+                                <select name="package_id" id="package_id" class="form-control select2">
                                     <option hidden="hidden" value="">--select--</option>
-                                    <?php foreach($categories as $key=>$val){ ?>
-                                        <option value="<?php echo $val->category_id; ?>"><?php echo $val->category_name; ?></option>
+                                    <?php foreach($packages as $key=>$val){ ?>
+                                        <option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
                                     <?php } ?>
                                 </select>
-                                <span class="error text-danger validation-message" data-field="category_id"></span>
+                                <span class="error text-danger validation-message" data-field="package_id"></span>
                             </div>
                         </div>
 

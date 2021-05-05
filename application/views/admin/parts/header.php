@@ -55,6 +55,9 @@
                     <?php if($page == 'role_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'role/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
+                    <?php if($page == 'package_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'package/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
                 </div>
             </div>
 

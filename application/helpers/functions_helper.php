@@ -93,6 +93,18 @@ if ( ! function_exists('checklogin'))
 	}
 }
 
+if (!function_exists('curr_date')){
+	function curr_date(){
+		return date('Y-m-d');
+	}
+}
+
+if (!function_exists('curr_dateTime')){
+	function curr_dateTime(){
+		return date('Y-m-d H:i:s');
+	}
+}
+
 if ( ! function_exists('destroy_login_session')){
 	function destroy_login_session(){
 		echo "<pre>";
@@ -183,15 +195,88 @@ if (!function_exists('update_member_login_array')){
 	}
 }
 
-
 if (!function_exists('package_validity_converter')){
 	function package_validity_converter($validity_str) {
-		$result['one_str'] = "";
-		
+		$txt = "";
+		$year_s = $month_s = $day_s = '';
+		$total_days = $year = $month = $day = 0;
 		if($validity_str != ""){
+
 			$validity_ary = explode(':',$validity_str);
-			
+			$year = $validity_ary[0];
+
+			if(array_key_exists('1',$validity_ary)){
+				$month = $validity_ary[1];
+			}
+
+			if(array_key_exists('2',$validity_ary)){
+				$day = $validity_ary[2];
+			}
+
+			if($day > 360){
+				// echo "ggg";
+				$day_eq = $day/360;
+				$year_to_add = floor($day_eq);
+				$year += $year_to_add;
+				$day = fmod($day, 360);
+			}
+
+			if($day > 30){
+				// echo "nnn";
+				$day_eq = $day/30;
+				$month_to_add = floor($day_eq);
+				$month += $month_to_add;
+				$day = fmod($day, 30);
+			}
+
+			if($month > 12){
+				$month_eq = $month/12;
+				$year_to_add = floor($month_eq);
+				$year += $year_to_add;
+				$month = fmod($month, 12);
+			}
+
+			// echo "kkkk".$year."k";
+			// exit;
+
+			if($year > 1){ $year_s = 's'; }
+			$txt .= $year.' Year'.$year_s;
+
+			// if(array_key_exists('1',$validity_ary)){
+			if($month > 0){
+				if($month > 1){ $month_s = 's'; }
+				$txt .= ' '.$month.' Month'.$month_s;
+			}
+
+			// if(array_key_exists('2',$validity_ary)){
+			if($day > 0){
+				if($day > 1){ $day_s = 's'; }
+				$txt .= ' '.$day.' Day'.$day_s;
+			}
+
+			$total_days = ($year*360)+($month*30)+$day;
+
 		}
+
+		$result['year'] = $year;
+		$result['month'] = $month;
+		$result['day'] = $day;
+		$result['total_days'] = $total_days;
+		$result['txt'] = $txt;
 		return $result;
+	}
+}
+
+if (!function_exists('get_membership_validity_status')){
+	function get_membership_validity_status($startDate,$endDate) {
+		$validity_status = '';
+		if($startDate <= curr_date() && $endDate >= curr_date()){
+			$validity_status = "Ongoing";
+		}elseif($startDate > curr_date() ){
+			$validity_status = "Pending";
+		}elseif($endDate < curr_date() ){
+			$validity_status = "Expired";
+		}
+		return $validity_status;
 	}
 }
