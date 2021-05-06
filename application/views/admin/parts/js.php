@@ -491,6 +491,30 @@
     <?php if($page == 'appointment_add' || $page == 'appointment_edit'){ ?>
         $('.select2').select2();
 
+        $('#zipcode').select2({
+            ajax: {
+                type: "post",
+                url: admin_base+'zipcode/get_list_dropdown',
+                dataType: 'json',
+                data: function (params) {
+                    // console.log(params)
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    // console.log(data.result);
+                    return {
+                        results: data.result
+                    };
+                },
+                // cache: true,
+            },
+            placeholder: 'Search for a zip code',
+        });
+
         $('#date').datetimepicker({
             'timepicker':false,
             'format':'Y-m-d',

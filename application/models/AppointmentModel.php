@@ -5,6 +5,8 @@ class AppointmentModel extends CI_Model {
     function __construct() {
         $this->table = 'appointment';
         $this->primaryKey = 'id';
+
+        $this->load->model('PackageModel','Package');
     }
 
     function get_list($num="", $offset="",$where = []) {
@@ -49,17 +51,21 @@ class AppointmentModel extends CI_Model {
     }
 
     function getDataById($id){
-        $this->db->select('a.*')
+        $this->db->select('a.*,
+                            sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,
+                            p.name as package_name,
+                            ss.status_txt')
             ->join('customer as cr','cr.id = a.customer_id','left')
-            ->join('sp','sp.sp_id = a.sp_id','left');
-            // ->join('package as p','p.id = sp.package_id','left');
+            ->join('sp','sp.sp_id = a.sp_id','left')
+            ->join('package as p','p.id = a.package_id','left')
+            ->join('service_status as ss','ss.id = a.status_id','left');
 
         $this->db->where('a.id',$id);
         $query = $this->db->get($this->table.' as a');
         $row = $query->row();
 
         $services = (object) [];
-        $duration = 0; $amount = 0; $service_ids = [];
+        $duration = 0; $amount = 0; $service_ids = []; $service_names = [];
         if(!empty($row)){
             $query = $this->db->select('s.*')->from('appointment_service as as')->join('service as s','s.id=as.service_id','left')->where('as.appointment_id',$row->id)->get();
             $services = $query->result();
@@ -68,11 +74,13 @@ class AppointmentModel extends CI_Model {
                 $amount+=$val->amount;
                 $duration+=$val->duration;
                 $service_ids[] = $val->id;
+                $service_names[] = $val->name;
             }
         }
 
         $row->services = $services;
         $row->service_ids = $service_ids;
+        $row->service_names = $service_names;
         $row->duration = $duration;
         $row->amount = $amount;
         // $row->category_ids = array_column($categories,'category_id');
@@ -88,21 +96,24 @@ class AppointmentModel extends CI_Model {
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),
             'time'=>$this->input->post('time'),
+            'location'=>$this->input->post('location'),
+            'zipcode'=>$this->input->post('zipcode'),
             'status_id'=>$this->input->post('status_id'),
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
         // ================================
 
-        foreach($this->input->post('services') as $val){
+        $package = $this->Package->getDataById($this->input->post('package_id'));
+        // print_r($package);exit;
+        foreach($package->services as $val){
             $data = array(
                 'appointment_id'=>$id,
-                'service_id'=>$val
+                'service_id'=>$val->id
             );
             $this->db->insert('appointment_service',$data);
         }
 
-        
         return $id;
     }
 
@@ -115,6 +126,8 @@ class AppointmentModel extends CI_Model {
             'sp_id'=>$this->input->post('sp_id'),
             'date'=>$this->input->post('date'),
             'time'=>$this->input->post('time'),
+            'location'=>$this->input->post('location'),
+            'zipcode'=>$this->input->post('zipcode'),
             'status_id'=>$this->input->post('status_id'),
         );
         $this->db->set($data)->where('id',$this->input->post('id'));
@@ -128,10 +141,14 @@ class AppointmentModel extends CI_Model {
         $this->db->where('service_id', $this->input->post('id'));
         $this->db->delete('appointment_service');
 
-        foreach($this->input->post('services') as $val){
+
+        $package = $this->Package->getDataById($this->input->post('package_id'));
+        // print_r($package);
+        // exit;
+        foreach($package->services as $val){
             $data = array(
                 'appointment_id'=>$this->input->post('id'),
-                'service_id'=>$val
+                'service_id'=>$val->id
             );
             $this->db->insert('appointment_service',$data);
         }

@@ -82,9 +82,11 @@
             $this->form_validation->set_rules('customer_id', 'Customer', 'required');
             $this->form_validation->set_rules('package_id', 'Package', 'required');
             $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
-            $this->form_validation->set_rules('services[]', 'Services', 'required');
+            // $this->form_validation->set_rules('services[]', 'Services', 'required');
             $this->form_validation->set_rules('date', 'Date', 'required');
             $this->form_validation->set_rules('time', 'Time', 'required');
+            $this->form_validation->set_rules('location', 'Location', 'required');
+            $this->form_validation->set_rules('zipcode', 'Zipcode', 'required');
             $this->form_validation->set_rules('status_id', 'Status', 'required');
             if ($this->form_validation->run()) {
                 // header("Content-type:application/json");

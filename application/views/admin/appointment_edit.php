@@ -51,18 +51,17 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label">Services *</label>
                                 <select name="services[]" id="services" class="form-control select2" multiple>
-                                    <!-- <option hidden="hidden" value="">--select--</option> -->
                                     <?php foreach($services as $key=>$val){ ?>
                                         <option value="<?php echo $val->id; ?>" <?php if(in_array($val->id,$form_data->service_ids)){ echo "selected"; } ?>><?php echo $val->name; ?></option>
                                     <?php } ?>
                                 </select>
                                 <span class="error text-danger validation-message" data-field="services[]"></span>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -87,6 +86,16 @@
                                 <span class="error text-danger validation-message" data-field="location"></span>
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Zip Code *</label>
+                                <select name="zipcode" id="zipcode" class="form-control">
+                                    <option value="<?php echo $form_data->zipcode; ?>" selected><?php echo $form_data->zipcode; ?></option>
+                                </select>
+                                <span class="error text-danger validation-message" data-field="zipcode"></span>
+                            </div>
+                        </div>
                         
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -95,18 +104,6 @@
                                     <?php foreach($statuses as $key=>$val){ ?>
                                         <option value="<?php echo $val->id; ?>" <?php if($val->id == $form_data->status_id){ echo "selected"; } ?>><?php echo $val->status_txt; ?></option>
                                     <?php } ?>
-                                </select>
-                                <span class="error text-danger validation-message" data-field="status_id"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label">Zip Code *</label>
-                                <select name="zipcode" id="zipcode" class="form-control select2">
-                                    <option value="12345">12345</option>
-                                    <option value="6789">6789</option>
-                                    <option value="101112">101112</option>
                                 </select>
                                 <span class="error text-danger validation-message" data-field="status_id"></span>
                             </div>
