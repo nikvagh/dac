@@ -55,6 +55,18 @@
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
+        function view($id = 0){
+            $content['title'] = "Service Provider";
+            $content['form_data'] = $this->Sp->getDataById($id);
+
+            // print_r($content);
+            // exit;
+
+            $views["content"] = ["path"=>ADMIN.'serviceProvider_view',"data"=>$content];
+            $layout['page'] = 'serviceProvider_edit';
+            $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
         public function validation() {
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);

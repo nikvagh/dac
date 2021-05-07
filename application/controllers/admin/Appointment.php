@@ -75,6 +75,38 @@
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
+        function invoice($id = 0){
+
+            $this->load->library('Pdf_Generate');
+
+            $content['form_data'] = $this->Appointment->getDataById($id);
+            $content['form_data']->invoice_number = $invoice_number = sprintf("%05d", $content['form_data']->id);
+
+            // echo "<pre>";print_r($content);
+            // exit;
+
+            $html = $this->load->view(ADMIN.'invoice_pdf',$content,TRUE);
+
+
+            // $dataPdf['form_data'] = $this->job->getDataById_invoice($id);
+            // $dataPdf['services'] = $this->job->job_request_service($id);
+            // $dataPdf['featured_services'] = $this->job->job_request_featured_services($id);
+            // $invoice_number = sprintf("%05d", $dataPdf['form_data']['job_request_id']);
+            // $html = $this->load->view(ADMINPATH.'job/invoice_pdf',$dataPdf,TRUE);
+
+            // echo $html;exit;
+
+            $pdf = array(
+                "html" => $html,
+                "title" => 'invoice',
+                "author" => 'invoice',
+                "creator" => 'invoice',
+                "filename" => 'invoice_'.$invoice_number. '.pdf',
+                "badge" => FALSE
+            );
+            $this->pdf_generate->create_pdf($pdf);
+        }
+
         public function validation() {
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);

@@ -22,6 +22,9 @@
 .dataTable tbody tr td{
     padding: 5px 10px;
 }
+.table td.breakSpace, .table th.breakSpace{
+    white-space: break-spaces;
+}
 
 /* sidebar menu */
 .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active{

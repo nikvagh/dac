@@ -50,6 +50,7 @@
                                             </label>
                                         </td>
                                         <td>
+                                            <a href="<?php echo base_url(ADMIN.'serviceProvider/view/'.$val->sp_id) ?>" class="btn btn-sm btn-info">Detail</a>
                                             <a href="<?php echo base_url(ADMIN.'serviceProvider/edit/'.$val->sp_id) ?>" class="btn btn-sm btn-default">Edit</a>
                                             <a onClick="confirmDelete('dataTableForm',<?php echo $val->sp_id ?>,'Service Provider')" class="btn btn-sm btn-danger text-white">Delete</a>
                                         </td>

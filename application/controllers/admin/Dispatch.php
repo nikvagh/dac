@@ -35,7 +35,7 @@
             $where = ['status_id'=>1];
             $content['list'] = $this->Appointment->get_list('','',$where);
             $content['statuses'] = $this->ServiceStatus->get_list();
-            $content['title'] = "Dispatch Job";
+            $content['title'] = "New Jobs";
 
             // echo "<pre>";print_r($content);exit;
             $views["content"] = ["path"=>ADMIN.'dispatch_list',"data"=>$content];
@@ -78,10 +78,13 @@
             $content['title'] = "Job";
             $content['form_data'] = $this->Appointment->getDataById($id);
             $content['categories'] = $this->Category->get_list();
-            $content['sps'] = $this->Sp->get_list();
+            // $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
             $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
+
+            $where = [];
+            $content['service_providers'] = $this->Sp->get_list($where);
             // echo "<pre>";print_r($content);
             // exit;
 
@@ -94,32 +97,42 @@
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);
             // exit;
-            $this->form_validation->set_rules('customer_id', 'Customer', 'required');
-            $this->form_validation->set_rules('category_id', 'Category', 'required');
-            $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
-            $this->form_validation->set_rules('services[]', 'Services', 'required');
-            $this->form_validation->set_rules('date', 'Date', 'required');
-            $this->form_validation->set_rules('time', 'Time', 'required');
-            $this->form_validation->set_rules('status_id', 'Status', 'required');
-            if ($this->form_validation->run()) {
-                // header("Content-type:application/json");
+
+            if($_POST['action'] == "view"){
                 echo json_encode(['status'=>200]);
-            } else {
-                // header("Content-type:application/json");
-                echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
-            }
+            }else{
+                $this->form_validation->set_rules('customer_id', 'Customer', 'required');
+                $this->form_validation->set_rules('category_id', 'Category', 'required');
+                $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
+                $this->form_validation->set_rules('services[]', 'Services', 'required');
+                $this->form_validation->set_rules('date', 'Date', 'required');
+                $this->form_validation->set_rules('time', 'Time', 'required');
+                $this->form_validation->set_rules('status_id', 'Status', 'required');
+                if ($this->form_validation->run()) {
+                    echo json_encode(['status'=>200]);
+                } else {
+                    echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
+                }
+            } 
         }
 
         public function create(){
             if ($this->Appointment->create()) {
-                $this->session->set_flashdata('success', 'Appointment information has been saved successfully.');
+                $this->session->set_flashdata('success', 'Job information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }
 
         public function update(){
             if ($this->Appointment->update()) {
-                $this->session->set_flashdata('success', 'Appointment information has been saved successfully.');
+                $this->session->set_flashdata('success', 'Job information has been saved successfully.');
+                echo json_encode(['status'=>200]);
+            }
+        }
+
+        public function dispatch_view_update(){
+            if ($this->Appointment->dispatch_view_update()) {
+                $this->session->set_flashdata('success', 'Job information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }

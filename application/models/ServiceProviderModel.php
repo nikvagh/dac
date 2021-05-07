@@ -7,7 +7,7 @@ class ServiceProviderModel extends CI_Model {
         $this->primaryKey = 'sp_id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="",$where = []) {
         $this->db->select('*');
         $this->db->order_by("sp_id", "Desc");
         if($num != "" && $offset != ""){

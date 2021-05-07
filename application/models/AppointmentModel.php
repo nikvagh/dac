@@ -52,7 +52,7 @@ class AppointmentModel extends CI_Model {
 
     function getDataById($id){
         $this->db->select('a.*,
-                            sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,
+                            sp.sp_id,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,
                             p.name as package_name,
                             ss.status_txt')
             ->join('customer as cr','cr.id = a.customer_id','left')
@@ -84,6 +84,9 @@ class AppointmentModel extends CI_Model {
         $row->duration = $duration;
         $row->amount = $amount;
         // $row->category_ids = array_column($categories,'category_id');
+
+        // echo "<pre>";print_r($row);exit;
+
         return $row;
     }
 
@@ -158,6 +161,25 @@ class AppointmentModel extends CI_Model {
         return true;
     }
 
+    function dispatch_view_update(){
+        // echo "<pre>";print_r($_POST); exit;
+
+        if($this->input->post('sp_id')){
+            $data = array('sp_id'=>$this->input->post('sp_id'));
+        }
+
+        if($this->input->post('status_id')){
+            $data = array('status_id'=>$this->input->post('status_id'));
+        }
+
+        if(!empty($data)){
+            $this->db->set($data)->where('id',$this->input->post('id'));
+            $this->db->update($this->table);
+        }
+
+        return true;
+    }
+
     function st_update(){
         $this->db->set('status_id', $this->input->post('publish'));
         $this->db->where('id', $this->input->post('id'));
@@ -184,6 +206,33 @@ class AppointmentModel extends CI_Model {
             return true;
         }else{
             return false;
+        }
+    }
+
+    function getTotalCount(){
+        $query = $this->db->select("COUNT(id) AS total")->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
+    function getTotalPendingCount(){
+        $query = $this->db->select("COUNT(id) AS total")->where('status_id',1)->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
+    function getTotalSuccessCount(){
+        $query = $this->db->select("COUNT(id) AS total")->where('status_id',5)->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
         }
     }
     

@@ -51,7 +51,6 @@
                                     <span class="nav-link-text">Co-Workers</span>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
 

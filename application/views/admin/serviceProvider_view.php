@@ -15,42 +15,16 @@
                             <table class="table breakSpace align-items-center dataTable table-hover">
                                 <tbody class="list">
                                     <tr>
-                                        <td width="25%">Customer</td>
-                                        <td><?php echo $form_data->firstname.' '.$form_data->lastname; ?></td>
+                                        <td width="25%">Name</td>
+                                        <td><?php echo $form_data->company_name; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Service Provider</td>
-                                        <td class="text-left">
-
-                                            <div class="row">
-                                                <div class="col d-flex align-items-center">
-                                                    <?php 
-                                                        if($form_data->sp_id != "" && $form_data->sp_id != null && $form_data->sp_id > 0){
-                                                            echo $form_data->company_name;
-                                                        }else{
-                                                            echo '<span class="badge badge-pill badge-danger">Not Assigned</span>';
-                                                        }
-                                                    ?>
-                                                </div>
-                                                <div class="col-6 mr-auto">
-                                                    <select class="form-control form-control-sm select2" name="sp_id">
-                                                        <option value="">--Select Service Provider--</option>
-                                                        <?php foreach($service_providers as $key=>$val){ ?>
-                                                            <option value="<?php echo $val->sp_id; ?>"><?php echo $val->company_name; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </td>
+                                        <td>Email</td>
+                                        <td><?php echo $form_data->email; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Package</td>
-                                        <td><?php echo $form_data->package_name; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Services</td>
-                                        <td class="breakSpace"><?php echo implode(', ',$form_data->service_names); ?></td>
+                                        <td>Phone</td>
+                                        <td><?php echo $form_data->phone_day; ?></td>
                                     </tr>
                                     <tr>
                                         <td>Date</td>
@@ -60,6 +34,8 @@
                                         <td>Time</td>
                                         <td><?php echo $form_data->time; ?></td>
                                     </tr>
+
+                                    
                                     <tr>
                                         <td>Service At</td>
                                         <td><?php echo $form_data->service_at; ?></td>

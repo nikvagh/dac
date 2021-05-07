@@ -37,7 +37,7 @@
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
             $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add' || $page == 'settings_list' ||
-            $page == 'package_edit' || $page == 'package_add'){ ?>
+            $page == 'package_edit' || $page == 'package_add' || $page == 'dispatch_view'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -1136,6 +1136,93 @@
                 return 'success';
             }
         }
+
+    <?php } ?>
+
+    <?php if($page == 'dispatch_add' || $page == 'dispatch_edit' || $page == 'dispatch_view'){ ?>
+            $('.select2').select2();
+
+            function create_data(){
+                // var formData = $('form').serialize();
+                // console.log(validation(formData));
+                // return false;
+                var formData = new FormData(document.getElementById("form1"));
+                formData.append ('action', 'add');
+                
+                if(validation(formData) == 'success'){
+                    $.ajax({
+                        type: "post", url: admin_base+'appointment/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                        success: function (data, textStatus, jqXHR) {
+                            // console.log(data);
+                            // return false;
+                            if(data.status == 200){
+                                window.location.href = admin_base+'appointment';
+                            }
+                        }
+                    });
+                }
+            }
+
+            function edit_data(){
+                var formData = new FormData(document.getElementById("form1"));
+                formData.append ('action', 'edit');
+
+                if(validation(formData) == 'success'){
+                    $.ajax({
+                        type: "post", url: admin_base+'appointment/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            // return false;
+                            if(data.status == 200){
+                                window.location.href = admin_base+'appointment';
+                            }
+                        }
+                    });
+                }
+            }
+
+            function view_update(){
+                var formData = new FormData(document.getElementById("form1"));
+                formData.append ('action', 'view');
+
+                if(validation(formData) == 'success'){
+                    $.ajax({
+                        type: "post", url: admin_base+'dispatch/dispatch_view_update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                        success: function (data, textStatus, jqXHR) {
+                            // console.log(data);
+                            // return false;
+                            if(data.status == 200){
+                                window.location.href = admin_base+'dispatch';
+                            }
+                        }
+                    });
+                }
+            }
+
+            function validation(formData){
+                $(".btn-submit").html("Validating data, please wait...");
+                var returnData;
+                $.ajax({
+                    type: "post", url: admin_base+'dispatch/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        returnData = data;
+                    }
+                });
+
+                $('.validation-message').html('');
+                if (returnData.status != 200) {
+                    $(".btn-submit").html("Submit");
+                    $('.validation-message').each(function () {
+                        for (var key in returnData.result) {
+                            if ($(this).attr('data-field') == key) {
+                                $(this).html(returnData.result[key]);
+                            }
+                        }
+                    });
+                } else {
+                    return 'success';
+                }
+            }
 
     <?php } ?>
 

@@ -1,5 +1,7 @@
 
     <div class="row">
+
+
         <div class="col">
             <div class="card">
                 <!-- Card header -->
@@ -45,6 +47,7 @@
                                             <!-- <a href="<?php echo base_url(ADMIN.'appointment/view/'.$val->id) ?>" class="btn btn-sm bg-yellow">View</a> -->
                                             <a href="<?php echo base_url(ADMIN.'appointment/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
                                             <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Appointment')" class="btn btn-sm btn-danger text-white">Delete</a>
+                                            <a href="<?php echo base_url(ADMIN.'appointment/invoice/'.$val->id) ?>" class="btn btn-sm bg-gray text-white">Invoice</a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -59,4 +62,5 @@
 
             </div>
         </div>
+        
     </div>

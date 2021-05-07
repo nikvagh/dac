@@ -160,6 +160,15 @@ class CustomerModel extends CI_Model {
             return false;
         }
     }
+
+    function getTotalCount(){
+        $query = $this->db->select("COUNT(id) AS total")->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
     
     function deleteselected(){
         
