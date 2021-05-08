@@ -5,20 +5,21 @@ class AppointmentModel extends CI_Model {
     function __construct() {
         $this->table = 'appointment';
         $this->primaryKey = 'id';
-
         $this->load->model('PackageModel','Package');
     }
 
     function get_list($num="", $offset="",$where = []) {
-        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname');
+        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
-            ->join('sp','sp.sp_id = a.sp_id','left');
-            // ->join('package as p','p.id = sp.package_id','left');
+            ->join('sp','sp.sp_id = a.sp_id','left')
+            ->join('service_status as ss','ss.id = a.status_id','left');
 
         if(!empty($where)){
             foreach($where as $key=>$val){
-                $this->db->where($key,$val);
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
             }
         }
 
@@ -28,10 +29,12 @@ class AppointmentModel extends CI_Model {
         }
 
         $query = $this->db->get();
+        // echo $this->db->last_query();
+        // exit;
+
         $result = $query->result();
 
         foreach($result as $key=>$val){
-
             $query = $this->db->select('s.*')->from('appointment_service as as')->join('service as s','s.id=as.service_id','left')->where('as.appointment_id',$val->id)->get();
 
             $result[$key]->services = $query->result();
@@ -209,8 +212,12 @@ class AppointmentModel extends CI_Model {
         }
     }
 
-    function getTotalCount(){
-        $query = $this->db->select("COUNT(id) AS total")->from($this->table)->get();
+    function getTotalCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total");
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->from($this->table)->get();
         if($query){ 
             return $query->row()->total;
         }else{
@@ -227,14 +234,33 @@ class AppointmentModel extends CI_Model {
         }
     }
 
-    function getTotalSuccessCount(){
-        $query = $this->db->select("COUNT(id) AS total")->where('status_id',5)->from($this->table)->get();
+    function getTotalSuccessCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total")->where('status_id',5);
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->from($this->table)->get();
         if($query){ 
             return $query->row()->total;
         }else{
             return 0;
         }
     }
+
+    function getTotalInProgressCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total")->where('status_id',4);
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
+    
     
     function deleteselected(){
         

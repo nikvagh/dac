@@ -3,6 +3,7 @@
         function __construct(){
             parent::__construct();
             $this->load->model('ServiceProviderModel','Sp');
+            $this->load->model('AppointmentModel','Appointment');
             checkLogin('admin');
         }
 
@@ -58,6 +59,9 @@
         function view($id = 0){
             $content['title'] = "Service Provider";
             $content['form_data'] = $this->Sp->getDataById($id);
+            $content['totalJobAssigned'] = $this->Appointment->getTotalCount($id);
+            $content['totalJobSuccess'] = $this->Appointment->getTotalSuccessCount($id);
+            $content['totalJobInProgress'] = $this->Appointment->getTotalInProgressCount($id);
 
             // print_r($content);
             // exit;
@@ -65,6 +69,23 @@
             $views["content"] = ["path"=>ADMIN.'serviceProvider_view',"data"=>$content];
             $layout['page'] = 'serviceProvider_edit';
             $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        public function appointmentList($type,$sp_id){
+            $this->session->unset_userdata('serviceProvider_ap_f');
+            $this->session->unset_userdata('status_ap_f');
+            if($type == 'totalJobAssigned'){
+                $this->session->set_userdata('serviceProvider_ap_f', $sp_id);
+            }
+            if($type == 'totalJobSuccess'){
+                $this->session->set_userdata('serviceProvider_ap_f', $sp_id);
+                $this->session->set_userdata('status_ap_f',5);
+            }
+            if($type == 'totalJobInProgress'){
+                $this->session->set_userdata('serviceProvider_ap_f', $sp_id);
+                $this->session->set_userdata('status_ap_f',4);
+            }
+            redirect(ADMIN.'appointment');
         }
 
         public function validation() {
@@ -75,10 +96,8 @@
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             $this->form_validation->set_rules('phone_day', 'Phone', 'required');
             if ($this->form_validation->run()) {
-                // header("Content-type:application/json");
                 echo json_encode(['status'=>200]);
             } else {
-                // header("Content-type:application/json");
                 echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
             }
         }

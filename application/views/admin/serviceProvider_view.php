@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="form1" action="" method="post" enctype="multipart/form-data">
+                <!-- <form id="form1" action="" method="post" enctype="multipart/form-data"> -->
                     <div class="row">
                         <div class="col-lg-12">
                             <table class="table breakSpace align-items-center dataTable table-hover">
@@ -27,57 +27,79 @@
                                         <td><?php echo $form_data->phone_day; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Date</td>
-                                        <td><?php echo $form_data->date; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Time</td>
-                                        <td><?php echo $form_data->time; ?></td>
-                                    </tr>
-
-                                    
-                                    <tr>
-                                        <td>Service At</td>
-                                        <td><?php echo $form_data->service_at; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Location</td>
-                                        <td><?php echo $form_data->location; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zip Code</td>
-                                        <td><?php echo $form_data->zipcode; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Service Status</td>
+                                        <td>Status</td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col d-flex align-items-center">
-                                                    <span class="badge badge-pill badge-default"><?php echo $form_data->status_txt; ?></span>
-                                                </div>
-                                                <div class="col">
-                                                    <select class="form-control form-control-sm select2" name="status_id">
-                                                        <option value="">-- Change Status --</option>
-                                                        <?php foreach($statuses as $key=>$val){ ?>
-                                                            <option value="<?php echo $val->id; ?>"><?php echo $val->status_txt; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
+                                            <?php if($form_data->status == 'Enable'){ ?>
+                                                <span class="badge badge-pill badge-default"><?php echo $form_data->status; ?></span>
+                                            <?php }else{ ?>
+                                                <span class="badge badge-pill badge-danger"><?php echo $form_data->status; ?></span>
+                                            <?php } ?>
                                         </td>
                                     </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
-                    <input type="hidden" name="id" value="<?php echo $form_data->id; ?>">
-                </form>
+                    <!-- <input type="hidden" name="id" value="<?php echo $form_data->sp_id; ?>"> -->
+                <!-- </form> -->
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card bg-gradient-success">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase mb-0">Total Jobs Assign</h5>
+                                        <span class="h2 font-weight-bold mb-0"><?php echo $totalJobAssigned; ?></span>
+                                    </div>
+                                </div>
+                                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                                    <a href="<?php echo base_url(ADMIN.'serviceProvider/appointmentList/totalJobAssigned/'.$form_data->sp_id); ?>" class="text-white"> View</a>
+                                    <!-- <span class="text-nowrap">Since last month</span> -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="card bg-gradient-primary">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase mb-0">Total Jobs Complete</h5>
+                                        <span class="h2 font-weight-bold mb-0"><?php echo $totalJobSuccess; ?></span>
+                                    </div>
+                                </div>
+                                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                                    <a href="<?php echo base_url(ADMIN.'serviceProvider/appointmentList/totalJobSuccess/'.$form_data->sp_id); ?>" class="text-white"> View</a>
+                                    <!-- <span class="text-nowrap">Since last month</span> -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="card bg-gradient-warning">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase mb-0">Total Jobs In Progress</h5>
+                                        <span class="h2 font-weight-bold mb-0"><?php echo $totalJobInProgress; ?></span>
+                                    </div>
+                                </div>
+                                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                                    <a href="<?php echo base_url(ADMIN.'serviceProvider/appointmentList/totalJobInProgress/'.$form_data->sp_id); ?>" class="text-white"> View</a>
+                                <!-- <span class="text-nowrap">Since last month</span> -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="card-footer text-right">
+            <!-- <div class="card-footer text-right">
                 <a href="<?php echo base_url(ADMIN.'dispatch'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="view_update()">Submit</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

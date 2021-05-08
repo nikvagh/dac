@@ -32,7 +32,7 @@
             //     }
             // }
                 
-            $where = ['status_id'=>1];
+            $where = [['column'=>'status_id','op'=>'=','value'=>1]];
             $content['list'] = $this->Appointment->get_list('','',$where);
             $content['statuses'] = $this->ServiceStatus->get_list();
             $content['title'] = "New Jobs";

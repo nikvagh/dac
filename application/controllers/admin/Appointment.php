@@ -32,9 +32,16 @@
             //         redirect('membership');
             //     }
             // }
-            
-            $where = ['status_id'=>1];
-            $content['list'] = $this->Appointment->get_list($where);
+                
+            $where = [];
+            if($this->session->userdata('serviceProvider_ap_f')){
+                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('serviceProvider_ap_f')];
+            }
+            if($this->session->userdata('status_ap_f')){
+                $where[] = ['column'=>'a.status_id','op'=>'=','value'=>$this->session->userdata('status_ap_f')];
+            }
+            $content['list'] = $this->Appointment->get_list('','',$where);
+            $content['sps'] = $this->Sp->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
             $content['title'] = "Appointment";
 
@@ -73,6 +80,17 @@
             $views["content"] = ["path"=>ADMIN.'appointment_edit',"data"=>$content];
             $layout['page'] = 'appointment_edit';
             $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        function filter(){
+            if($this->input->post('submit') == "Filter"){
+                $this->session->set_userdata('serviceProvider_ap_f', $this->input->post('serviceProvider'));
+                $this->session->set_userdata('status_ap_f', $this->input->post('status'));
+            }else{
+                $this->session->unset_userdata('serviceProvider_ap_f');
+                $this->session->unset_userdata('status_ap_f');
+            }
+            redirect(ADMIN.'appointment');
         }
 
         function invoice($id = 0){

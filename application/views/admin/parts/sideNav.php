@@ -83,20 +83,6 @@
                     </li> -->
 
                     <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
-                            <i class="ni ni-notification-70 text-yellow"></i>
-                            <span class="nav-link-text">Notification</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
-                            <i class="ni ni-ruler-pencil text-warning"></i>
-                            <span class="nav-link-text">Notification Template</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'adminUser'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'adminUser'); ?>">
                             <i class="ni ni-active-40 text-gray"></i>
                             <span class="nav-link-text">Admin</span>
@@ -108,29 +94,11 @@
                             <span class="nav-link-text">Customer</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'faq'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'faq'); ?>">
-                            <i class="ni ni-like-2 text-dark"></i>
-                            <span class="nav-link-text">FAQ</span>
-                        </a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'role'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'role'); ?>">
-                            <i class="ni ni-circle-08 text-pink"></i>
-                            <span class="nav-link-text">Role</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'settings'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'settings'); ?>">
-                            <i class="ni ni-settings-gear-65 text-dark"></i>
-                            <span class="nav-link-text">Settings</span>
-                        </a>
-                    </li>
-
-                    <?php 
+                    <?php
                         $crm_t = false;
-                        if($activeTab == 'package' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch'){ $crm_t = true; }
+                        if($activeTab == 'package' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch' || 
+                            $activeTab == 'payment' || $activeTab == 'report'){ $crm_t = true; }
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
                         <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#crmMenu" class="collapsed">
@@ -173,7 +141,55 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'payment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'payment'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'payment'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Payment</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'report'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'report'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'report'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Reports</span>
+                                </a>
+                            </li>
+
                         </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
+                            <i class="ni ni-ruler-pencil text-warning"></i>
+                            <span class="nav-link-text">Notification Template</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
+                            <i class="ni ni-notification-70 text-yellow"></i>
+                            <span class="nav-link-text">Notification</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'faq'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'faq'); ?>">
+                            <i class="ni ni-like-2 text-dark"></i>
+                            <span class="nav-link-text">FAQ</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'role'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'role'); ?>">
+                            <i class="ni ni-circle-08 text-pink"></i>
+                            <span class="nav-link-text">Role</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'settings'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'settings'); ?>">
+                            <i class="ni ni-settings-gear-65 text-dark"></i>
+                            <span class="nav-link-text">Settings</span>
+                        </a>
                     </li>
 
                 </ul>

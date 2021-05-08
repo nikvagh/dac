@@ -69,7 +69,7 @@ class Admin {
 			}
 		}
 		
-		function login($username, $password)
+		function login($username, $password, $profileUpdate="N")
 		{
 //                    echo $username;
 //                    echo $password;exit;
@@ -84,8 +84,12 @@ class Admin {
 //			$this->obj->db->where('admin_name', $username);
 //			$this->obj->db->where('admin_password', md5($password));
 //			$this->obj->db->where('admin_status', '1');
-                        
-            $this->obj->db->where("(username='$username' OR email ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+			
+			if($profileUpdate == 'N'){
+				$this->obj->db->where("(username='$username' OR email ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+			}else{
+				$this->obj->db->where("(username='$username' OR email ='$username')");
+			}
 			
 			$query = $this->obj->db->get($this->table, 1);
 			// echo $this->obj->db->last_query();exit;
@@ -118,6 +122,7 @@ class Admin {
 				return false;
 			}
 		}
+
 		function logout()
 		{
 //                        print_r($this->date_time);exit;

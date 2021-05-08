@@ -1,16 +1,19 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminUserModel extends CI_Model {
+class PaymentModel extends CI_Model {
     function __construct() {
-        $this->table = 'admin';
+        $this->table = 'payment';
         $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('*');
-        $this->db->from($this->table);
-        $this->db->order_by("admin_id", "Desc");
+        $this->db->select('p.*,c.firstname,c.lastname,sp.company_name');
+        $this->db->from('payment as p');
+        $this->db->join('customer as c','c.id = p.user_id AND p.user_type = "customer"','left');
+        $this->db->join('sp','sp.sp_id = p.user_id AND p.user_type = "sp"','left');
+        $this->db->order_by("p.id", "Desc");
+
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
@@ -24,9 +27,18 @@ class AdminUserModel extends CI_Model {
 
     function getDataById($id){
         $this->db->select('*');
-        $this->db->where('admin_id',$id);
+        $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         $row = $query->row();
+
+        $services = (object) [];
+        if(!empty($row)){
+            $query = $this->db->select('s.*')->from('payment_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.payment_id',$row->id)->get();
+            $services = $query->result();
+        }
+
+        $row->services = $services;
+        $row->services_ids = array_map(function($e) { return is_object($e) ? $e->id : $e['id']; }, $services);
         return $row;
     }
 
@@ -47,7 +59,7 @@ class AdminUserModel extends CI_Model {
                 $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
                 $config['file_name'] = $image_name;
-                $config['upload_path'] = ADMIN_IMG;
+                $config['upload_path'] = PACKAGE_IMG;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
                 $this->upload->initialize($config);
@@ -58,16 +70,25 @@ class AdminUserModel extends CI_Model {
         }
 
         $data = array(
-            'username'=>$this->input->post('username'),
-            'password'=>$this->input->post('password'),
-            'admin_group_id'=>$this->input->post('role'),
-            'phone'=>$this->input->post('phone'),
-            'email'=>$this->input->post('email'),
-            'profile'=>$image_name,
+            'name'=>$this->input->post('name'),
+            'amount'=>$this->input->post('amount'),
+            'description'=>$this->input->post('description'),
+            'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
+            'image'=>$image_name,
             'status'=>$status,
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
+        // ================================
+
+        foreach($this->input->post('services') as $val){
+            $data = array(
+                'payment_id'=>$id,
+                'service_id'=>$val
+            );
+            $this->db->insert('payment_service',$data);
+        }
+
         return $id;
     }
 
@@ -87,14 +108,14 @@ class AdminUserModel extends CI_Model {
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
 
             // remove old file
-            if(file_exists(ADMIN_IMG.$this->input->post('image_old'))){
-                @unlink(ADMIN_IMG.$this->input->post('image_old'));
+            if(file_exists(PACKAGE_IMG.$this->input->post('image_old'))){
+                @unlink(PACKAGE_IMG.$this->input->post('image_old'));
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
             
             $config['file_name'] = $image_name;
-            $config['upload_path'] = ADMIN_IMG;
+            $config['upload_path'] = PACKAGE_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
             $this->upload->initialize($config);
@@ -105,73 +126,28 @@ class AdminUserModel extends CI_Model {
         }
 
         $data = array(
-            'username'=>$this->input->post('username'),
-            'phone'=>$this->input->post('phone'),
-            'email'=>$this->input->post('email'),
-            'profile'=>$image_name,
+            'name'=>$this->input->post('name'),
+            'amount'=>$this->input->post('amount'),
+            'description'=>$this->input->post('description'),
+            'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
+            'image'=>$image_name,
             'status'=>$status,
-            'admin_group_id'=>$this->input->post('role'),
         );
-
-        if($this->input->post('password') && $this->input->post('password') != ""){
-            $data['password'] = md5($this->input->post('password'));
-        }
-
-        $this->db->set($data)->where('admin_id',$this->input->post('id'));
+        $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
 
-        // echo $this->db->last_query();
-        // exit;
-        return true;
-    }
+        // ============================
 
-    function profileUpdate(){
-        // echo "<pre>";
-        // print_r($_POST);
-        // print_r($_FILES);
-        // exit;
+        $this->db->where('payment_id', $this->input->post('id'));
+        $this->db->delete('payment_service');
 
-        $image_name = $this->input->post('image_old');
-        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
-
-            // remove old file
-            if(file_exists(ADMIN_IMG.$this->input->post('image_old'))){
-                @unlink(ADMIN_IMG.$this->input->post('image_old'));
-            }
-                
-            $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
-            
-            $config['file_name'] = $image_name;
-            $config['upload_path'] = ADMIN_IMG;
-            $config['allowed_types'] = 'gif|jpg|png|jpeg';
-
-            $this->upload->initialize($config);
-            if (!$this->upload->do_upload('image')) {
-                $data['error'] = array('error' => $this->upload->display_errors());
-                // echo "<pre>";print_r($data['error']);
-            }
+        foreach($this->input->post('services') as $val){
+            $data = array(
+                'payment_id'=>$this->input->post('id'),
+                'service_id'=>$val
+            );
+            $this->db->insert('payment_service',$data);
         }
-
-        $data = array(
-            'username'=>$this->input->post('username'),
-            'phone'=>$this->input->post('phone'),
-            'email'=>$this->input->post('email'),
-            'profile'=>$image_name
-        );
-
-        if($this->input->post('password') && $this->input->post('password') != ""){
-            $data['password'] = md5($this->input->post('password'));
-        }
-
-        $this->db->set($data)->where('admin_id',$this->input->post('id'));
-        $this->db->update($this->table);
-
-
-        // $admin = $this->getDataById($this->input->post('id'));
-        // print_r($admin);
-        // exit;
-
-        $this->admin->login($this->input->post('username'),'','Y');
 
         // echo $this->db->last_query();
         // exit;
@@ -180,7 +156,7 @@ class AdminUserModel extends CI_Model {
 
     function st_update(){
         $this->db->set('status', $this->input->post('publish'));
-        $this->db->where('admin_id', $this->input->post('id'));
+        $this->db->where('id', $this->input->post('id'));
         $query = $this->db->update($this->table);
 
         if($query){
@@ -194,11 +170,14 @@ class AdminUserModel extends CI_Model {
         $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(ADMIN_IMG.$row->profile)){
-            @unlink(ADMIN_IMG.$row->profile);
+        if(file_exists(PACKAGE_IMG.$row->image)){
+            @unlink(PACKAGE_IMG.$row->image);
         }
+
+        $this->db->where('payment_id', $this->input->post('id'));
+        $this->db->delete('payment_service');
         
-        $this->db->where('admin_id', $this->input->post('id'));
+        $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;
         }else{

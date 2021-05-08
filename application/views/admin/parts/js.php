@@ -18,7 +18,7 @@
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
             $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list' || $page == 'package_list' || 
-            $page == 'membership_list' || $page == 'dispatch_list'){ ?>
+            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -27,7 +27,7 @@
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
             $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
             $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'settings_list' || $page == 'package_add' || 
-            $page == 'package_edit'){ ?>
+            $page == 'package_edit' || $page == 'profile_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
@@ -87,7 +87,7 @@
 
     <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list" || 
             $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list'  || $page == 'role_list' || $page == 'package_list' || 
-            $page == 'membership_list' || $page == 'dispatch_list')){ ?>
+            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list')){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -594,6 +594,29 @@
     <?php } ?>
 
     <?php if($page == 'calendar_list'){ ?>
+
+        var returnData;
+        $.ajax({
+            type: "post", url: admin_base+'calendar/getAll', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:[],
+            success: function (data, textStatus, jqXHR) {
+                returnData = data;
+            }
+        });
+
+        if (returnData.status == 200) {
+            console.log(returnData);
+            // return false;
+            // for (var key in returnData.result) {
+            //     if ($(this).attr('data-field') == key) {
+            //         $(this).html(returnData.result[key]);
+            //     }
+            // }
+        }
+
+        // returnData.then(function(){
+        //         console.log('jjj');
+        // })
+
         var Calendar = tui.Calendar;
         var calendar = new Calendar('#calendar', {
             // options here
@@ -607,7 +630,7 @@
             // },
             calendars: [],
             useCreationPopup: false,
-            useDetailPopup: false,
+            useDetailPopup: true,
             // template:templates
         });
 
@@ -618,8 +641,8 @@
                 title: 'my schedule',
                 category: 'time',
                 dueDateClass: '',
-                start: '2021-04-18T22:30:00+09:00',
-                end: '2021-04-20T02:30:00+09:00'
+                start: '2021-05-18',
+                end: '2021-05-20'
             },
             {
                 id: '2',
@@ -627,8 +650,8 @@
                 title: 'second schedule',
                 category: 'time',
                 dueDateClass: '',
-                start: '2021-04-25T17:30:00+09:00',
-                end: '2021-04-28T17:31:00+09:00'
+                start: '2021-05-30T17:30:00+09:00',
+                end: '2021-05-30T17:31:00+09:00'
             }
         ]);
 
@@ -1223,6 +1246,53 @@
                     return 'success';
                 }
             }
+
+    <?php } ?>
+
+    <?php if($page == 'profile_add' || $page == 'profile_edit'){ ?>
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'profile/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'profile';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'profile/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
 
     <?php } ?>
 

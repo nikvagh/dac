@@ -1,8 +1,44 @@
 
     <div class="row">
-
-
         <div class="col">
+
+            <form name="filterForm" id="filterForm" action="<?=base_url().ADMIN;?>appointment/filter" method="post" enctype="multipart/form-data">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">Filter Data</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="">Service Provider</label>
+                                <select name="serviceProvider" class="form-control">
+                                    <option value=""> -- Select --</option>
+                                    <?php foreach($sps as $key=>$val){ ?>
+                                        <option value="<?php echo $val->sp_id; ?>" <?php if($this->session->userdata('serviceProvider_ap_f') == $val->sp_id){ echo 'selected'; } ?>><?php echo $val->company_name; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="">Status</label>
+                                <select name="status" class="form-control">
+                                    <option value=""> -- Select --</option>
+                                    <?php foreach($statuses as $key=>$val){ ?>
+                                        <option value="<?php echo $val->id; ?>" <?php if($this->session->userdata('status_ap_f') == $val->id){ echo 'selected'; } ?>><?php echo $val->status_txt; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-right">
+                        <input type="submit" name="submit" class="btn btn-primary" value="Clear"/>
+                        <input type="submit" name="submit" class="btn btn-default" value="Filter"/>
+                    </div>
+                </div>
+            </form>
+
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header border-0">
@@ -37,7 +73,7 @@
                                         <td><?php echo $val->amount; ?></td>
                                         <td><?php echo $val->service_at; ?></td>
                                         <td>
-                                            <select name="status" id="" onChange="confirmPublishStatus('dataTableForm',<?php echo $val->id ?>,this,'Y')" class="form-control">
+                                            <select name="status" id="" onChange="confirmPublishStatus('dataTableForm',<?php echo $val->id ?>,this,'Y')" class="form-control form-control-sm">
                                                 <?php foreach($statuses as $key1=>$val1){ ?>
                                                     <option value="<?php echo $val1->id; ?>" <?php if($val1->id == $val->status_id){ echo "selected"; } ?>><?php echo $val1->status_txt; ?></option>
                                                 <?php } ?>
@@ -61,6 +97,6 @@
                 </form>
 
             </div>
+
         </div>
-        
     </div>

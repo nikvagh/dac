@@ -182,27 +182,38 @@
                     </div>
                 </li> -->
             </ul>
+
+            <?php 
+                // echo $this->session->userdata('loginData')->username;
+                // echo '<pre>';
+                // print_r($_SESSION);
+                // print_r($this->admin->loginData);
+            ?>
             <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                 <li class="nav-item dropdown">
                     <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="media align-items-center">
                             <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="<?php echo $this->dash_assets; ?>img/theme/team-4.jpg">
+                                <?php if($this->admin->loginData->profile != ""){ ?>
+                                    <img alt="Image placeholder" src="<?php echo base_url(ADMIN_IMG.$this->admin->loginData->profile); ?>" style="height: 36px;width: 36px;">
+                                <?php }else{ ?>
+                                    <img alt="Image placeholder" src="<?php echo $this->dash_assets; ?>img/theme/team-4.jpg">
+                                <?php } ?>
                             </span>
                             <div class="media-body  ml-2 d-none d-lg-block">
-                                <span class="mb-0 text-sm font-weight-bold">John Snow</span>
+                                <span class="mb-0 text-sm font-weight-bold"><?php echo $this->admin->username; ?></span>
                             </div>
                         </div>
                     </a>
-                    <div class="dropdown-menu  dropdown-menu-right ">
+                    <div class="dropdown-menu  dropdown-menu-right">
                         <div class="dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <a href="#!" class="dropdown-item">
+                        <a href="<?php echo base_url(ADMIN.'profile'); ?>" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
                         </a>
-                        <a href="#!" class="dropdown-item">
+                        <a href="<?php echo base_url(ADMIN.'settings'); ?>" class="dropdown-item">
                             <i class="ni ni-settings-gear-65"></i>
                             <span>Settings</span>
                         </a>

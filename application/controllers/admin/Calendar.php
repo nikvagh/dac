@@ -35,6 +35,11 @@
             // $this->load->view(ADMIN.'category/list',$data);
         }
 
+        function getAll(){
+            $result['list'] = $this->Appointment->get_list();
+            echo json_encode(['status'=>200,'result'=>$result]);
+        }
+
         function add(){
             $content['title'] = "Offer";
             $content['categories'] = $this->Category->get_list();

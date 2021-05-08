@@ -70,7 +70,6 @@ function delete_items(frm,id){
 	$("#"+frm).submit();
 }
 
-
 function confirmPublishStatus(frm, id, publish, isElement)
 {
 	// console.log(frm);
