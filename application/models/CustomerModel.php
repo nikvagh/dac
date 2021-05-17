@@ -206,4 +206,78 @@ class CustomerModel extends CI_Model {
         else
             return false;
     }
+
+    public function register(){
+        $status = 'Enable';
+
+        $refer_from = 0;
+        if($this->input->post('referral_code') != ""){
+            $code = $this->input->post('referral_code');
+            
+            $this->db->select('*');
+            $this->db->where('refer_code',$code);
+            $query1 = $this->db->get('customer');
+            if ($query1->num_rows() > 0) {
+                $refer_from = $query1->row()->id;
+            }
+        }
+
+        $data = array(
+            'username'=>$this->input->post('username'),
+            'email'=>$this->input->post('email'),
+            'phone'=>$this->input->post('phone'),
+            'password'=>md5($this->input->post('phone')),
+            'status'=>$status,
+            'refer_code' => random_str(6),
+            'refer_from' => $refer_from,
+        );
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+        
+        return $id;
+    }
+
+    public function profileUpdate(){
+        $image_name = $this->input->post('image_old');
+        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
+
+            // remove old file
+            if(file_exists(CUSTOMER_IMG.$this->input->post('image_old'))){
+                @unlink(CUSTOMER_IMG.$this->input->post('image_old'));
+            }
+                
+            $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
+            
+            $config['file_name'] = $image_name;
+            $config['upload_path'] = CUSTOMER_IMG;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('image')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
+        $data = array(
+            'firstname'=>$this->input->post('firstname'),
+            'lastname'=>$this->input->post('lastname'),
+            'phone'=>$this->input->post('phone'),
+            'address'=>$this->input->post('address'),
+            'profile'=>$image_name
+        );
+
+        if($this->input->post('password') && $this->input->post('password') != ""){
+            $data['password'] = md5($this->input->post('password'));
+        }
+
+        $this->db->set($data)->where('id',$this->input->post('id'));
+        $this->db->update($this->table);
+
+        $this->member->login('','',$this->input->post('id'));
+
+        // echo $this->db->last_query();
+        // exit;
+        return true;
+    }
 }

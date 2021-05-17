@@ -5,7 +5,7 @@ class Member {
 		var $logged_in = false;
 		var $loginData = array();
 		var $username = '';
-		var $table = 'member';
+		var $table = 'customer';
 		
 		function __construct()
 		{
@@ -37,7 +37,7 @@ class Member {
             $dt= date('Y-m-d H:i:s'); 
                     
 			$data = array(
-						'id' 			=> $user->member_id,
+						'id' 			=> $user->id,
 						'username' 		=> $user->username,
 						'loginData'		=> $user,
 						'logged_in'		=> true,
@@ -68,10 +68,8 @@ class Member {
 			}
 		}
 		
-		function login($username, $password, $memebr_id = "")
-		{
-//                    echo $username;
-//                    echo $password;exit;
+		function login($username, $password, $member_id = "", $profileUpdate="N")
+		{	
 			$pass = md5($password);
                         
 			// $query = $this->obj->db->get($this->table, 1);
@@ -83,17 +81,21 @@ class Member {
 //			$this->obj->db->where('admin_name', $username);
 //			$this->obj->db->where('admin_password', md5($password));
 //			$this->obj->db->where('admin_status', '1');
-			
-			if($memebr_id != ""){
-				// fb
-				$this->obj->db->where("member_id='$memebr_id'");
+
+			if($profileUpdate == 'N'){
+				if($member_id != ""){
+					// fb
+					$this->obj->db->where("id='$member_id'");
+				}else{
+					$this->obj->db->where("(username='$username' OR email ='$username' OR phone ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+				}
 			}else{
-				$this->obj->db->where("(username='$username' OR email ='$username' OR phone ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+				$this->obj->db->where("(username='$username' OR email ='$username')");
 			}
 			
 			$query = $this->obj->db->get($this->table, 1);
 			// echo $this->obj->db->last_query();exit;
-			if ( $query->num_rows() == 1 )
+			if ($query->num_rows() == 1)
 			{
 //                            echo "1";
 				// We found a user!
@@ -106,32 +108,30 @@ class Member {
 				// echo "</pre>";exit;
 
 				$this->_start_session($user);
-				
 				$this->obj->session->set_flashdata('user', 'Login successful...');
-				
 				return true;
-			} else {   
+			} else {
 				// Login failed...
 				// Couldn't find the user,
 				// Let's destroy everything just to make sure.
 				
 				$this->_destroy_session();
-				
 				$this->obj->session->set_flashdata('user', 'Login failed...');
-				
 				return false;
 			}
 		}
+
 		function logout()
 		{
-//                        print_r($this->date_time);exit;
-//                        echo $this->obj->session->userdata();exit;
+			// print_r($this->date_time);exit;
+			// echo $this->obj->session->userdata();exit;
 			
 			$data=array('last_login' => $this->date_time);
-			$this->obj->db->where('member_id',$this->id);
+			$this->obj->db->where('id',$this->id);
 			$query=$this->obj->db->update($this->table ,$data);
-//                        echo $this->obj->db->last_query();
-//                        exit;
+
+			// echo $this->obj->db->last_query();
+			// exit;
 			$this->_destroy_session();
 			$this->obj->session->set_flashdata('user', 'You are now logged out');
 		}

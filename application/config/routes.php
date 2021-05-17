@@ -55,6 +55,10 @@ $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['admin'] = ADMIN.'/login';
+$route['member'] = MEMBER.'/login';
+$route['sp'] = SP.'/login';
+
 $route['admin_portal'] = ADMINPATH.'/login';
 $route['member_portal'] = MEMBERPATH.'/login';
 $route['sp_portal'] = SPPATH.'/login';

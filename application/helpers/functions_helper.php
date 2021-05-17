@@ -80,7 +80,7 @@ if ( ! function_exists('checklogin'))
 
 		if($err == 'Y'){
 			if($userType == 'member'){
-				header('Location:'.base_url().MEMBERPATH.'login');
+				header('Location:'.base_url().MEMBER.'login');
 			}elseif($userType == 'admin'){
 				// header('Location:'.base_url().ADMINPATH.'login');
 				header('Location:'.base_url().ADMIN.'login');

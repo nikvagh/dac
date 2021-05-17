@@ -9,7 +9,7 @@ class AppointmentModel extends CI_Model {
     }
 
     function get_list($num="", $offset="",$where = []) {
-        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt');
+        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt,ss.bgColor,ss.color');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')
@@ -24,7 +24,11 @@ class AppointmentModel extends CI_Model {
         }
 
         $this->db->order_by("a.id", "Desc");
-        if($num != "" && $offset != ""){
+        // echo "ggg";exit;
+        // echo $num; echo $offset; exit;
+
+        if($num != "" || $offset != ""){
+            // echo "fff";exit;
             $this->db->limit($num, $offset);
         }
 

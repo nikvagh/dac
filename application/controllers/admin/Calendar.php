@@ -7,7 +7,6 @@
         }
 
         function index(){
-
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Offer->st_update()) {
                     $this->session->set_flashdata('success', 'Offer status has been update successfully.');
@@ -36,7 +35,25 @@
         }
 
         function getAll(){
-            $result['list'] = $this->Appointment->get_list();
+            $data = $this->Appointment->get_list();
+
+            // echo "<pre>";
+            // print_r($result['list']);
+            // exit;
+
+            foreach($data as $key=>$val){
+                $data[$key]->start = date('Y-m-d',strtotime($val->created_at));
+                $data[$key]->category = 'allday';
+                $data[$key]->title = $val->company_name.': '.$val->firstname.' '.$val->lastname;
+                $data[$key]->dragBgColor = $val->bgColor;
+                $data[$key]->borderColor = 'transparent';
+            }
+
+            // echo "<pre>";
+            // print_r($data);
+            // exit;
+            $result = $data;
+
             echo json_encode(['status'=>200,'result'=>$result]);
         }
 
