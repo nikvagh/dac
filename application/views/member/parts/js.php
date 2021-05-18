@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
 <?php if(isset($page)){ ?>
-    <?php if($page == 'vehicle_list'){ ?>
+    <?php if($page == 'vehicle_list' || $page == 'payment_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -30,7 +30,7 @@
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
-    <?php if($page == 'vehicle_add' || $page == 'vehicle_edit'){ ?>
+    <?php if($page == 'vehicle_add' || $page == 'vehicle_edit' || $page == 'paymentCard_add' || $page == 'paymentCard_edit'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -78,7 +78,7 @@
             });
     <?php } ?>
 
-    <?php if(isset($page) && ($page == "vehicle_list")){ ?>
+    <?php if(isset($page) && ($page == "vehicle_list" || $page == "payment_list")){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -158,24 +158,21 @@
 
     <?php } ?>
 
-    <?php if($page == 'serviceProvider_add' || $page == 'serviceProvider_edit'){ ?>
+    <?php if($page == 'paymentCard_add' || $page == 'paymentCard_edit'){ ?>
+        $('.select2').select2();
 
         function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
             var formData = new FormData(document.getElementById("form1"));
-
             //  console.log(formData);
             
             if(validation(formData) == 'success'){
                 $.ajax({
-                    type: "post", url: base+'serviceProvider/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    type: "post", url: base+'payment/createCard', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
                         // console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = base+'serviceProvider';
+                            window.location.href = base+'payment';
                         }
                     }
                 });
@@ -186,12 +183,12 @@
             var formData = new FormData(document.getElementById("form1"));
             if(validation(formData) == 'success'){
                 $.ajax({
-                    type: "post", url: base+'serviceProvider/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    type: "post", url: base+'payment/updateCard', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
                         console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = base+'serviceProvider';
+                            window.location.href = base+'payment';
                         }
                     }
                 });
@@ -202,7 +199,7 @@
             $(".btn-submit").html("Validating data, please wait...");
             var returnData;
             $.ajax({
-                type: "post", url: base+'serviceProvider/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                type: "post", url: base+'payment/validationCard', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }
@@ -222,72 +219,25 @@
                 return 'success';
             }
         }
-
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
-        $('.select2').select2();
+    <?php if($page == 'refer_friend'){ ?>
+        $(".btn-copy").click(function(e){
+            e.preventDefault();
+            $('#link').select();
+            document.execCommand("copy");
+        })
 
-        $('#start_time').datetimepicker({
-            datepicker:false,
-            format:'H:i',
-            step:15,
-            onShow:function( ct ){
-                if($('#end_time').val() != '00:00:00' && $('#end_time').val() != '00:00'){
-                    this.setOptions({
-                        maxTime:$('#end_time').val()?$('#end_time').val():false
-                    })
-                }
-            },
-            onChangeDateTime:function(){
-                $("#end_time").val('');
-            }
-        });
-
-        $('#end_time').datetimepicker({
-            datepicker:false,
-            format:'H:i',
-            step:15,
-            onShow:function( ct ){
-                this.setOptions({
-                    minTime:$('#start_time').val()?$('#start_time').val():false
-                })
-            },
-        });
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
+        function edit_data(){
             var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
             if(validation(formData) == 'success'){
                 $.ajax({
-                    type: "post", url: base+'coWorker/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    type: "post", url: base+'refer/sendMail', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
                         // console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = base+'coWorker';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'coWorker/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'coWorker';
+                            window.location.href = base+'refer';
                         }
                     }
                 });
@@ -298,7 +248,7 @@
             $(".btn-submit").html("Validating data, please wait...");
             var returnData;
             $.ajax({
-                type: "post", url: base+'coWorker/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                type: "post", url: base+'refer/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }
@@ -318,269 +268,6 @@
                 return 'success';
             }
         }
-
-    <?php } ?>
-
-    <?php if($page == 'service_add' || $page == 'service_edit'){ ?>
-        $('.select2').select2();
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'service/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'service';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'service/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'service';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'service/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'offer_add' || $page == 'offer_edit'){ ?>
-        $('.select2').select2();
-
-        $('#start_date').datetimepicker({
-            format:'Y-m-d',
-            onShow:function( ct ){
-                this.setOptions({
-                    maxDate:$('#end_date').val()?jQuery('#end_date').val():false
-                })
-            },
-            timepicker:false,
-            onChangeDateTime:function(){
-                $("#end_date").val('');
-            }
-        });
-        $('#end_date').datetimepicker({
-            format:'Y-m-d',
-            onShow:function( ct ){
-                this.setOptions({
-                    minDate:$('#start_date').val()?jQuery('#start_date').val():false
-                })
-            },
-            timepicker:false
-        });
-
-        function create_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'offer/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'offer';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'offer/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'offer';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'offer/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'appointment_add' || $page == 'appointment_edit'){ ?>
-        $('.select2').select2();
-
-        $('#zipcode').select2({
-            ajax: {
-                type: "post",
-                url: base+'zipcode/get_list_dropdown',
-                dataType: 'json',
-                data: function (params) {
-                    // console.log(params)
-                    var query = {
-                        search: params.term,
-                        type: 'public'
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    // console.log(data.result);
-                    return {
-                        results: data.result
-                    };
-                },
-                // cache: true,
-            },
-            placeholder: 'Search for a zip code',
-        });
-
-        $('#date').datetimepicker({
-            'timepicker':false,
-            'format':'Y-m-d',
-            'step':15,
-        });
-
-        $('#time').datetimepicker({
-            datepicker:false,
-            format:'H:i',
-            step:15
-        });
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'appointment/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'appointment';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'appointment/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'appointment';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'appointment/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
     <?php } ?>
 
     <?php if($page == 'calendar_list'){ ?>
@@ -822,8 +509,6 @@
             }
         })
         
-
-
     <?php } ?>
 
     <?php if($page == 'notification_add'){ ?>
@@ -855,594 +540,6 @@
             var returnData;
             $.ajax({
                 type: "post", url: base+'notification/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'notificationTemplate_list'){ ?>
-
-        CKEDITOR.replace(document.getElementById('mail_content_UserAppointmentBook'));
-        CKEDITOR.replace(document.getElementById('mail_content_AppointmentCancel'));
-        CKEDITOR.replace(document.getElementById('mail_content_AppointmentReject'));
-        CKEDITOR.replace(document.getElementById('mail_content_UserVerification'));
-        CKEDITOR.replace(document.getElementById('mail_content_AppointmentComplete'));
-        CKEDITOR.replace(document.getElementById('mail_content_ForgotPassword'));
-        CKEDITOR.replace(document.getElementById('mail_content_WorkerAppointmentBook'));
-
-        function edit_data(heading_code){
-            // var formData = $('form').serialize();
-            for (instance in CKEDITOR.instances)
-            {
-                CKEDITOR.instances[instance].updateElement();
-            }
-
-            var formData = new FormData(document.getElementById("form1_"+heading_code));
-            formData.append ('action', 'edit');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'notificationTemplate/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-
-                        // console.log(data.result.tab);
-                        // return false;
-
-                        if(data.status == 200){
-                            window.location.href = base+'notificationTemplate?tab='+data.result.tab;
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'notificationTemplate/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'adminUser_add' || $page == 'adminUser_edit'){ ?>
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'adminUser/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'adminUser';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'adminUser/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'adminUser';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'adminUser/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'customer_add' || $page == 'customer_edit'){ ?>
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'customer/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'customer';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'customer/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'customer';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'customer/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'faq_add' || $page == 'faq_edit'){ ?>
-
-        function create_data(){
-            // var formData = $('form').serialize();
-            // console.log(validation(formData));
-            // return false;
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'faq/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'faq';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'faq/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'faq';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'faq/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'role_add' || $page == 'role_edit'){ ?>
-
-        $('.select2').select2();
-        function create_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'role/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        if(data.status == 200){
-                            window.location.href = base+'role';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'role/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        if(data.status == 200){
-                            window.location.href = base+'role';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'role/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'settings_list'){ ?>
-
-        $('.select2').select2();
-
-        // CKEDITOR.replace(document.getElementById('mail_content_UserAppointmentBook'));
-        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentCancel'));
-        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentReject'));
-        // CKEDITOR.replace(document.getElementById('mail_content_UserVerification'));
-        // CKEDITOR.replace(document.getElementById('mail_content_AppointmentComplete'));
-        // CKEDITOR.replace(document.getElementById('mail_content_ForgotPassword'));
-        CKEDITOR.replace(document.getElementById('privacy_policy'));
-
-        function edit_data(settingType){
-            // var formData = $('form').serialize();
-            for (instance in CKEDITOR.instances)
-            {
-                CKEDITOR.instances[instance].updateElement();
-            }
-
-            var formData = new FormData(document.getElementById("form1_"+settingType));
-            formData.append ('action', 'edit');
-            formData.append ('settingType', settingType);
-            
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'settings/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        // console.log(data.result.tab);
-                        // return false;
-
-                        if(data.status == 200){
-                            window.location.href = base+'settings?tab='+data.result.tab;
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'settings/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'package_add' || $page == 'package_edit'){ ?>
-
-        $('.select2').select2();
-        function create_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'add');
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'package/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        if(data.status == 200){
-                            window.location.href = base+'package';
-                        }
-                    }
-                });
-            }
-        }
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'package/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        if(data.status == 200){
-                            window.location.href = base+'package';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'package/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                success: function (data, textStatus, jqXHR) {
-                    returnData = data;
-                }
-            });
-
-            $('.validation-message').html('');
-            if (returnData.status != 200) {
-                $(".btn-submit").html("Submit");
-                $('.validation-message').each(function () {
-                    for (var key in returnData.result) {
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
-                    }
-                });
-            } else {
-                return 'success';
-            }
-        }
-
-    <?php } ?>
-
-    <?php if($page == 'dispatch_add' || $page == 'dispatch_edit' || $page == 'dispatch_view'){ ?>
-            $('.select2').select2();
-
-            function create_data(){
-                // var formData = $('form').serialize();
-                // console.log(validation(formData));
-                // return false;
-                var formData = new FormData(document.getElementById("form1"));
-                formData.append ('action', 'add');
-                
-                if(validation(formData) == 'success'){
-                    $.ajax({
-                        type: "post", url: base+'appointment/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                        success: function (data, textStatus, jqXHR) {
-                            // console.log(data);
-                            // return false;
-                            if(data.status == 200){
-                                window.location.href = base+'appointment';
-                            }
-                        }
-                    });
-                }
-            }
-
-            function edit_data(){
-                var formData = new FormData(document.getElementById("form1"));
-                formData.append ('action', 'edit');
-
-                if(validation(formData) == 'success'){
-                    $.ajax({
-                        type: "post", url: base+'appointment/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                        success: function (data, textStatus, jqXHR) {
-                            console.log(data);
-                            // return false;
-                            if(data.status == 200){
-                                window.location.href = base+'appointment';
-                            }
-                        }
-                    });
-                }
-            }
-
-            function view_update(){
-                var formData = new FormData(document.getElementById("form1"));
-                formData.append ('action', 'view');
-
-                if(validation(formData) == 'success'){
-                    $.ajax({
-                        type: "post", url: base+'dispatch/dispatch_view_update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                        success: function (data, textStatus, jqXHR) {
-                            // console.log(data);
-                            // return false;
-                            if(data.status == 200){
-                                window.location.href = base+'dispatch';
-                            }
-                        }
-                    });
-                }
-            }
-
-            function validation(formData){
-                $(".btn-submit").html("Validating data, please wait...");
-                var returnData;
-                $.ajax({
-                    type: "post", url: base+'dispatch/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        returnData = data;
-                    }
-                });
-
-                $('.validation-message').html('');
-                if (returnData.status != 200) {
-                    $(".btn-submit").html("Submit");
-                    $('.validation-message').each(function () {
-                        for (var key in returnData.result) {
-                            if ($(this).attr('data-field') == key) {
-                                $(this).html(returnData.result[key]);
-                            }
-                        }
-                    });
-                } else {
-                    return 'success';
-                }
-            }
-
-    <?php } ?>
-
-    <?php if($page == 'profile_add' || $page == 'profile_edit'){ ?>
-
-        function edit_data(){
-            var formData = new FormData(document.getElementById("form1"));
-            formData.append ('action', 'edit');
-
-            if(validation(formData) == 'success'){
-                $.ajax({
-                    type: "post", url: base+'profile/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data);
-                        // return false;
-                        if(data.status == 200){
-                            window.location.href = base+'profile';
-                        }
-                    }
-                });
-            }
-        }
-
-        function validation(formData){
-            $(".btn-submit").html("Validating data, please wait...");
-            var returnData;
-            $.ajax({
-                type: "post", url: base+'profile/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }

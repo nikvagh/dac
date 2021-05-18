@@ -52,6 +52,11 @@
             }
         }
 
+        function refer($refer_code=""){
+            $data['form_data']['referral_code'] = $refer_code;
+            $this->register_form($data);
+        }
+
         function register_form($data=[]){
             $data1['title'] = "Register";
             $data1['data'] = $data;

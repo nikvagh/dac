@@ -28,8 +28,8 @@
                         <a href="<?php echo base_url(MEMBER.'vehicle/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                         <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
                     <?php } ?>
-                    <?php if($page == 'serviceProvider_list'){ ?>
-                        <a href="<?php echo base_url(MEMBER.'serviceProvider/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php if($page == 'payment_list'){ ?>
+                        <a href="<?php echo base_url(MEMBER.'payment/addCard'); ?>" class="btn btn-sm btn-neutral">New Card</a>
                     <?php } ?>
                     <?php if($page == 'coWorker_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'coWorker/add'); ?>" class="btn btn-sm btn-neutral">New</a>

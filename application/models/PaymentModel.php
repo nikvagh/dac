@@ -7,12 +7,21 @@ class PaymentModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="",$where = []) {
         $this->db->select('p.*,c.firstname,c.lastname,sp.company_name');
         $this->db->from('payment as p');
         $this->db->join('customer as c','c.id = p.user_id AND p.user_type = "customer"','left');
         $this->db->join('sp','sp.sp_id = p.user_id AND p.user_type = "sp"','left');
         $this->db->order_by("p.id", "Desc");
+
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
 
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);

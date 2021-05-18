@@ -115,6 +115,12 @@ if ( ! function_exists('destroy_login_session')){
 	}
 }
 
+if (!function_exists('get_month')){
+	function get_month(){
+		return ['01','02','03','04','05','06','07','08','09','10','11','12'];		
+	}
+}
+
 if ( ! function_exists('get_last_30_yr')){
 	function get_last_30_yr(){
 		$year = array();
@@ -122,6 +128,21 @@ if ( ! function_exists('get_last_30_yr')){
 			$year[] = date("Y", strtotime("-$i years"));
 		}
 		rsort($year);
+
+		// echo "<pre>";
+		// print_r($year);
+		// exit;
+		return $year;
+	}
+}
+
+if ( ! function_exists('get_next_30_yr')){
+	function get_next_30_yr(){
+		$year = array();
+		for($i = 0; $i < 30; $i++){
+			$year[] = date("Y", strtotime("+$i years"));
+		}
+		// rsort($year);
 
 		// echo "<pre>";
 		// print_r($year);

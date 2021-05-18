@@ -59,6 +59,8 @@ $route['admin'] = ADMIN.'/login';
 $route['member'] = MEMBER.'/login';
 $route['sp'] = SP.'/login';
 
+// $route['member/register/(:any)'] = "member/register/index/$1";
+
 $route['admin_portal'] = ADMINPATH.'/login';
 $route['member_portal'] = MEMBERPATH.'/login';
 $route['sp_portal'] = SPPATH.'/login';

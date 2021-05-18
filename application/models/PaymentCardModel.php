@@ -1,17 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class FaqModel extends CI_Model {
+class PaymentCardModel extends CI_Model {
     function __construct() {
-        $this->table = 'faq';
+        $this->table = 'payment_cards';
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where) {
-        $this->db->select('f.*');
-        $this->db->from('faq as f');
-        // $this->db->order_by("id", "Desc");
-        
+    function get_list($num="", $offset="",$where = []) {
+        $this->db->select('pc.*');
+        $this->db->from('payment_cards as pc');
+        $this->db->join('customer as c','c.id = pc.customer_id','left');
+        $this->db->order_by("pc.id", "Desc");
+
         if(!empty($where)){
             foreach($where as $key=>$val){
                 if($val['op'] == "="){
@@ -20,8 +21,13 @@ class FaqModel extends CI_Model {
             }
         }
 
+        if($num != "" && $offset != ""){
+            $this->db->limit($num, $offset);
+        }
+
         $query = $this->db->get();
         $result = $query->result();
+
         // echo "<pre>";print_r($result);exit;
         return $result;
     }
@@ -35,40 +41,31 @@ class FaqModel extends CI_Model {
     }
 
     function create(){
-        if($this->input->post('status')){
-            $status = 'Enable';
-        }else{
-            $status = 'Disable';
-        }
-
         $data = array(
-            'question'=>$this->input->post('question'),
-            'answer'=>$this->input->post('answer'),
-            'faq_for'=>$this->input->post('faq_for'),
-            'status'=>$status,
+            'customer_id'=>$this->input->post('customer_id'),
+            'name'=>$this->input->post('name'),
+            'number'=>$this->input->post('number'),
+            'expiry_month'=>$this->input->post('expiry_month'),
+            'expiry_year'=>$this->input->post('expiry_year'),
+            'cvv'=>$this->input->post('cvv')
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
-        
+
         return $id;
     }
 
     function update(){
-        if($this->input->post('status')){
-            $status = 'Enable';
-        }else{
-            $status = 'Disable';
-        }
-
         $data = array(
-            'question'=>$this->input->post('question'),
-            'answer'=>$this->input->post('answer'),
-            'faq_for'=>$this->input->post('faq_for'),
-            'status'=>$status,
+            'name'=>$this->input->post('name'),
+            'number'=>$this->input->post('number'),
+            'expiry_month'=>$this->input->post('expiry_month'),
+            'expiry_year'=>$this->input->post('expiry_year'),
+            'cvv'=>$this->input->post('cvv')
         );
-
         $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
+
         return true;
     }
 
@@ -96,6 +93,7 @@ class FaqModel extends CI_Model {
     }
     
     function deleteselected(){
+        
         $arrcat = $this->input->post('u_list');
 
         for ($m = 0; $m < count($arrcat); $m++) {
