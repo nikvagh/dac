@@ -7,12 +7,20 @@ class PackageModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
-        $this->db->select('s.*');
-        $this->db->from('package as s');
+    function get_list($num="", $offset="",$where = []) {
+        $this->db->select('p.*');
+        $this->db->from('package as p');
         $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
+        }
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
         }
 
         $query = $this->db->get();

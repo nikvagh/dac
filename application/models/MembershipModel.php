@@ -7,7 +7,7 @@ class MembershipModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="",$where = []) {
         $this->db->select('cm.*,c.firstname,c.lastname,c.username,c.email,c.phone,p.name as package_name,p.validity');
         $this->db->from('customer_membership as cm');
         $this->db->join('customer c','c.id=cm.customer_id','left')
@@ -17,6 +17,14 @@ class MembershipModel extends CI_Model {
             $this->db->limit($num, $offset);
         }
 
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+        
         $query = $this->db->get();
         $result = $query->result();
 
@@ -193,5 +201,4 @@ class MembershipModel extends CI_Model {
             return false;
         }
     }
-
 }

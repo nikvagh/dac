@@ -260,8 +260,10 @@ if (!function_exists('package_validity_converter')){
 			// echo "kkkk".$year."k";
 			// exit;
 
-			if($year > 1){ $year_s = 's'; }
-			$txt .= $year.' Year'.$year_s;
+			if($year > 0){
+				if($year > 1){ $year_s = 's'; }
+				$txt .= $year.' Year'.$year_s;
+			}
 
 			// if(array_key_exists('1',$validity_ary)){
 			if($month > 0){
@@ -279,10 +281,17 @@ if (!function_exists('package_validity_converter')){
 
 		}
 
+		$start_date = date('Y-m-d');
+		$end_date = date('Y-m-d', strtotime($start_date ."+".$total_days." days"));
+
 		$result['year'] = $year;
 		$result['month'] = $month;
 		$result['day'] = $day;
 		$result['total_days'] = $total_days;
+
+		$result['start_date'] = $start_date;
+		$result['end_date'] = $end_date;
+
 		$result['txt'] = $txt;
 		return $result;
 	}

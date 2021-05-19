@@ -31,9 +31,11 @@
                     <?php if($page == 'payment_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'payment/addCard'); ?>" class="btn btn-sm btn-neutral">New Card</a>
                     <?php } ?>
-                    <?php if($page == 'coWorker_list'){ ?>
-                        <a href="<?php echo base_url(MEMBER.'coWorker/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php if($page == 'membership_list'){ ?>
+                        <a href="<?php echo base_url(MEMBER.'membership/add'); ?>" class="btn btn-sm btn-neutral">New Package</a>
                     <?php } ?>
+
+
                     <?php if($page == 'service_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'service/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
