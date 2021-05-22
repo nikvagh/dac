@@ -18,7 +18,7 @@
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
             $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list' || $page == 'package_list' || 
-            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list'){ ?>
+            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -87,7 +87,7 @@
 
     <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list" || 
             $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list'  || $page == 'role_list' || $page == 'package_list' || 
-            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list')){ ?>
+            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list')){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -1319,6 +1319,66 @@
             var returnData;
             $.ajax({
                 type: "post", url: admin_base+'package/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'addOn_add' || $page == 'addOn_edit'){ ?>
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'addOn/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'addOn';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'addOn/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'addOn';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'addOn/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }

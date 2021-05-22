@@ -97,7 +97,7 @@
 
                     <?php
                         $crm_t = false;
-                        if($activeTab == 'package' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch' || 
+                        if($activeTab == 'package' || $activeTab == 'addOn' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch' || 
                             $activeTab == 'payment' || $activeTab == 'report'){ $crm_t = true; }
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
@@ -110,6 +110,13 @@
                                 <a class="nav-link <?php if($activeTab == 'package'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'package'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Package</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'addOn'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'addOn'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'addOn'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Add-On</span>
                                 </a>
                             </li>
 

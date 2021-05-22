@@ -9,7 +9,7 @@
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
                 $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list' || $page == 'package_list' || 
-                $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list'){ ?>
+                $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list'){ ?>
         <!-- dataTable -->
         <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">

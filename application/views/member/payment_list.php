@@ -41,13 +41,15 @@
                                         <td>
                                             <?php 
                                                 if($val->transaction_type == "Credit"){
-                                                    echo '<span class="text-success font-weight-bold">'.$val->amount.'</span>';
-                                                }else if($val->transaction_type == "Debit"){
                                                     echo '<span class="text-danger font-weight-bold">'.$val->amount.'</span>';
+                                                }else if($val->transaction_type == "Debit"){
+                                                    echo '<span class="text-success font-weight-bold">'.$val->amount.'</span>';
                                                 }
                                             ?>
                                         </td>
-                                        <td><?php echo $val->transaction_type; ?></td>
+                                        <td> 
+                                            <?php if($val->transaction_type == "Credit"){  echo 'Debit'; }else if($val->transaction_type == "Debit"){ echo 'Credit'; } ?>
+                                        </td>
                                         <td>
                                             <?php 
                                                 if($val->status == 'Pending'){

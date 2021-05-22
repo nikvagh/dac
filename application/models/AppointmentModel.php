@@ -8,7 +8,7 @@ class AppointmentModel extends CI_Model {
         $this->load->model('PackageModel','Package');
     }
 
-    function get_list($num="", $offset="",$where = []) {
+    function get_list($num="", $offset="",$where = [],$where_or = []) {
         $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt,ss.bgColor,ss.color');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
@@ -20,6 +20,11 @@ class AppointmentModel extends CI_Model {
                 if($val['op'] == "="){
                     $this->db->where($val['column'],$val['value']);
                 }
+            }
+        }
+        if(!empty($where_or)){
+            foreach($where_or as $key=>$val){
+                $this->db->where($val);
             }
         }
 

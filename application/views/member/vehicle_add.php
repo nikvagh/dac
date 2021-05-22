@@ -35,11 +35,10 @@
                     </div>
 
                     <input type="hidden" name="member_id" value="<?php echo $this->member->loginData->id; ?>">
-                    
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'vehicle'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(MEMBER.'vehicle'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="create_data()">Submit</button>
             </div>
         </div>

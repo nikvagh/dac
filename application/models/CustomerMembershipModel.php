@@ -65,7 +65,7 @@ class CustomerMembershipModel extends CI_Model {
         // payment
         $payment = array(
             'user_id'=>$this->input->post('customer_id'),
-            'user_type'=>'customer_id',
+            'user_type'=>'customer',
             'amount' => $package->amount,
             'transaction_type' => 'Credit',
             'status' => 'Success',

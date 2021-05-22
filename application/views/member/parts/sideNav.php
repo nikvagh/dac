@@ -35,6 +35,40 @@
                         </a>
                     </li>
 
+                    <?php
+                        $crm_t = false;
+                        if($activeTab == 'booking' || $activeTab == 'bookNow' || $activeTab == 'booking'){ $crm_t = true; }
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#bookingMenu" class="collapsed">
+                            <i class="ni ni-active-40"></i>
+                            <span class="nav-link-text">Booking</span>
+                        </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($crm_t){ echo 'show'; } ?>" id="bookingMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'booking'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'booking'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'booking'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Service Booking</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'bookNow'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'bookNow'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Book Now</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'booking'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'booking'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Schedule Service</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'vehicle'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'vehicle'); ?>">
                             <i class="fas fa-car"></i>
@@ -56,12 +90,8 @@
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'settings'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'settings'); ?>">
-                            <i class="ni ni-settings-gear-65 text-dark"></i>
-                            <span class="nav-link-text">Settings</span>
-                        </a>
-                    </li> -->
+                    
+
                 </ul>
                 
             </div>

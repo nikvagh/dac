@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
 <?php if(isset($page)){ ?>
-    <?php if($page == 'vehicle_list' || $page == 'payment_list' || $page == 'membership_list'){ ?>
+    <?php if($page == 'vehicle_list' || $page == 'payment_list' || $page == 'membership_list' || $page == 'booking_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -30,7 +30,8 @@
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
-    <?php if($page == 'vehicle_add' || $page == 'vehicle_edit' || $page == 'paymentCard_add' || $page == 'paymentCard_edit' || $page == 'membership_add' || $page == 'membership_edit'){ ?>
+    <?php if($page == 'vehicle_add' || $page == 'vehicle_edit' || $page == 'paymentCard_add' || $page == 'paymentCard_edit' || $page == 'membership_add' || 
+            $page == 'membership_edit' || $page == 'book_now'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -78,7 +79,7 @@
             });
     <?php } ?>
 
-    <?php if(isset($page) && ($page == "vehicle_list" || $page == "payment_list" || $page == "membership_list")){ ?>
+    <?php if(isset($page) && ($page == "vehicle_list" || $page == "payment_list" || $page == "membership_list" || $page == "booking_list")){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -156,6 +157,106 @@
             }
         }
 
+    <?php } ?>
+
+    <?php if($page == 'book_now'){ ?>
+        $('.select2').select2();
+
+        // handlePermission();
+        getLocation();
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            //  console.log(formData);
+
+            
+            // getLocation();
+
+            // if($("#latitude").val() == "" ||  $("#longitude").val() == ""){
+
+            // }
+                
+
+            if(validation(formData) == 'success'){
+                // $.ajax({
+                //     type: "post", url: base+'payment/createCard', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                //     success: function (data, textStatus, jqXHR) {
+                //         // console.log(data);
+                //         // return false;
+                //         if(data.status == 200){
+                //             window.location.href = base+'payment';
+                //         }
+                //     }
+                // });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: base+'booking/validationBookNow', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            var alertStatus = false;
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                // $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if(key == "latitude" || key == "longitude"){
+                            alertStatus = true;
+                        }
+
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                // });
+
+
+                if(alertStatus){
+                    var alertModelHtml  = '<div class="modal-dialog">'+
+                                                '<div class="modal-content">'+
+                                                    '<div class="modal-body text-center">'+
+                                                        '<p>Please allow location services of your browser.</p>'+
+                                                        '<div class="text-center">'+
+                                                            '<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>';
+                    $('#confirm_model').html(alertModelHtml);
+                    $('#confirm_model').modal('show');
+                }
+
+                
+
+
+                
+            } else {
+                return 'success';
+            }
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                console.log('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function showPosition(position) {
+            // console.log(position.coords.latitude)
+            // console.log(position.coords.longitude)
+            $("#latitude").val(position.coords.latitude);
+            $("#longitude").val(position.coords.longitude);
+        }
+    
     <?php } ?>
 
     <?php if($page == 'paymentCard_add' || $page == 'paymentCard_edit'){ ?>
@@ -316,7 +417,7 @@
                     returnData = data;
                 }
             });
-
+            
             $('.validation-message').html('');
             if (returnData.status != 200) {
                 $(".btn-submit").html("Submit");
