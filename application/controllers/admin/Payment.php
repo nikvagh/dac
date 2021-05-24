@@ -9,7 +9,7 @@
 
         function index(){
             $data['payment_manage'] = TRUE;
-            $data['title']="Payment";
+            $data['title']="Payments";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Payment->st_update()) {
@@ -30,7 +30,7 @@
             // }
             
             $content['list'] = $this->Payment->get_list();
-            $content['title'] = "Payment";
+            $content['title'] = "Payments";
             $views["content"] = ["path"=>ADMIN.'payment_list',"data"=>$content];
             $layout['page'] = 'payment_list';
 
@@ -39,7 +39,7 @@
         }
 
         function add(){
-            $content['title'] = "Payment";
+            $content['title'] = "Payments";
             $content['services'] = $this->Service->get_list();
             $views["content"] = ["path"=>ADMIN.'payment_add',"data"=>$content];
             $layout['page'] = 'payment_add';
@@ -47,7 +47,7 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Payment";
+            $content['title'] = "Payments";
             $content['form_data'] = $form_data = $this->Payment->getDataById($id);
             $content['validity'] = payment_validity_converter($form_data->validity);
             $content['services'] = $this->Service->get_list();

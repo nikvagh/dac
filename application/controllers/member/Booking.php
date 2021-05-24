@@ -5,6 +5,7 @@
             $this->load->model('AppointmentModel','Appointment');
             $this->load->model('VehicleModel','Vehicle');
             $this->load->model('AddOnModel','AddOn');
+            $this->load->model('ZipcodeModel','Zipcode');
             checkLogin('member');
         }
 
@@ -46,6 +47,9 @@
             $content['title'] = "Book Service";
 
             $where1 = [];
+
+            // $content['zipcodes'] = $this->Zipcode->get_list('','');
+
             $where1[] = ['column'=>'cv.member_id','op'=>'=','value'=>$this->member->id];
             $content['vehicles'] = $this->Vehicle->get_list('','',$where1);
 
@@ -86,11 +90,23 @@
             $this->form_validation->set_rules('location', 'Location', 'required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'required');
             $this->form_validation->set_rules('longitude', 'Longitude', 'required');
+            $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
+            $this->form_validation->set_rules('vehicle_id', 'Vehicle', 'required');
+            $this->form_validation->set_rules('package_id', 'Package', 'required');
+            // $this->form_validation->set_rules('addOn[]', 'Add On', 'required');
+            $this->form_validation->set_rules('time', 'Time', 'required');
 
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
             } else {
                 echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
+            }
+        }
+
+        public function bookNowSave(){
+            if ($this->Appointment->bookNowSave()) {
+                $this->session->set_flashdata('success', 'Appointment Booked successfully');
+                echo json_encode(['status'=>200]);
             }
         }
 
@@ -113,6 +129,20 @@
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
             }
+        }
+
+        public function get_list_dropdown($val = ""){
+            $result = [];
+            if(isset($_POST['search'])){
+                $where = array(["column"=>"zipcode","op"=>"like","value"=>'%'.$_POST['search'].'%']);
+                $resultAll = $this->Zipcode->get_list('','',$where);
+            }
+
+            foreach($resultAll as $key=>$val){
+                $result[] = ["text"=>$val->zipcode,"id"=>$val->zipcode];
+            }
+
+            echo json_encode(['result'=>$result]);
         }
 
     }

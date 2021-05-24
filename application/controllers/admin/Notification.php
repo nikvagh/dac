@@ -31,6 +31,7 @@
             
             $content['list'] = $this->Notification->get_list();
             $content['customers'] = $this->Customer->get_list();
+            $content['title_top'] = "Notifications";
             $content['title'] = "Notification";
             $views["content"] = ["path"=>ADMIN.'notification_add',"data"=>$content];
             $layout['page'] = 'notification_add';
@@ -40,7 +41,7 @@
         }
 
         function add(){
-            $content['title'] = "Notification";
+            $content['title'] = "Notifications";
             $content['categories'] = $this->Category->get_list();
             $views["content"] = ["path"=>ADMIN.'notification_add',"data"=>$content];
             $layout['page'] = 'notification_add';
@@ -48,7 +49,7 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Notification";
+            $content['title'] = "Notifications";
             $content['form_data'] = $this->Notification->getDataById($id);
             $content['categories'] = $this->Category->get_list();
             // echo "<pre>";print_r($content);

@@ -21,84 +21,17 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'category'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'category'); ?>">
                             <i class="fas fa-paste text-danger"></i>
                             <span class="nav-link-text">Category</span>
                         </a>
-                    </li>
-
-                    <?php 
-                        $serviceProvider_t = false;
-                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $serviceProvider_t = true; } 
-                    ?>
-                    <li class="nav-item menu-is-opening menu-open">
-                        <a class="nav-link <?php if($serviceProvider_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#serviceProviderMenu" class="collapsed">
-                            <i class="fas fa-building text-pink"></i>
-                            <span class="nav-link-text">Service Provider</span>
-                        </a>
-                        <ul class="nav nav-treeView sub-menu collapse <?php if($serviceProvider_t){ echo 'show'; } ?>" id="serviceProviderMenu">
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'serviceProvider'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'serviceProvider'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'serviceProvider'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Service Provider</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'coWorker'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Co-Workers</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'service'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'service'); ?>">
-                            <i class="fas fa-concierge-bell text-dark"></i>
-                            <span class="nav-link-text">Service</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'offer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'offer'); ?>">
-                            <i class="fas fa-percentage text-warning"></i>
-                            <span class="nav-link-text">Offer</span>
-                        </a>
-                    </li>
-
-                    <!-- <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
-                            <i class="ni ni-watch-time text-success"></i>
-                            <span class="nav-link-text">Appointment</span>
-                        </a>
                     </li> -->
-
-                    <!-- <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'calendar'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'calendar'); ?>">
-                            <i class="ni ni-calendar-grid-58 text-indigo"></i>
-                            <span class="nav-link-text">Calendar</span>
-                        </a>
-                    </li> -->
-
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'adminUser'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'adminUser'); ?>">
-                            <i class="ni ni-active-40 text-gray"></i>
-                            <span class="nav-link-text">Admin</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'customer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'customer'); ?>">
-                            <i class="ni ni-single-02 text-primary"></i>
-                            <span class="nav-link-text">Customer</span>
-                        </a>
-                    </li>
 
                     <?php
                         $crm_t = false;
                         if($activeTab == 'package' || $activeTab == 'addOn' || $activeTab == 'membership' || $activeTab == 'appointment' || $activeTab == 'calendar' || $activeTab == 'dispatch' || 
-                            $activeTab == 'payment' || $activeTab == 'report'){ $crm_t = true; }
+                            $activeTab == 'payment' || $activeTab == 'report' || $activeTab == 'service' || $activeTab == 'offer'){ $crm_t = true; }
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
                         <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#crmMenu" class="collapsed">
@@ -109,10 +42,24 @@
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'package'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'package'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Package</span>
+                                    <span class="nav-link-text">Packages</span>
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'service'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'service'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'service'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Services</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'offer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'offer'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'offer'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Coupons</span>
+                                </a>
+                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'addOn'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'addOn'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'addOn'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
@@ -123,14 +70,14 @@
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'membership'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'membership'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'membership'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Membership</span>
+                                    <span class="nav-link-text">Memberships</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'appointment'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">All Appointment</span>
+                                    <span class="nav-link-text">Bookings</span>
                                 </a>
                             </li>
 
@@ -151,7 +98,7 @@
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'payment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'payment'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab == 'payment'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Payment</span>
+                                    <span class="nav-link-text">Payments</span>
                                 </a>
                             </li>
 
@@ -166,23 +113,115 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
-                            <i class="ni ni-ruler-pencil text-warning"></i>
-                            <span class="nav-link-text">Notification Template</span>
+                        <a class="nav-link <?php if($activeTab == 'customer'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'customer'); ?>">
+                            <i class="ni ni-single-02 text-primary"></i>
+                            <span class="nav-link-text">Members</span>
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
-                            <i class="ni ni-notification-70 text-yellow"></i>
-                            <span class="nav-link-text">Notification</span>
+                    <?php 
+                        $serviceProvider_t = false;
+                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $serviceProvider_t = true; } 
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($serviceProvider_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#serviceProviderMenu" class="collapsed">
+                            <i class="fas fa-building text-pink"></i>
+                            <span class="nav-link-text">Service Providers</span>
                         </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($serviceProvider_t){ echo 'show'; } ?>" id="serviceProviderMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'serviceProvider'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'serviceProvider'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'serviceProvider'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Service Providers</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'coWorker'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'coWorker'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Co-Workers</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'appointment'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'appointment'); ?>">
+                            <i class="ni ni-watch-time text-success"></i>
+                            <span class="nav-link-text">Appointment</span>
+                        </a>
+                    </li> -->
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'calendar'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'calendar'); ?>">
+                            <i class="ni ni-calendar-grid-58 text-indigo"></i>
+                            <span class="nav-link-text">Calendar</span>
+                        </a>
+                    </li> -->
+
+                    <?php 
+                        $notification_t = false;
+                        if($activeTab == 'notificationTemplate' || $activeTab == 'notification'){ $notification_t = true; } 
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($notification_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#notificationMenu" class="collapsed">
+                            <i class="ni ni-notification-70 text-yellow"></i>
+                            <span class="nav-link-text">Notifications</span>
+                        </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($notification_t){ echo 'show'; } ?>" id="notificationMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'notificationTemplate'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Template</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'notification'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Send Notification</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'faq'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'faq'); ?>">
                             <i class="ni ni-like-2 text-dark"></i>
-                            <span class="nav-link-text">FAQ</span>
+                            <span class="nav-link-text">Manage FAQ's</span>
+                        </a>
+                    </li>
+
+                    <?php 
+                        $user_t = false;
+                        if($activeTab == 'adminUser' || $activeTab == 'role'){ $user_t = true; } 
+                    ?>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a class="nav-link <?php if($user_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#userMenu" class="collapsed">
+                            <i class="ni ni-active-40 text-gray"></i>
+                            <span class="nav-link-text">Users</span>
+                        </a>
+                        <ul class="nav nav-treeView sub-menu collapse <?php if($user_t){ echo 'show'; } ?>" id="userMenu">
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'adminUser'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'adminUser'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'adminUser'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">Admin Users</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link <?php if($activeTab == 'role'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'role'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'role'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <span class="nav-link-text">User Roles</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'adminUser'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'adminUser'); ?>">
+                            <i class="ni ni-active-40 text-gray"></i>
+                            <span class="nav-link-text">Admin</span>
                         </a>
                     </li>
 
@@ -191,7 +230,23 @@
                             <i class="ni ni-circle-08 text-pink"></i>
                             <span class="nav-link-text">Role</span>
                         </a>
-                    </li>
+                    </li> -->
+
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'notificationTemplate'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notificationTemplate'); ?>">
+                            <i class="ni ni-ruler-pencil text-warning"></i>
+                            <span class="nav-link-text">Notification Template</span>
+                        </a>
+                    </li> -->
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'notification'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'notification'); ?>">
+                            <i class="ni ni-notification-70 text-yellow"></i>
+                            <span class="nav-link-text">Notification</span>
+                        </a>
+                    </li> -->
+
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'settings'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'settings'); ?>">
                             <i class="ni ni-settings-gear-65 text-dark"></i>

@@ -7,7 +7,7 @@ class FaqModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where) {
+    function get_list($num="", $offset="",$where = []) {
         $this->db->select('f.*');
         $this->db->from('faq as f');
         // $this->db->order_by("id", "Desc");

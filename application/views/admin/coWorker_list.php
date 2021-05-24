@@ -15,12 +15,13 @@
                                 <tr>
                                     <th scope="col" class="sort">#</th>
                                     <th scope="col" class="sort">Name</th>
+                                    <th scope="col" class="sort">Service Provider</th>
                                     <th scope="col">Image</th>
                                     <th scope="col" class="sort">Email</th>
                                     <th scope="col" class="sort">Phone</th>
                                     <th scope="col" class="sort">Start Time</th>
                                     <th scope="col" class="sort">End Time</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -29,6 +30,7 @@
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
                                         <td><?php echo $val->name; ?></td>
+                                        <td><?php echo $val->company_name; ?></td>
                                         <td>
                                             <?php if($val->image != ""){ ?>
                                                 <img src="<?php echo base_url(COWORKER_IMG.$val->image); ?>" width="50"/>

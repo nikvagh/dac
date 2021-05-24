@@ -14,12 +14,12 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="sort">#</th>
-                                    <th scope="col">Image</th>
+                                    <th scope="col">Profile Pic</th>
                                     <th scope="col" class="sort">Name</th>
                                     <th scope="col" class="sort">Username</th>
                                     <th scope="col" class="sort">Email</th>
                                     <th scope="col" class="sort">Phone</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -52,6 +52,7 @@
                                             </label>
                                         </td>
                                         <td>
+                                            <a href="<?php echo base_url(ADMIN.'customer/view/'.$val->id) ?>" class="btn btn-sm btn-info">Portfolio</a>
                                             <a href="<?php echo base_url(ADMIN.'customer/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
                                             <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Customer')" class="btn btn-sm btn-danger text-white">Delete</a>
                                         </td>

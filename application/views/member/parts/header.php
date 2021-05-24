@@ -19,7 +19,7 @@
                         <div class="alert alert-danger mb-0 fadeOut">
                             <button class="close" data-dismiss="alert">×</button>
                             <i class="fa-fw fa fa-times"></i>
-                            <strong>Error!</strong> <?php echo $this->session->flashdata('success');?>
+                            <strong>Error!</strong> <?php echo $this->session->flashdata('error');?>
                         </div>
                     <?php endif; ?>
                 </div>

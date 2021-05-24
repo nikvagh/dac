@@ -7,7 +7,7 @@
         }
 
         function index(){
-            $data['title'] = "Faq";
+            $data['title'] = "Manage FAQ's";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Faq->st_update()) {
@@ -28,7 +28,8 @@
             // }
             
             $content['list'] = $this->Faq->get_list();
-            $content['title'] = "Faq";
+            $content['title_top'] = "Manage FAQ's";
+            $content['title'] = "Manage FAQ's";
             $views["content"] = ["path"=>ADMIN.'faq_list',"data"=>$content];
             $layout['page'] = 'faq_list';
 
@@ -37,14 +38,16 @@
         }
 
         function add(){
-            $content['title'] = "Faq";
+            $content['title_top'] = "Manage FAQ's";
+            $content['title'] = "FAQ";
             $views["content"] = ["path"=>ADMIN.'faq_add',"data"=>$content];
             $layout['page'] = 'faq_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
         function edit($id = 0){
-            $content['title'] = "Faq";
+            $content['title_top'] = "Manage FAQ's";
+            $content['title'] = "FAQ";
             $content['form_data'] = $this->Faq->getDataById($id);
             // echo "<pre>";print_r($content);
             // exit;

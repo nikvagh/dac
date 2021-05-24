@@ -12,6 +12,8 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <?php $activeTab = $this->uri->segment(2); ?>
+                <?php $activeTab3 = $this->uri->segment(3); ?>
+                <?php $activeTab4 = $this->uri->segment(4); ?>
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -37,7 +39,7 @@
 
                     <?php
                         $crm_t = false;
-                        if($activeTab == 'booking' || $activeTab == 'bookNow' || $activeTab == 'booking'){ $crm_t = true; }
+                        if($activeTab == 'booking' || $activeTab == 'booking'){ $crm_t = true; }
                     ?>
                     <li class="nav-item menu-is-opening menu-open">
                         <a class="nav-link <?php if($crm_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#bookingMenu" class="collapsed">
@@ -47,14 +49,14 @@
                         <ul class="nav nav-treeView sub-menu collapse <?php if($crm_t){ echo 'show'; } ?>" id="bookingMenu">
                             <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'booking'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'booking'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'booking'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                    <i class="fas fa-dot-circle <?php if($activeTab == 'booking' && $activeTab3 == ''){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Service Booking</span>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'bookNow'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'bookNow'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'package'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                                <a class="nav-link <?php if($activeTab == 'booking' && $activeTab3 == 'book_now'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'booking/book_now'); ?>">
+                                    <i class="fas fa-dot-circle <?php if($activeTab3 == 'book_now'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Book Now</span>
                                 </a>
                             </li>
@@ -67,7 +69,6 @@
                             </li>
                         </ul>
                     </li>
-
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'vehicle'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'vehicle'); ?>">

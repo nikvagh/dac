@@ -21,14 +21,22 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label class="form-control-label">Zip Code *</label>
+                                <select name="zipcode" id="zipcode" class="form-control"></select>
+                                <span class="error text-danger validation-message" data-field="zipcode"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
                                 <label class="form-control-label">Vehicle *</label>
-                                <select name="vehicle" id="vehicle" class="form-control select2">
+                                <select name="vehicle_id" id="vehicle_id" class="form-control select2">
                                     <option value="">--select--</option>
                                     <?php foreach($vehicles as $val){ ?>
                                         <option value="<?php echo $val->id; ?>"><?php echo $val->name.' - '.$val->year; ?></option>
                                     <?php } ?>
                                 </select>
-                                <span class="error text-danger validation-message" data-field="vehicle"></span>
+                                <span class="error text-danger validation-message" data-field="vehicle_id"></span>
                             </div>
                         </div>
 
@@ -41,33 +49,31 @@
                                         <option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
                                     <?php } ?>
                                 </select>
-                                <span class="error text-danger validation-message" data-field="package"></span>
+                                <span class="error text-danger validation-message" data-field="package_id"></span>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Add On *</label>
+                                <label class="form-control-label">Add On</label>
                                 <select name="addOn[]" id="addOn" class="form-control select2" multiple="">
-                                    <option value="">--select--</option>
                                     <?php foreach($addOns as $val){ ?>
                                         <option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
                                     <?php } ?>
                                 </select>
-                                <span class="error text-danger validation-message" data-field="addOn"></span>
+                                <span class="error text-danger validation-message" data-field="addOn[]"></span>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label">Time *</label>
-                                <input type="text" name="time" class="form-control"/>
-                                <span class="error text-danger validation-message" data-field="vehicle"></span>
+                                <input type="text" name="time" id="time" class="form-control"/>
+                                <span class="error text-danger validation-message" data-field="time"></span>
                             </div>
                         </div>
-
                     </div>
-                    <input type="hidden" name="member_id" value="<?php echo $this->member->loginData->id; ?>">
+                    <input type="hidden" name="customer_id" value="<?php echo $this->member->loginData->id; ?>">
                     <input type="hidden" name="latitude" id="latitude" value="">
                     <input type="hidden" name="longitude" id="longitude" value="">
                 </form>

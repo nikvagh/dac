@@ -269,6 +269,64 @@ class AppointmentModel extends CI_Model {
         }
     }
 
+    function bookNowSave(){
+
+        $payment_id = 0;
+        $date = date('Y-m-d');
+        $appointment_type = 'book_now';
+        $total_amount = 0;
+        $total_payable = 0;
+        $additional_fee = 0;
+        $discount = 0;
+        $status_id = '1';
+
+        $data = array(
+            'customer_id'=>$this->input->post('customer_id'),
+            'package_id'=>$this->input->post('package_id'),
+            'vehicle_id'=>$this->input->post('vehicle_id'),
+            'payment_id'=>$payment_id,
+            'date'=>$date,
+            'time'=>$this->input->post('time'),
+            'appointment_type'=>$appointment_type,
+            'location'=>$this->input->post('location'),
+            'latitude'=>$this->input->post('latitude'),
+            'longitude'=>$this->input->post('longitude'),
+            'zipcode'=>$this->input->post('zipcode'),
+            'total_amount'=>$total_amount,
+            'total_payable'=>$total_payable,
+            'additional_fee'=>$additional_fee,
+            'discount'=>$discount,
+            'status_id'=>$status_id,
+        );
+
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+        // ================================
+
+        $package = $this->Package->getDataById($this->input->post('package_id'));
+        foreach($package->services as $val){
+            $data = array(
+                'appointment_id'=>$id,
+                'service_id'=>$val->id,
+                'service_in'=>'package',
+                'amount'=>$val->amount,
+            );
+            $this->db->insert('appointment_service',$data);
+        }
+
+        $addOn = $this->Package->getDataById($this->input->post('addOn'));
+        foreach($addOn as $val){
+            $data = array(
+                'appointment_id'=>$id,
+                'addon_id'=>$val->id,
+                'amount'=>$val->amount,
+            );
+            $this->db->insert('appointment_addon',$data);
+        }
+
+        return $id;
+    }
+
     
     
     function deleteselected(){

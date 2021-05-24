@@ -9,7 +9,7 @@
         }
 
         function index(){
-            $data['title']="Offer";
+            $data['title']="Coupons";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Offer->st_update()) {
@@ -30,7 +30,8 @@
             // }
             
             $content['list'] = $this->Offer->get_list();
-            $content['title'] = "Offer";
+            $content['title_top'] = "Coupons";
+            $content['title'] = "Coupon";
             $views["content"] = ["path"=>ADMIN.'offer_list',"data"=>$content];
             $layout['page'] = 'offer_list';
 
@@ -39,7 +40,8 @@
         }
 
         function add(){
-            $content['title'] = "Offer";
+            $content['title_top'] = "Coupons";
+            $content['title'] = "Coupon";
             $content['categories'] = $this->Category->get_list();
             $content['services'] = $this->Service->get_list();
             $views["content"] = ["path"=>ADMIN.'offer_add',"data"=>$content];
@@ -48,7 +50,8 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Offer";
+            $content['title_top'] = "Coupons";
+            $content['title'] = "Coupon";
             $content['form_data'] = $this->Offer->getDataById($id);
             $content['categories'] = $this->Category->get_list();
             $content['services'] = $this->Service->get_list();

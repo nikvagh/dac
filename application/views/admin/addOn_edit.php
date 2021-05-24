@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Status *</label>
+                                <label class="form-control-label">Active *</label>
                                 <br/>
                                 <label class="custom-toggle">
                                     <input type="checkbox" name="status" <?php if($form_data->status == "Enable"){ echo "checked"; } ?>>

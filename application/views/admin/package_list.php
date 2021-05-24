@@ -19,7 +19,7 @@
                                     <th scope="col" class="sort">Amount</th>
                                     <th scope="col" class="sort">Validity</th>
                                     <th scope="col" class="sort">Services</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>

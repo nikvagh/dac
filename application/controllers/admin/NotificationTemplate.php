@@ -8,7 +8,7 @@
         }
 
         function index(){
-            $data['title'] = "Notification Template";
+            $data['title'] = "Notification Templates";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Nt->st_update()) {
@@ -29,7 +29,7 @@
             // }
             
             $content['list'] = $this->Nt->get_list();
-            $content['title'] = "Notification Template";
+            $content['title'] = "Notification Templates";
             if(isset($_GET['tab'])){
                 $content['tab'] = $_GET['tab'];
             }else{

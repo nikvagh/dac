@@ -8,7 +8,7 @@
         }
 
         function index(){
-            $data['title']="Customer";
+            $data['title']="Members";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Customer->st_update()) {
@@ -29,7 +29,7 @@
             // }
             
             $content['list'] = $this->Customer->get_list();
-            $content['title'] = "Customer";
+            $content['title'] = "Members";
             $views["content"] = ["path"=>ADMIN.'customer_list',"data"=>$content];
             $layout['page'] = 'customer_list';
 
@@ -38,7 +38,8 @@
         }
 
         function add(){
-            $content['title'] = "Customer";
+            $content['title_top'] = "Members";
+            $content['title'] = "Member";
             $content['categories'] = $this->Category->get_list();
             $views["content"] = ["path"=>ADMIN.'customer_add',"data"=>$content];
             $layout['page'] = 'customer_add';
@@ -46,7 +47,8 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Customer";
+            $content['title_top'] = "Members";
+            $content['title'] = "Member";
             $content['form_data'] = $this->Customer->getDataById($id);
             $content['categories'] = $this->Category->get_list();
             // echo "<pre>";print_r($content);
@@ -54,6 +56,16 @@
 
             $views["content"] = ["path"=>ADMIN.'customer_edit',"data"=>$content];
             $layout['page'] = 'customer_edit';
+            $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        function view($id = 0){
+            $content['title_top'] = "Members";
+            $content['title'] = "Customer";
+            $content['form_data'] = $this->Customer->getDataById($id);
+
+            $views["content"] = ["path"=>ADMIN.'customer_view',"data"=>$content];
+            $layout['page'] = 'customer_view';
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 

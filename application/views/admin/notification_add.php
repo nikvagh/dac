@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row align-items-center">
                     <div class="col-8">
-                        <h3 class="mb-0">New <?php echo $title; ?></h3>
+                        <h3 class="mb-0">Send <?php echo $title; ?></h3>
                     </div>
                 </div>
             </div>

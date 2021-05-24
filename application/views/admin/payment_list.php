@@ -29,9 +29,9 @@
                                         <td>
                                             <?php 
                                                 if($val->user_type == 'customer'){
-                                                    echo $val->firstname.' '.$val->lastname; 
+                                                    echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->user_id).'">'.$val->firstname.' '.$val->lastname.'</a>';
                                                 }else{
-                                                    echo $val->company_name; 
+                                                    echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->user_id).'">'.$val->company_name.'</a>';
                                                 }
                                             ?>
                                         </td>

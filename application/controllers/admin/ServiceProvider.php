@@ -4,6 +4,7 @@
             parent::__construct();
             $this->load->model('ServiceProviderModel','Sp');
             $this->load->model('AppointmentModel','Appointment');
+            $this->load->model('CoWorkerModel','CoWorker');
             checkLogin('admin');
         }
 
@@ -29,6 +30,7 @@
             // }
             
             $content['list'] = $this->Sp->get_list();
+            $content['title_top'] = "Service Providers";
             $content['title'] = "Service Provider";
             $views["content"] = ["path"=>ADMIN.'serviceProvider_list',"data"=>$content];
             $layout['page'] = 'serviceProvider_list';
@@ -38,6 +40,7 @@
         }
 
         function add(){
+            $content['title_top'] = "Service Providers";
             $content['title'] = "Service Provider";
             $views["content"] = ["path"=>ADMIN.'serviceProvider_add',"data"=>$content];
             $layout['page'] = 'serviceProvider_add';
@@ -45,6 +48,7 @@
         }
 
         function edit($id = 0){
+            $content['title_top'] = "Service Providers";
             $content['title'] = "Service Provider";
             $content['form_data'] = $this->Sp->getDataById($id);
 
@@ -57,13 +61,18 @@
         }
 
         function view($id = 0){
+            $content['title_top'] = "Service Providers";
             $content['title'] = "Service Provider";
             $content['form_data'] = $this->Sp->getDataById($id);
+
+            $where = [['column'=>'sp.sp_id','op'=>'=','value'=>$id]];
+            $content['form_data']->CoWorkers = $this->CoWorker->get_list('','',$where);
+            
             $content['totalJobAssigned'] = $this->Appointment->getTotalCount($id);
             $content['totalJobSuccess'] = $this->Appointment->getTotalSuccessCount($id);
             $content['totalJobInProgress'] = $this->Appointment->getTotalInProgressCount($id);
 
-            // print_r($content);
+            // echo "<pre>"; print_r($content['form_data']);
             // exit;
 
             $views["content"] = ["path"=>ADMIN.'serviceProvider_view',"data"=>$content];
@@ -95,6 +104,8 @@
             $this->form_validation->set_rules('company_name', 'Company Name', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             $this->form_validation->set_rules('phone_day', 'Phone', 'required');
+            $this->form_validation->set_rules('EIN', 'EIN', 'required');
+            
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
             } else {

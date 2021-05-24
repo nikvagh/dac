@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-lg-10 file-box-wrapper">
                                         <div class="form-group">
-                                            <label class="form-control-label">Image</label>
+                                            <label class="form-control-label">Logo</label>
                                             <label class="file-box">
                                                 <span class="name-box">Drag or Select Files</span>
                                                 <input type="hidden" name="image_old" id="image_old" value="<?php echo $form_data->profile; ?>"/>
@@ -56,12 +56,64 @@
                                 </div>
                             </div>
 
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">EIN/SSN *</label>
+                                    <input type="text" name="EIN" class="form-control" placeholder="EIN" value="<?php echo $form_data->EIN; ?>">
+                                    <span class="error text-danger validation-message" data-field="EIN"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6 file-box-wrapper">
+                                        <div class="form-group">
+                                            <label class="form-control-label">W9</label>
+                                            <label class="file-box">
+                                                <span class="name-box">Drag or Select Files</span>
+                                                <input type="hidden" name="W9_old" id="W9_old" value="<?php echo $form_data->W9; ?>"/>
+                                                <input type="file" name="W9" class="form-control input-single" onchange="" accept=".png, .jpg, .jpeg, .svg, .pdf, .doc,.docx,application/msword"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 d-flex align-items-center pre-img-box">
+                                        <?php if($form_data->W9 != ""){ ?>
+                                            <a href="<?php echo base_url(W9_PATH.$form_data->W9); ?>" target="_blank">Click To View Documents</a>
+                                        <?php }else{ ?>
+                                            Documents are not uploaded.    
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6 file-box-wrapper">
+                                        <div class="form-group">
+                                            <label class="form-control-label">COI</label>
+                                            <label class="file-box">
+                                                <span class="name-box">Drag or Select Files</span>
+                                                <input type="hidden" name="COI_old" id="COI_old" value="<?php echo $form_data->COI; ?>"/>
+                                                <input type="file" name="COI" class="form-control input-single" onchange="" accept=".png, .jpg, .jpeg, .svg, .pdf, .doc,.docx,application/msword"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 d-flex align-items-center pre-img-box">
+                                        <?php if($form_data->COI != ""){ ?>
+                                            <a href="<?php echo base_url(COI_PATH.$form_data->COI); ?>" target="_blank">Click To View Documents</a>
+                                        <?php }else{ ?>
+                                            Documents are not uploaded.    
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Status *</label>
+                                    <label class="form-control-label">Active *</label>
                                     <br/>
                                     <label class="custom-toggle">
                                         <input type="checkbox" name="status" checked>

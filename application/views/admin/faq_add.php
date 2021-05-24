@@ -41,7 +41,7 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Status *</label>
+                                <label class="form-control-label">Active *</label>
                                 <br/>
                                 <label class="custom-toggle">
                                     <input type="checkbox" name="status" checked>
@@ -54,7 +54,7 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'customer'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(ADMIN.'faq'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="create_data()">Submit</button>
             </div>
         </div>

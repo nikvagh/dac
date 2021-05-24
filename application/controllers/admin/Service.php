@@ -8,7 +8,7 @@
         }
 
         function index(){
-            $data['title']="Service";
+            $data['title']="Services";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Service->st_update()) {
@@ -29,7 +29,7 @@
             // }
             
             $content['list'] = $this->Service->get_list();
-            $content['title'] = "Service";
+            $content['title'] = "Services";
             $views["content"] = ["path"=>ADMIN.'service_list',"data"=>$content];
             $layout['page'] = 'service_list';
 
@@ -38,6 +38,7 @@
         }
 
         function add(){
+            $content['title_top'] = "Services";
             $content['title'] = "Service";
             $content['categories'] = $this->Category->get_list();
             $views["content"] = ["path"=>ADMIN.'service_add',"data"=>$content];
@@ -46,6 +47,7 @@
         }
 
         function edit($id = 0){
+            $content['title_top'] = "Services";
             $content['title'] = "Service";
             $content['form_data'] = $this->Service->getDataById($id);
             $content['categories'] = $this->Category->get_list();

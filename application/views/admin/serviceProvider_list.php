@@ -15,10 +15,10 @@
                                 <tr>
                                     <th scope="col" class="sort">#</th>
                                     <th scope="col" class="sort">Company Name</th>
-                                    <th scope="col">Image</th>
+                                    <th scope="col">Logo</th>
                                     <th scope="col" class="sort">Email</th>
                                     <th scope="col" class="sort">Phone</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -50,7 +50,7 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url(ADMIN.'serviceProvider/view/'.$val->sp_id) ?>" class="btn btn-sm btn-info">Detail</a>
+                                            <a href="<?php echo base_url(ADMIN.'serviceProvider/view/'.$val->sp_id) ?>" class="btn btn-sm btn-info">Portfolio</a>
                                             <a href="<?php echo base_url(ADMIN.'serviceProvider/edit/'.$val->sp_id) ?>" class="btn btn-sm btn-default">Edit</a>
                                             <a onClick="confirmDelete('dataTableForm',<?php echo $val->sp_id ?>,'Service Provider')" class="btn btn-sm btn-danger text-white">Delete</a>
                                         </td>

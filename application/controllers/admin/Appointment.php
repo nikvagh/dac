@@ -13,7 +13,7 @@
         }
 
         function index(){
-            $data['title'] = "Appointment";
+            $data['title'] = "Bookings";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Appointment->st_update()) {
@@ -43,7 +43,7 @@
             $content['list'] = $this->Appointment->get_list('','',$where);
             $content['sps'] = $this->Sp->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
-            $content['title'] = "Appointment";
+            $content['title'] = "Bookings";
 
             // echo "<pre>";print_r($content);exit;
             $views["content"] = ["path"=>ADMIN.'appointment_list',"data"=>$content];
@@ -54,7 +54,8 @@
         }
 
         function add(){
-            $content['title'] = "Appointment";
+            $content['title_top'] = "Bookings";
+            $content['title'] = "Booking";
             $content['packages'] = $this->Package->get_list();
             $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
@@ -67,7 +68,8 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Appointment";
+            $content['title_top'] = "Bookings";
+            $content['title'] = "Booking";
             $content['form_data'] = $this->Appointment->getDataById($id);
             $content['packages'] = $this->Package->get_list();
             $content['sps'] = $this->Sp->get_list();

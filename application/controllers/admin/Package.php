@@ -9,7 +9,7 @@
 
         function index(){
             $data['package_manage'] = TRUE;
-            $data['title']="Package";
+            $data['title']="Packages";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Package->st_update()) {
@@ -30,7 +30,7 @@
             // }
             
             $content['list'] = $this->Package->get_list();
-            $content['title'] = "Package";
+            $content['title'] = "Packages";
             $views["content"] = ["path"=>ADMIN.'package_list',"data"=>$content];
             $layout['page'] = 'package_list';
 
@@ -39,6 +39,7 @@
         }
 
         function add(){
+            $content['title_top'] = "Packages";
             $content['title'] = "Package";
             $content['services'] = $this->Service->get_list();
             $views["content"] = ["path"=>ADMIN.'package_add',"data"=>$content];
@@ -47,6 +48,7 @@
         }
 
         function edit($id = 0){
+            $content['title_top'] = "Packages";
             $content['title'] = "Package";
             $content['form_data'] = $form_data = $this->Package->getDataById($id);
             $content['validity'] = package_validity_converter($form_data->validity);

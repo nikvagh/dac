@@ -72,7 +72,7 @@
                             <div class="row">
                                 <div class="col-lg-10 file-box-wrapper">
                                     <div class="form-group">
-                                        <label class="form-control-label">Image</label>
+                                        <label class="form-control-label">Profile Pic</label>
                                         <label class="file-box">
                                             <span class="name-box">Drag or Select Files</span>
                                             <input type="hidden" name="image_old" id="image_old" value=""/>
@@ -91,7 +91,7 @@
                         <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Status *</label>
+                                <label class="form-control-label">Active *</label>
                                 <br/>
                                 <label class="custom-toggle">
                                     <input type="checkbox" name="status" checked>

@@ -79,6 +79,9 @@
 				// echo "<pre>"; print_r($_POST); exit;
 				$this->session->set_flashdata('success', 'Email sent successfully.');
 				echo json_encode(['status'=>200]);
+			}else{
+				$this->session->set_flashdata('error', 'Something went wrong, please try again.');
+				echo json_encode(['status'=>200]);
 			}
 		}
 

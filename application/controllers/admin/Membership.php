@@ -29,7 +29,7 @@
             // }
             
             $content['list'] = $this->Membership->get_list();
-            $content['title'] = "Membership";
+            $content['title'] = "Memberships";
             $views["content"] = ["path"=>ADMIN.'membership_list',"data"=>$content];
             $layout['page'] = 'membership_list';
 

@@ -114,7 +114,7 @@ class Mail {
 	    $mail = new PHPMailer(true); //Argument true in constructor enables exceptions
 
 	    //From email address and name
-	    $mail->From = "dacteam@gmail.com";
+	    $mail->From = "email@dac.igeekteam.org";
 	    $mail->FromName = "DAC";
 
 	    // $to = "nikul@kartuminfotech.com";
@@ -157,10 +157,13 @@ class Mail {
 	    // $mail->AltBody = "This is the plain text version of the email content";
 
 	    try {
-	        $mail->send();
-	        return true;
+	        if($mail->send()){
+	        	return true;
+	        }
 	    } catch (Exception $e) {
 	        $error = "Mailer Error: " . $mail->ErrorInfo;
+	        // echo "<pre>";print_r($error);
+	        // exit;
 			return false;
 	    }
 

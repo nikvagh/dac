@@ -17,7 +17,7 @@
                                     <th scope="col" class="sort">Question</th>
                                     <th scope="col" class="sort">Answer</th>
                                     <th scope="col" class="sort">Faq For</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>

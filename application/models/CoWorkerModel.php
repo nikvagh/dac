@@ -7,14 +7,23 @@ class CoWorkerModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
-        $this->db->select('*');
-        $this->db->order_by("id", "Desc");
+    function get_list($num="", $offset="",$where = []) {
+        $this->db->select('se.*,sp.company_name');
+        $this->db->join('sp','sp.sp_id=se.sp_id','left');
+        $this->db->order_by("se.id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
 
-        $query = $this->db->get($this->table);
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+
+        $query = $this->db->get($this->table .' as se');
         $result = $query->result();
         return $result;
     }

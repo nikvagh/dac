@@ -8,7 +8,7 @@
         }
 
         function index(){
-            $data['title']="Admin";
+            $data['title']="Admin Users";
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->AdminUser->st_update()) {
                     $this->session->set_flashdata('success', 'Admin status has been update successfully.');
@@ -28,7 +28,7 @@
             // }
             
             $content['list'] = $this->AdminUser->get_list();
-            $content['title'] = "Admin";
+            $content['title'] = "Admin Users";
             $views["content"] = ["path"=>ADMIN.'adminUser_list',"data"=>$content];
             $layout['page'] = 'adminUser_list';
 
@@ -37,7 +37,8 @@
         }
 
         function add(){
-            $content['title'] = "Admin";
+            $content['title_top'] = "Admin Users";
+            $content['title'] = "User";
             $content['roles'] = $this->Role->get_list();
             $views["content"] = ["path"=>ADMIN.'adminUser_add',"data"=>$content];
             $layout['page'] = 'adminUser_add';
@@ -45,7 +46,8 @@
         }
 
         function edit($id = 0){
-            $content['title'] = "Admin";
+            $content['title_top'] = "Admin Users";
+            $content['title'] = "User";
             $content['roles'] = $this->Role->get_list();
             $content['form_data'] = $this->AdminUser->getDataById($id);
             // echo "<pre>";print_r($content);

@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-lg-10 file-box-wrapper">
                                         <div class="form-group">
-                                            <label class="form-control-label">Image</label>
+                                            <label class="form-control-label">Logo</label>
                                             <label class="file-box">
                                                 <span class="name-box">Drag or Select Files</span>
                                                 <!-- <input type="hidden" name="profile_pic_old" id="profile_pic_old" value=""/> -->
@@ -55,12 +55,47 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label class="form-control-label">Status *</label>
+                                    <label class="form-control-label">EIN/SSN *</label>
+                                    <input type="text" name="EIN" class="form-control" placeholder="EIN" value="">
+                                    <span class="error text-danger validation-message" data-field="EIN"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12 file-box-wrapper">
+                                        <div class="form-group">
+                                            <label class="form-control-label">W9</label>
+                                            <label class="file-box">
+                                                <span class="name-box">Drag or Select Files</span>
+                                                <input type="file" name="W9" class="form-control input-single" onchange="" accept=".png, .jpg, .jpeg, .svg, .pdf, .doc,.docx,application/msword"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12 file-box-wrapper">
+                                        <div class="form-group">
+                                            <label class="form-control-label">COI</label>
+                                            <label class="file-box">
+                                                <span class="name-box">Drag or Select Files</span>
+                                                <input type="file" name="COI" class="form-control input-single" onchange="" accept=".png, .jpg, .jpeg, .svg, .pdf, .doc,.docx,application/msword"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-control-label">Active *</label>
                                     <br/>
                                     <label class="custom-toggle">
                                         <input type="checkbox" name="status" checked>

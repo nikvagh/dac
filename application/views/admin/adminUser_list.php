@@ -18,7 +18,7 @@
                                     <th scope="col" class="sort">Username</th>
                                     <th scope="col" class="sort">Email</th>
                                     <th scope="col" class="sort">Phone</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>

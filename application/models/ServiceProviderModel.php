@@ -53,12 +53,45 @@ class ServiceProviderModel extends CI_Model {
                 }
         }
 
+        $W9_name = "";
+        if(isset($_FILES['W9']['name']) && $_FILES['W9']['name'] != ""){
+                $W9_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['W9']['name']);
+
+                $config['file_name'] = $W9_name;
+                $config['upload_path'] = W9_PATH;
+                $config['allowed_types'] = '*';
+
+                $this->upload->initialize($config);
+                if (!$this->upload->do_upload('W9')) {
+                        $data['error'] = array('error' => $this->upload->display_errors());
+                        // echo "<pre>";print_r($data['error']);
+                }
+        }
+
+        $COI_name = "";
+        if(isset($_FILES['COI']['name']) && $_FILES['COI']['name'] != ""){
+                $COI_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['COI']['name']);
+
+                $config['file_name'] = $COI_name;
+                $config['upload_path'] = COI_PATH;
+                $config['allowed_types'] = '*';
+
+                $this->upload->initialize($config);
+                if (!$this->upload->do_upload('COI')) {
+                        $data['error'] = array('error' => $this->upload->display_errors());
+                        // echo "<pre>";print_r($data['error']);
+                }
+        }
+
         $data = array(
             'company_name'=>$this->input->post('company_name'),
             'email'=>$this->input->post('email'),
             'phone_day'=>$this->input->post('phone_day'),
+            'EIN'=>$this->input->post('EIN'),
             'status'=>$status,
-            'profile'=>$image_name
+            'profile'=>$image_name,
+            'W9'=>$W9_name,
+            'COI'=>$COI_name,
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
@@ -98,12 +131,55 @@ class ServiceProviderModel extends CI_Model {
             }
         }
 
+        $W9_name = $this->input->post('W9_old');
+        if(isset($_FILES['W9']['name']) && $_FILES['W9']['name'] != ""){
+            // remove old file
+            if(file_exists(W9_PATH.$this->input->post('W9_old'))){
+                @unlink(W9_PATH.$this->input->post('W9_old'));
+            }
+                
+            $W9_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['W9']['name']);
+            
+            $config['file_name'] = $W9_name;
+            $config['upload_path'] = W9_PATH;
+            $config['allowed_types'] = '*';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('W9')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
+        $COI_name = $this->input->post('COI_old');
+        if(isset($_FILES['COI']['name']) && $_FILES['COI']['name'] != ""){
+            // remove old file
+            if(file_exists(COI_PATH.$this->input->post('COI_old'))){
+                @unlink(COI_PATH.$this->input->post('COI_old'));
+            }
+                
+            $COI_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['COI']['name']);
+            
+            $config['file_name'] = $COI_name;
+            $config['upload_path'] = COI_PATH;
+            $config['allowed_types'] = '*';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('COI')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
         $data = array(
             'company_name'=>$this->input->post('company_name'),
             'email'=>$this->input->post('email'),
             'phone_day'=>$this->input->post('phone_day'),
+            'EIN'=>$this->input->post('EIN'),
             'status'=>$status,
-            'profile'=>$image_name
+            'profile'=>$image_name,
+            'W9'=>$W9_name,
+            'COI'=>$COI_name,
         );
         $this->db->set($data)->where('sp_id',$this->input->post('id'));
         $this->db->update($this->table);

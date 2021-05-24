@@ -339,5 +339,8 @@ define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');
 define('INVOICE_PATH', UPLOADS.'invoice/');
 
+define('W9_PATH', UPLOADS.'w9/');
+define('COI_PATH', UPLOADS.'coi/');
+
 
 require_once BASEPATH.'core/CodeIgniter.php';

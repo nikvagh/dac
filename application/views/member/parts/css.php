@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.css">
     <?php } ?>
 
-    <?php if($page == ''){ ?>
+    <?php if($page == 'book_now'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/jquery.datetimepicker.css">
     <?php } ?>
 

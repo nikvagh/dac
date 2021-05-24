@@ -26,7 +26,7 @@
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == ''){ ?>
+    <?php if($page == 'book_now'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
@@ -162,32 +162,84 @@
     <?php if($page == 'book_now'){ ?>
         $('.select2').select2();
 
+        $('#zipcode').select2({
+            ajax: {
+                type: "post",
+                url: base+'booking/get_list_dropdown',
+                dataType: 'json',
+                data: function (params) {
+                    // console.log(params)
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    // console.log(data.result);
+                    return {
+                        results: data.result
+                    };
+                },
+                // cache: true,
+            },
+            placeholder: 'Search for a zip code',
+        });
+
+        // console.log(currentDateTime.getDay());
+
+        var setTime = function(currentDateTime){
+
+            // console.log(currentDateTime);
+            // currentDateTime.toISOString();
+            // console.log(currentDateTime);
+            // // currentDateTime = currentDateTime.toUTCString()
+            // console.log(currentDateTime);
+            // console.log(currentDateTime.getHours());
+
+            if(currentDateTime.getHours() >= 7){
+                var minTime = currentDateTime.getHours()+":"+currentDateTime.getMinutes();
+                this.setOptions({
+                    minTime:minTime,
+                    maxTime:'18:00'
+                });
+            }else{
+                var minTime = '7:00';
+                this.setOptions({
+                    minTime:minTime,
+                    maxTime:'18:00'
+                });
+            }
+        };
+
+        $('#time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15,
+            onShow:setTime,
+            timezone:'UTC'
+
+            // minTime:'11:00',
+            // maxTime:'18:00',
+        });
+
         // handlePermission();
         getLocation();
 
         function create_data(){
             var formData = new FormData(document.getElementById("form1"));
-            //  console.log(formData);
-
-            
-            // getLocation();
-
-            // if($("#latitude").val() == "" ||  $("#longitude").val() == ""){
-
-            // }
-                
 
             if(validation(formData) == 'success'){
-                // $.ajax({
-                //     type: "post", url: base+'payment/createCard', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
-                //     success: function (data, textStatus, jqXHR) {
-                //         // console.log(data);
-                //         // return false;
-                //         if(data.status == 200){
-                //             window.location.href = base+'payment';
-                //         }
-                //     }
-                // });
+                $.ajax({
+                    type: "post", url: base+'booking/bookNowSave', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = base+'payment';
+                        }
+                    }
+                });
             }
         }
 
@@ -206,17 +258,17 @@
             if (returnData.status != 200) {
                 $(".btn-submit").html("Submit");
                 // $('.validation-message').each(function () {
+                    console.log(returnData.result);
+                    // return false;
+
                     for (var key in returnData.result) {
                         if(key == "latitude" || key == "longitude"){
                             alertStatus = true;
                         }
-
-                        if ($(this).attr('data-field') == key) {
-                            $(this).html(returnData.result[key]);
-                        }
+                        console.log(key);
+                        $('.validation-message[data-field="'+key+'"]').html(returnData.result[key]);
                     }
                 // });
-
 
                 if(alertStatus){
                     var alertModelHtml  = '<div class="modal-dialog">'+
@@ -232,10 +284,6 @@
                     $('#confirm_model').html(alertModelHtml);
                     $('#confirm_model').modal('show');
                 }
-
-                
-
-
                 
             } else {
                 return 'success';
@@ -335,7 +383,7 @@
                 $.ajax({
                     type: "post", url: base+'refer/sendMail', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
-                        // console.log(data);
+                        console.log(data);
                         // return false;
                         if(data.status == 200){
                             window.location.href = base+'refer';
@@ -432,247 +480,6 @@
                 return 'success';
             }
         }
-    <?php } ?>
-
-    <?php if($page == 'calendar_list'){ ?>
-
-        function getTimeTemplate(schedule, isAllDay) {
-            var html = [];
-
-            if (!isAllDay) {
-                html.push('<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ');
-            }
-            if (schedule.isPrivate) {
-                html.push('<span class="calendar-font-icon ic-lock-b"></span>');
-                html.push(' Private');
-            } else {
-                if (schedule.isReadOnly) {
-                html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
-                } else if (schedule.recurrenceRule) {
-                    html.push('<span class="calendar-font-icon ic-repeat-b"></span>');
-                } else if (schedule.attendees.length) {
-                    html.push('<span class="calendar-font-icon ic-user-b"></span>');
-                } else if (schedule.location) {
-                    html.push('<span class="calendar-font-icon ic-location-b"></span>');
-                }
-                html.push(' ' + schedule.title);
-            }
-
-            return html.join('');
-        }
-
-        function getGridTitleTemplate(type) {
-            var title = '';
-
-            switch(type) {
-            case 'milestone':
-                title = '<span class="tui-full-calendar-left-content">MILESTONE</span>';
-                break;
-            case 'task':
-                title = '<span class="tui-full-calendar-left-content">TASK</span>';
-                break;
-            case 'allday':
-                title = '<span class="tui-full-calendar-left-content">ALL DAY</span>';
-                break;
-            }
-
-            return title;
-        }
-
-        function getGridCategoryTemplate(category, schedule) {
-            var tpl;
-
-            switch(category) {
-            case 'milestone':
-                tpl = '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' + schedule.bgColor + '">' + schedule.title + '</span>';
-                break;
-            case 'task':
-                tpl = '#' + schedule.title;
-                break;
-            case 'allday':
-                tpl = getTimeTemplate(schedule, true);
-                break;
-            }
-
-            return tpl;
-        }
-
-        var calendar = new tui.Calendar('#calendar', {
-            // options here
-            taskView: true,
-            defaultView: 'month',
-            scheduleView: true,
-            // week: {
-            //     daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            //     startDayOfWeek: 0,
-            //     narrowWeekend: true
-            // },
-            // calendars: [],
-            useCreationPopup: false,
-            useDetailPopup: true,
-            // template:templates,
-            // schedule:{
-            //     alldayTitle: function() {
-            //         return '<span class="tui-full-calendar-left-content">ALL DAY</span>';
-            //     },
-            // },
-
-            template: {
-                milestone: function(schedule) {
-                    return '<span style="color:red;"><i class="fa fa-flag"></i> ' + schedule.title + '</span>';
-                },
-                milestoneTitle: function() {
-                    return 'Milestone';
-                },
-                task: function(schedule) {
-                    return '&nbsp;&nbsp;#' + schedule.title;
-                },
-                taskTitle: function() {
-                    return '<label><input type="checkbox" />Task</label>';
-                },
-                allday: function(schedule) {
-                    // console.log(schedule);
-                    return '<i class="fa fa-car"></i> ' +schedule.title;
-                },
-                alldayTitle: function() {
-                    return 'All Day';
-                },
-                time: function(schedule) {
-                    return '<div class="bg-danger"> '+schedule.title + ' <i class="fa fa-refresh"></i>' + schedule.start +'</div>';
-                },
-                goingDuration: function(schedule) {
-                    return '<span class="calendar-icon ic-travel-time"></span>' + schedule.goingDuration + 'min.';
-                },
-                comingDuration: function(schedule) {
-                    return '<span class="calendar-icon ic-travel-time"></span>' + schedule.comingDuration + 'min.';
-                },
-                monthMoreTitleDate: function(date, dayname) {
-                    var day = date.split('.')[2];
-                    return '<span class="tui-full-calendar-month-more-title-day">' + day + '</span> <span class="tui-full-calendar-month-more-title-day-label">' + dayname + '</span>';
-                },
-                monthMoreClose: function() {
-                    return '<span class="tui-full-calendar-icon tui-full-calendar-ic-close"></span>';
-                },
-                monthGridHeader: function(dayModel) {
-                    var date = parseInt(dayModel.date.split('-')[2], 10);
-                    var classNames = ['tui-full-calendar-weekday-grid-date '];
-
-                    if (dayModel.isToday) {
-                        classNames.push('tui-full-calendar-weekday-grid-date-decorator');
-                    }
-
-                    return '<span class="' + classNames.join(' ') + '">' + date + '</span>';
-                },
-                monthGridHeaderExceed: function(hiddenSchedules) {
-                    return '<span class="weekday-grid-more-schedules">+' + hiddenSchedules + '</span>';
-                },
-                monthGridFooter: function() {
-                    return '';
-                },
-                monthGridFooterExceed: function(hiddenSchedules) {
-                    return '';
-                },
-                monthDayname: function(model) {
-                    return String(model.label).toLocaleUpperCase();
-                },
-                dayGridTitle: function(viewName) {
-                    /*
-                    * use another functions instead of 'dayGridTitle'
-                    * milestoneTitle: function() {...}
-                    * taskTitle: function() {...}
-                    * alldayTitle: function() {...}
-                    */
-
-                    return getGridTitleTemplate(viewName);
-                },
-                schedule: function(schedule) {
-                    /*
-                    * use another functions instead of 'schedule'
-                    * milestone: function() {...}
-                    * task: function() {...}
-                    * allday: function() {...}
-                    */
-
-                    return getGridCategoryTemplate(schedule.category, schedule);
-                }
-            },
-            // week: {
-            //     daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            //     startDayOfWeek: 0,
-            //     narrowWeekend: true
-            // },
-            // month: {
-            //     daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            //     startDayOfWeek: 0,
-            //     narrowWeekend: true
-            // },
-            // list of Calendars that can be used to add new schedule
-            // calendars: [],
-            // whether use default creation popup or not
-            // useCreationPopup: false,
-            // whether use default detail popup or not
-            // useDetailPopup: false
-        });
-
-
-        var appointmentData;
-        $.ajax({
-            type: "post", url: base+'calendar/getAll', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:[],
-            success: function (data, textStatus, jqXHR) {
-                appointmentData = data;
-            }
-        });
-
-        // if (appointmentData.status == 200) {
-        //     console.log(appointmentData);
-        // }
-
-        // appointmentStData = [
-        //     {
-        //         id: '1',
-        //         calendarId: '1',
-        //         title: 'my schedule',
-        //         category: 'allday',
-        //         dueDateClass: '',
-        //         start: '2021-05-18',
-        //         // end: '2021-05-19',
-        //         bgColor: '#e94e38',
-        //         dragBgColor: '#e94e38',
-        //         // color: '#e94e38'
-        //     },
-        //     {
-        //         // id: '2',
-        //         // calendarId: '1',
-        //         // title: 'second schedule',
-        //         category: 'allday',
-        //         // dueDateClass: '',
-        //         start: '2021-05-30T17:30:00+09:00',
-        //         // end: '2021-05-30T17:31:00+12:00',
-        //         // dueDateClass: '',
-        //     },
-        // ]
-
-        // console.log(appointmentStData);
-        // appointmentData = json.parse(appointmentData.result);
-        appointmentData = appointmentData.result;
-        // console.log(appointmentData);
-        calendar.createSchedules(appointmentData);
-
-
-        $('.move-today').click(function(){
-            calendar.changeView('day', true);
-        })
-
-        $('.move-day').click(function(){
-            var move_attr = $(this).attr('data-action');
-            if(move_attr == "move-prev"){
-                calendar.prev();
-            }
-            if(move_attr == "move-prev"){
-                calendar.next();
-            }
-        })
-        
     <?php } ?>
 
     <?php if($page == 'notification_add'){ ?>

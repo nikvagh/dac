@@ -11,7 +11,7 @@
 
         function index(){
             $data['membership_manage'] = TRUE;
-            $data['title']="Membership";
+            $data['title']="Memberships";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Membership->st_update()) {
@@ -34,7 +34,7 @@
             $where = [];
             $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
             $content['list'] = $this->Membership->get_list('','',$where);
-            $content['title'] = "Membership";
+            $content['title'] = "Memberships";
             $views["content"] = ["path"=>MEMBER.'membership_list',"data"=>$content];
             $layout['page'] = 'membership_list';
 
@@ -43,7 +43,7 @@
         }
 
         function add(){
-            $content['title'] = "Package";
+            $content['title'] = "Memberships";
             $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
             $content['packages'] = $this->Package->get_list('','',$where2);
 
