@@ -66,8 +66,24 @@
                                 <?php foreach($list as $key=>$val){ //echo "<pre>";print_r($val); ?>
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
-                                        <td><?php echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->customer_id).'" target="_blank">'.$val->firstname.' '.$val->lastname.'</a>'; ?></td>
-                                        <td><?php echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->sp_id).'" target="_blank">'.$val->company_name.'</a>'; ?></td>
+                                        <td>
+                                            <?php
+                                                if($val->firstname == "" && $val->lastname == ""){
+                                                    echo 'Customer Deleted';
+                                                }else{
+                                                    echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->customer_id).'" target="_blank">'.$val->firstname.' '.$val->lastname.'</a>';
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                if($val->company_name == ""){
+                                                    echo 'Service Provider Deleted';
+                                                }else{
+                                                    echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->sp_id).'" target="_blank">'.$val->company_name.'</a>';
+                                                }
+                                            ?>
+                                        </td>
                                         <td><?php echo $val->date; ?></td>
                                         <td><?php echo $val->duration; ?></td>
                                         <td><?php echo $val->amount; ?></td>
