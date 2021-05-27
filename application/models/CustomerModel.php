@@ -54,10 +54,12 @@ class CustomerModel extends CI_Model {
                 $config['upload_path'] = CUSTOMER_IMG;
                 $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
+
                 $this->upload->initialize($config);
                 if (!$this->upload->do_upload('image')) {
                         $data['error'] = array('error' => $this->upload->display_errors());
                         // echo "<pre>";print_r($data['error']);
+                        // exit;
                 }
         }
 
@@ -98,7 +100,6 @@ class CustomerModel extends CI_Model {
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
-            
             $config['file_name'] = $image_name;
             $config['upload_path'] = CUSTOMER_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -107,6 +108,7 @@ class CustomerModel extends CI_Model {
             if (!$this->upload->do_upload('image')) {
                 $data['error'] = array('error' => $this->upload->display_errors());
                 // echo "<pre>";print_r($data['error']);
+                // exit;
             }
         }
 

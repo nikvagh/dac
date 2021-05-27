@@ -29,9 +29,17 @@
                                         <td>
                                             <?php 
                                                 if($val->user_type == 'customer'){
-                                                    echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->user_id).'">'.$val->firstname.' '.$val->lastname.'</a>';
+                                                    if($val->firstname == "" && $val->lastname == ""){
+                                                        echo 'Customer Deleted';
+                                                    }else{
+                                                        echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->user_id).'" target="_blank">'.$val->firstname.' '.$val->lastname.'</a>';
+                                                    }
                                                 }else{
-                                                    echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->user_id).'">'.$val->company_name.'</a>';
+                                                    if($val->company_name == ""){
+                                                        echo 'Service Provider Deleted';
+                                                    }else{
+                                                        echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->user_id).'" target="_blank">'.$val->company_name.'</a>';
+                                                    }
                                                 }
                                             ?>
                                         </td>

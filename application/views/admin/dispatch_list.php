@@ -27,8 +27,8 @@
                                 <?php foreach($list as $key=>$val){ //echo "<pre>";print_r($val); ?>
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
-                                        <td><?php echo $val->firstname.' '.$val->lastname; ?></td>
-                                        <td><?php echo $val->company_name; ?></td>
+                                        <td><?php echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->customer_id).'" target="_blank">'.$val->firstname.' '.$val->lastname.'</a>'; ?></td>
+                                        <td><?php echo '<a href="'.base_url(ADMIN.'serviceProvider/view/'.$val->sp_id).'" target="_blank">'.$val->company_name.'</a>'; ?></td>
                                         <td><?php echo $val->date; ?></td>
                                         <td><?php echo $val->duration; ?></td>
                                         <td><?php echo $val->amount; ?></td>

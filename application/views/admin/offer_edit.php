@@ -71,27 +71,27 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <!-- <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Categories *</label>
                                     <select name="categories[]" id="categories" class="form-control select2" multiple>
-                                        <?php foreach($categories as $key=>$val){ ?>
-                                            <option value="<?php echo $val->category_id; ?>" <?php if(in_array($val->category_id,$form_data->category_ids)){ echo "selected"; } ?>><?php echo $val->category_name; ?></option>
-                                        <?php } ?>
+                                        <?php //foreach($categories as $key=>$val){ ?>
+                                            <option value="<?php //echo $val->category_id; ?>" <?php //if(in_array($val->category_id,$form_data->category_ids)){ echo "selected"; } ?>><?php //echo $val->category_name; ?></option>
+                                        <?php //} ?>
                                     </select>
                                     <span class="error text-danger validation-message" data-field="categories[]"></span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Services *</label>
-                                    <select name="services[]" id="services" class="form-control select2" multiple>
-                                        <?php foreach($services as $key=>$val){ ?>
-                                            <option value="<?php echo $val->id; ?>" <?php if(in_array($val->id,$form_data->service_ids)){ echo "selected"; } ?>><?php echo $val->name; ?></option>
+                                    <label class="form-control-label">Packages *</label>
+                                    <select name="packages[]" id="packages" class="form-control select2" multiple>
+                                        <?php foreach($packages as $key=>$val){ ?>
+                                            <option value="<?php echo $val->id; ?>" <?php if(in_array($val->id,$form_data->packages_ids)){ echo "selected"; } ?>><?php echo $val->name; ?></option>
                                         <?php } ?>
                                     </select>
-                                    <span class="error text-danger validation-message" data-field="services[]"></span>
+                                    <span class="error text-danger validation-message" data-field="packages[]"></span>
                                 </div>
                             </div>
 

@@ -18,7 +18,7 @@
                                     <th scope="col">Image</th>
                                     <th scope="col" class="sort">Amount</th>
                                     <th scope="col" class="sort">Duration</th>
-                                    <th scope="col" class="sort">Categories</th>
+                                    <!-- <th scope="col" class="sort">Categories</th> -->
                                     <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -35,7 +35,7 @@
                                         </td>
                                         <td><?php echo $val->amount; ?></td>
                                         <td><?php echo $val->duration; ?></td>
-                                        <td><?php echo implode(', ',$val->category_names); ?></td>
+                                        <!-- <td><?php echo implode(', ',$val->category_names); ?></td> -->
                                         <td>
                                             <label class="custom-toggle">
                                                 <?php 

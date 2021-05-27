@@ -19,8 +19,8 @@
                                     <th scope="col" class="sort">Discount</th>
                                     <th scope="col" class="sort">Start Date</th>
                                     <th scope="col" class="sort">End Date</th>
-                                    <th scope="col" class="sort">Categories</th>
-                                    <th scope="col" class="sort">Services</th>
+                                    <!-- <th scope="col" class="sort">Categories</th> -->
+                                    <th scope="col" class="sort">Packages</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -38,8 +38,8 @@
                                             <td><?php echo $val->discount; ?></td>
                                             <td><?php echo $val->start_date; ?></td>
                                             <td><?php echo $val->end_date; ?></td>
-                                            <td><?php echo implode(', ',$val->category_names); ?></td>
-                                            <td><?php echo implode(', ',$val->services_names); ?></td>
+                                            <!-- <td><?php //echo implode(', ',$val->category_names); ?></td> -->
+                                            <td><?php echo implode(', ',$val->packages_names); ?></td>
                                             <td>
                                                 <a href="<?php echo base_url(ADMIN.'offer/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
                                                 <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Offer ')" class="btn btn-sm btn-danger text-white">Delete</a>

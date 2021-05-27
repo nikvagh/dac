@@ -27,7 +27,15 @@
                                 <?php foreach($list as $key=>$val){ ?>
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
-                                        <td><?php echo $val->firstname.' '.$val->lastname; ?></td>
+                                        <td>
+                                            <?php
+                                                if($val->firstname == "" && $val->lastname == ""){
+                                                    echo 'Customer Deleted';
+                                                }else{
+                                                    echo '<a href="'.base_url(ADMIN.'customer/view/'.$val->customer_id).'" target="_blank">'.$val->firstname.' '.$val->lastname.'</a>';
+                                                }
+                                            ?>
+                                        </td>
                                         <td><?php echo $val->package_name; ?></td>
                                         <td><?php echo $val->start_date; ?></td>
                                         <td><?php echo $val->end_date; ?></td>

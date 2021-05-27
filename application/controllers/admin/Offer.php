@@ -5,6 +5,7 @@
             $this->load->model('OfferModel','Offer');
             $this->load->model('CategoryModel','Category');
             $this->load->model('ServiceModel','Service');
+            $this->load->model('PackageModel','Package');
             checkLogin('admin');
         }
 
@@ -42,8 +43,9 @@
         function add(){
             $content['title_top'] = "Coupons";
             $content['title'] = "Coupon";
-            $content['categories'] = $this->Category->get_list();
-            $content['services'] = $this->Service->get_list();
+            // $content['categories'] = $this->Category->get_list();
+            // $content['services'] = $this->Service->get_list();
+            $content['packages'] = $this->Package->get_list();
             $views["content"] = ["path"=>ADMIN.'offer_add',"data"=>$content];
             $layout['page'] = 'offer_add';
             $this->layouts->view($views,'admin_dashboard',$layout);
@@ -53,8 +55,9 @@
             $content['title_top'] = "Coupons";
             $content['title'] = "Coupon";
             $content['form_data'] = $this->Offer->getDataById($id);
-            $content['categories'] = $this->Category->get_list();
-            $content['services'] = $this->Service->get_list();
+            // $content['categories'] = $this->Category->get_list();
+            // $content['services'] = $this->Service->get_list();
+            $content['packages'] = $this->Package->get_list();
             // echo "<pre>";print_r($content);
             // exit;
 
@@ -71,8 +74,8 @@
             $this->form_validation->set_rules('discount', 'Discount', 'required|numeric|less_than_equal_to[100]');
             $this->form_validation->set_rules('start_date', 'Start Date', 'required');
             $this->form_validation->set_rules('end_date', 'End Date', 'required');
-            $this->form_validation->set_rules('categories[]', 'Categories', 'required');
-            $this->form_validation->set_rules('services[]', 'Services', 'required');
+            // $this->form_validation->set_rules('categories[]', 'Categories', 'required');
+            $this->form_validation->set_rules('packages[]', 'Packages', 'required');
             if ($this->form_validation->run()) {
                 // header("Content-type:application/json");
                 echo json_encode(['status'=>200]);

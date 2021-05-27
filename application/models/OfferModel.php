@@ -23,9 +23,9 @@ class OfferModel extends CI_Model {
             $result[$key]->categories = $query->result();
             $result[$key]->category_names = array_map(function($e) { return is_object($e) ? $e->category_name : $e['category_name']; }, $result[$key]->categories );
 
-            $query = $this->db->select('s.*')->from('offer_service as os')->join('service as s','s.id = os.service_id','left')->where('os.offer_id',$val->id)->get();
-            $result[$key]->services = $query->result();
-            $result[$key]->services_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services );
+            $query = $this->db->select('p.*')->from('offer_package as op')->join('package as p','p.id = op.package_id','left')->where('op.offer_id',$val->id)->get();
+            $result[$key]->packages = $query->result();
+            $result[$key]->packages_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->packages );
         }
 
         // echo "<pre>";print_r($result);exit;
@@ -39,20 +39,20 @@ class OfferModel extends CI_Model {
         $row = $query->row();
 
         $categories = (object) [];
-        $services = (object) [];
+        $packages = (object) [];
         if(!empty($row)){
             $query = $this->db->select('c.*')->from('offer_category as oc')->join('category as c','c.category_id = oc.category_id','left')->where('oc.offer_id',$row->id)->get();
             $categories = $query->result();
 
-            $query = $this->db->select('s.*')->from('offer_service as os')->join('service as s','s.id = os.service_id','left')->where('os.offer_id',$row->id)->get();
-            $services = $query->result();
+            $query = $this->db->select('p.*')->from('offer_package as op')->join('package as p','p.id = op.package_id','left')->where('op.offer_id',$row->id)->get();
+            $packages = $query->result();
         }
 
         $row->categories = $categories;
         $row->category_ids = array_map(function($e) { return is_object($e) ? $e->category_id : $e['category_id']; }, $categories);
 
-        $row->services = $services;
-        $row->service_ids = array_map(function($e) { return is_object($e) ? $e->id : $e['id']; }, $services);
+        $row->packages = $packages;
+        $row->packages_ids = array_map(function($e) { return is_object($e) ? $e->id : $e['id']; }, $packages);
 
         // echo "<pre>";print_r($row);exit;
         return $row;
@@ -97,20 +97,28 @@ class OfferModel extends CI_Model {
         $id = $this->db->insert_id();
         // ================================
 
-        foreach($this->input->post('categories') as $val){
-            $data = array(
-                'offer_id'=>$id,
-                'category_id'=>$val
-            );
-            $this->db->insert('offer_category',$data);
-        }
+        // foreach($this->input->post('categories') as $val){
+        //     $data = array(
+        //         'offer_id'=>$id,
+        //         'category_id'=>$val
+        //     );
+        //     $this->db->insert('offer_category',$data);
+        // }
 
-        foreach($this->input->post('services') as $val){
+        // foreach($this->input->post('services') as $val){
+        //     $data = array(
+        //         'offer_id'=>$id,
+        //         'service_id'=>$val
+        //     );
+        //     $this->db->insert('offer_service',$data);
+        // }
+
+        foreach($this->input->post('packages') as $val){
             $data = array(
                 'offer_id'=>$id,
-                'service_id'=>$val
+                'package_id'=>$val
             );
-            $this->db->insert('offer_service',$data);
+            $this->db->insert('offer_package',$data);
         }
 
         return $id;
@@ -162,26 +170,37 @@ class OfferModel extends CI_Model {
 
         // ============================
 
-        $this->db->where('offer_id', $this->input->post('id'));
-        $this->db->delete('offer_category');
+        // $this->db->where('offer_id', $this->input->post('id'));
+        // $this->db->delete('offer_category');
 
-        foreach($this->input->post('categories') as $val){
+        // foreach($this->input->post('categories') as $val){
+        //     $data = array(
+        //         'offer_id'=>$this->input->post('id'),
+        //         'category_id'=>$val
+        //     );
+        //     $this->db->insert('offer_category',$data);
+        // }
+
+        // $this->db->where('offer_id', $this->input->post('id'));
+        // $this->db->delete('offer_service');
+
+        // foreach($this->input->post('services') as $val){
+        //     $data = array(
+        //         'offer_id'=>$this->input->post('id'),
+        //         'service_id'=>$val
+        //     );
+        //     $this->db->insert('offer_service',$data);
+        // }
+
+        $this->db->where('offer_id', $this->input->post('id'));
+        $this->db->delete('offer_package');
+
+        foreach($this->input->post('packages') as $val){
             $data = array(
                 'offer_id'=>$this->input->post('id'),
-                'category_id'=>$val
+                'package_id'=>$val
             );
-            $this->db->insert('offer_category',$data);
-        }
-
-        $this->db->where('offer_id', $this->input->post('id'));
-        $this->db->delete('offer_service');
-
-        foreach($this->input->post('services') as $val){
-            $data = array(
-                'offer_id'=>$this->input->post('id'),
-                'service_id'=>$val
-            );
-            $this->db->insert('offer_service',$data);
+            $this->db->insert('offer_package',$data);
         }
 
         // echo $this->db->last_query();
