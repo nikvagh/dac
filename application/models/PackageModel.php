@@ -9,7 +9,8 @@ class PackageModel extends CI_Model {
 
     function get_list($num="", $offset="",$where = []) {
         $this->db->select('p.*');
-        $this->db->from('package as p');
+        $this->db->from('package as p')->join('customer_membership as cm','cm.package_id=p.id','left');
+        $this->db->group_by("p.id");
         $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);

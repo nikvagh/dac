@@ -27,8 +27,9 @@
             //         redirect('membership');
             //     }
             // }
-            
-            $content['list'] = $this->Vehicle->get_list();
+                
+            $where = [['column'=>'cv.member_id','op'=>'=','value'=>$this->member->id]];
+            $content['list'] = $this->Vehicle->get_list('','',$where);
             $content['title_top'] = "Vehicles";
             $content['title'] = "Vehicle";
             $views["content"] = ["path"=>MEMBER.'vehicle_list',"data"=>$content];

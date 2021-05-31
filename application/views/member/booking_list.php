@@ -28,7 +28,20 @@
                                 <?php foreach($list_current as $key=>$val){ ?>
                                     <tr>
                                         <td><?php echo $val->id; //echo "<pre>";print_r($val);  ?></td>
-                                        <td><?php echo $val->company_name; ?></td>
+                                        <td>
+                                            <?php
+                                                if($val->company_name == ""){
+                                                    if($val->status_id == 1){
+                                                        echo 'Service Provider is not assigned.';
+                                                    }else{
+                                                        echo 'Service Provider is Deleted';
+                                                    }
+                                                }else{
+                                                    // echo '<a href="'.base_url(MEMBER.'serviceProvider/view/'.$val->sp_id).'">'.$val->company_name.'</a>';
+                                                    echo $val->company_name;
+                                                }
+                                            ?>
+                                        </td>
                                         <td><?php echo $val->date; ?></td>
                                         <td><?php echo $val->time; ?></td>
                                         <td><?php echo $val->amount; ?></td>

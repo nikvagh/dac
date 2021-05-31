@@ -193,17 +193,14 @@
         var setTime = function(currentDateTime){
             if(date.getHours() >= 7){
                 var minTime = date.getHours()+":"+date.getMinutes();
-                this.setOptions({
-                    minTime:minTime,
-                    maxTime:'18:00'
-                });
             }else{
                 var minTime = '7:00';
-                this.setOptions({
-                    minTime:minTime,
-                    maxTime:'18:00'
-                });
             }
+
+            this.setOptions({
+                minTime:minTime,
+                maxTime:'18:15'
+            });
         };
 
         $('#time').datetimepicker({

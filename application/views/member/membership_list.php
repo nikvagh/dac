@@ -15,7 +15,6 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="sort">#</th>
-                                    <th scope="col" class="sort">Customer Name</th>
                                     <th scope="col" class="sort">Package</th>
                                     <!-- <th scope="col" class="sort">Amount</th> -->
                                     <th scope="col" class="sort">Start Date</th>
@@ -28,7 +27,6 @@
                                 <?php foreach($list as $key=>$val){ ?>
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
-                                        <td><?php echo $val->firstname.' '.$val->lastname; ?></td>
                                         <td><?php echo $val->package_name; ?></td>
                                         <td><?php echo $val->start_date; ?></td>
                                         <td><?php echo $val->end_date; ?></td>

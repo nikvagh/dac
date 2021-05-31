@@ -59,7 +59,11 @@
             $where1[] = ['column'=>'cv.member_id','op'=>'=','value'=>$this->member->id];
             $content['vehicles'] = $this->Vehicle->get_list('','',$where1);
 
-            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
+            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable'],
+                        ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id],
+                        ['column'=>'cm.start_date','op'=>'<=','value'=>curr_date()],
+                        ['column'=>'cm.end_date','op'=>'>=','value'=>curr_date()]
+                    ];
             $content['packages'] = $this->Package->get_list('','',$where2);
 
             $where3 = [['column'=>'a.status','op'=>'=','value'=>'Enable']];
@@ -78,7 +82,11 @@
             $where1[] = ['column'=>'cv.member_id','op'=>'=','value'=>$this->member->id];
             $content['vehicles'] = $this->Vehicle->get_list('','',$where1);
 
-            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
+            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable'],
+                        ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id],
+                        ['column'=>'cm.start_date','op'=>'<=','value'=>curr_date()],
+                        ['column'=>'cm.end_date','op'=>'>=','value'=>curr_date()]
+                    ];
             $content['packages'] = $this->Package->get_list('','',$where2);
 
             $where3 = [['column'=>'a.status','op'=>'=','value'=>'Enable']];
