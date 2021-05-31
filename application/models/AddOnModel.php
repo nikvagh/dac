@@ -37,6 +37,14 @@ class AddOnModel extends CI_Model {
         return $row;
     }
 
+    function getDataByIds($ids){
+        $this->db->select('*');
+        $this->db->where_in('id',$ids);
+        $query = $this->db->get($this->table);
+        $result = $query->result();
+        return $result;
+    }
+
     function create(){
         if($this->input->post('status')){
             $status = 'Enable';

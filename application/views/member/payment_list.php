@@ -4,7 +4,7 @@
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header border-0">
-                    <h3 class="mb-0">Transaction</h3>
+                    <h3 class="mb-0">Transactions</h3>
                 </div>
 
                 <form name="dataTableForm" id="dataTableForm" action="<?=base_url().MEMBER;?>payment" method="post" enctype="multipart/form-data">

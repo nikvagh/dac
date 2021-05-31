@@ -18,11 +18,14 @@
     .text-right{
         text-align: right;
     }
+    .bg-platinum{
+        background: #E5E4E2;
+    }
 </style>
 
 <div class="padding-10">
 
-    <div class="pull-right text-right">
+    <div class="">
         <img src="<?php echo $this->assets; ?>img/logo.png" width="100" alt="invoice icon">
         <br /><br>
         <address>
@@ -30,18 +33,16 @@
             <br />
             <?php echo $this->system->company_address; ?>
         </address>
-        <h4>Invoice Number #<?php echo $form_data->invoice_number; ?></h4>
-        <h4 class="">Date: <?php echo date('d M, Y', strtotime($form_data->created_at)); ?></h4>
     </div>
     <div class="clearfix"></div>
 
-    <div class="pull-left">
-        <!-- <address> -->
-        <h3>To, <?php echo $form_data->firstname . ' ' . $form_data->lastname; ?></h3>
-        <br />
-        <?php //echo $this->system->company_address; 
-        ?>
-        <!-- </address> -->
+    <div class="pull-right text-right">
+        <h4>Invoice Number # <?php echo $form_data->invoice_number; ?> <br/> Date: <?php echo date('d M, Y', strtotime($form_data->created_at)); ?></h4>
+        <p>
+            <strong><?php echo $form_data->firstname . ' ' . $form_data->lastname; ?></strong> <br />
+            <?php echo $form_data->location;?> <br />
+            <?php echo $form_data->zipcode;?>
+        </p>
     </div>
     <div class="clearfix"></div>
 
@@ -49,19 +50,37 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th>SERVICE LIST</th>
+                <th>SERVICES LIST</th>
                 <th>SUBTOTAL</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($form_data->services)) { ?>
-                <!-- <tr>
-                    <td colspan="3" class="text-center">Services</td>
-                </tr> -->
+                <tr>
+                    <td class="bg-platinum"></td>
+                    <td class="text-center bg-platinum">Services</td>
+                    <td class="bg-platinum"></td>
+                </tr>
                 <?php $cnt1 = 1;
                 foreach ($form_data->services as $key=>$val) { ?>
                     <tr>
-                        <td class="text-center"><strong><?php echo $key+1; ?></strong></td>
+                        <td class="text-center"><strong><?php echo $cnt1; ?></strong></td>
+                        <td><a><?php echo $val->name; ?></a></td>
+                        <td>&nbsp;<?php echo ' $ '.$val->amount; ?></td>
+                    </tr>
+                <?php $cnt1++; } ?>
+            <?php } ?>
+
+            <?php if (!empty($form_data->addons)) { ?>
+                <tr>
+                    <td class="bg-platinum"></td>
+                    <td class="text-center bg-platinum">Addons</td>
+                    <td class="bg-platinum"></td>
+                </tr>
+                <?php
+                foreach ($form_data->addons as $key=>$val) { ?>
+                    <tr>
+                        <td class="text-center"><strong><?php echo $cnt1; ?></strong></td>
                         <td><a><?php echo $val->name; ?></a></td>
                         <td>&nbsp;<?php echo ' $ '.$val->amount; ?></td>
                     </tr>
@@ -75,15 +94,16 @@
                 </tr> -->
             <?php //} ?>
 
-            <!-- <tr>
-                <td colspan="2" class="text-right">Total</td>
-                <td><strong><?php //echo '$'.$form_data['payeble_amount']; ?></strong></td>
-            </tr> -->
-
             <tr>
                 <td colspan="2" class="text-right">Total &nbsp;</td>
-                <td>&nbsp;<strong><?php echo '$ ' . $form_data->amount; ?></strong></td>
+                <td>&nbsp;<?php echo ' $ ' . $form_data->amount; ?></td>
             </tr>
+
+            <tr>
+                <td colspan="2" class="text-right">Total Payable </td>
+                <td>&nbsp;<?php echo ' $ '.$form_data->total_payable; ?></td>
+            </tr>
+            
             <!-- <tr>
                     <td colspan="2" class="text-right">HST/GST</td>
                     <td><strong>13%</strong></td>

@@ -26,6 +26,13 @@ class ServiceProviderModel extends CI_Model {
         return $query->row();
     }
 
+    function getDataByZip($zip){
+        $this->db->select('*');
+        $this->db->where('zipcode',$zip);
+        $query = $this->db->get($this->table);
+        return $query->row();
+    }
+
     function create(){
         // echo "<pre>";
         // print_r($_POST);
@@ -253,4 +260,15 @@ class ServiceProviderModel extends CI_Model {
         else
             return false;
     }
+
+    function getServiceProviderInRadius($latitude,$longitude,$km){
+        $query = $this->db->query('SELECT *, ( 3959 * acos( cos( radians('.$latitude.') ) * cos( radians( latitude ) ) 
+                                        * cos( radians( longitude ) - radians('.$longitude.') ) + sin( radians('.$latitude.') ) * sin(radians(latitude)) ) ) AS distance 
+                                    FROM sp
+                                    WHERE status = "Enable"
+                                    HAVING distance < '.$km.'
+                                    ORDER BY distance');
+        return $query->result();
+    }
+
 }

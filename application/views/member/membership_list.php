@@ -1,6 +1,7 @@
 
     <div class="row">
         <div class="col">
+        
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header border-0">
@@ -59,5 +60,6 @@
                 </form>
 
             </div>
+
         </div>
     </div>

@@ -6,6 +6,7 @@
             $this->load->model('VehicleModel','Vehicle');
             $this->load->model('PackageModel','Package');
             $this->load->model('CustomerMembershipModel','CustomerMembership');
+            $this->load->model('OfferModel','Offer');
             checkLogin('member');
         }
 
@@ -34,6 +35,7 @@
             $where = [];
             $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
             $content['list'] = $this->Membership->get_list('','',$where);
+            $content['title_top'] = "Memberships";
             $content['title'] = "Memberships";
             $views["content"] = ["path"=>MEMBER.'membership_list',"data"=>$content];
             $layout['page'] = 'membership_list';
@@ -70,6 +72,7 @@
 
         public function validation() {
             $this->form_validation->set_rules('package_id', 'Package', 'required', ['required' => 'Please select at least one package']);
+            $this->form_validation->set_rules('coupon', 'Coupon', 'callback_checkCoupon');
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
             } else {
@@ -95,6 +98,29 @@
             if ($this->Membership->delete()) {
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
+            }
+        }
+
+        public function checkCoupon(){
+            if($this->input->post('coupon')){
+                if($this->input->post('package_id')){
+                    $couponPackage = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
+                    // echo "<pre>";print_r($couponPackage);
+                    // exit;
+
+                    if($couponPackage['status'] == 400){
+                        
+                    }else{
+                        if($couponPackage['status'] == 200){
+                            return true;
+                        }else{
+                            $this->form_validation->set_message('checkCoupon', 'Invalid coupon code');
+                            return false;
+                        }
+                    }
+                }else{
+                    return true;
+                }
             }
         }
 

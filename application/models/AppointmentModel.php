@@ -6,6 +6,7 @@ class AppointmentModel extends CI_Model {
         $this->table = 'appointment';
         $this->primaryKey = 'id';
         $this->load->model('PackageModel','Package');
+        $this->load->model('ServiceProviderModel','ServiceProvider');
     }
 
     function get_list($num="", $offset="",$where = [],$where_or = []) {
@@ -28,7 +29,7 @@ class AppointmentModel extends CI_Model {
             }
         }
 
-        $this->db->order_by("a.id", "Desc");
+        $this->db->order_by("a.id", "desc");
         // echo "ggg";exit;
         // echo $num; echo $offset; exit;
 
@@ -56,6 +57,13 @@ class AppointmentModel extends CI_Model {
             }
             $result[$key]->amount = $amount;
             $result[$key]->duration = $duration;
+
+            // ============== add on ==================
+
+            $query = $this->db->select('a.id,a.name,aa.amount')->from('appointment_addon as aa')->join('addon as a','a.id=aa.addon_id','left')->where('aa.appointment_id',$val->id)->get();
+            $result[$key]->addons = $query->result();
+            $result[$key]->addon_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->addons);
+
         }
 
         // echo "<pre>";print_r($result);exit;
@@ -66,9 +74,11 @@ class AppointmentModel extends CI_Model {
         $this->db->select('a.*,
                             sp.sp_id,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,
                             p.name as package_name,
+                            v.name as vehicle_name,v.year as vehicle_year,
                             ss.status_txt')
             ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')
+            ->join('customer_vehicle as v','v.id = a.vehicle_id','left')
             ->join('package as p','p.id = a.package_id','left')
             ->join('service_status as ss','ss.id = a.status_id','left');
 
@@ -77,7 +87,7 @@ class AppointmentModel extends CI_Model {
         $row = $query->row();
 
         $services = (object) [];
-        $duration = 0; $amount = 0; $service_ids = []; $service_names = [];
+        $duration = 0; $amount = 0; $service_ids = []; $service_names = []; $addon_ids = []; $addon_names = [];
         if(!empty($row)){
             $query = $this->db->select('s.*')->from('appointment_service as as')->join('service as s','s.id=as.service_id','left')->where('as.appointment_id',$row->id)->get();
             $services = $query->result();
@@ -88,15 +98,26 @@ class AppointmentModel extends CI_Model {
                 $service_ids[] = $val->id;
                 $service_names[] = $val->name;
             }
+
+            $query = $this->db->select('a.id,a.name,aa.amount')->from('appointment_addon as aa')->join('addon as a','a.id=aa.addon_id','left')->where('aa.appointment_id',$row->id)->get();
+            $addons = $query->result();
+            if(!empty($addons)){
+                $addon_ids = array_column($addons,'id');
+                $addon_names = array_column($addons,'name');
+            }
         }
 
         $row->services = $services;
         $row->service_ids = $service_ids;
         $row->service_names = $service_names;
+
+        $row->addons = $addons;
+        $row->addon_ids = $addon_ids;
+        $row->addon_names = $addon_names;
+
         $row->duration = $duration;
         $row->amount = $amount;
         // $row->category_ids = array_column($categories,'category_id');
-
         // echo "<pre>";print_r($row);exit;
 
         return $row;
@@ -270,8 +291,10 @@ class AppointmentModel extends CI_Model {
     }
 
     function bookNowSave(){
-
+        // echo "<pre>"; print_r($_POST); exit;
+        $sp_id = 0;
         $payment_id = 0;
+        // echo "<pre>"; print_r($sps); exit;
         $date = date('Y-m-d');
         $appointment_type = 'book_now';
         $total_amount = 0;
@@ -280,7 +303,34 @@ class AppointmentModel extends CI_Model {
         $discount = 0;
         $status_id = '1';
 
+        // ========================== sp_id =================
+        $sps = $this->ServiceProvider->getServiceProviderInRadius($this->input->post('latitude'),$this->input->post('longitude'),10);
+        if(!empty($sps)){
+            $sort_by_km = array_column($sps, 'distance');
+            array_multisort($sort_by_km, SORT_ASC, $sps);
+            $sp_id = $sps[0]->sp_id;
+        }
+
+        if($sp_id == 0){
+            $spbyZip = $this->ServiceProvider->getDataByZip($this->input->post('zipcode'));
+            if($spbyZip){
+                $sp_id = $spbyZip->sp_id;
+            }
+        }
+        // =========================
+
+        // ========================= amount ================
+        if($this->input->post('addOn')){
+            $addons = $this->AddOn->getDataByIds($this->input->post('addOn'));
+            $addon_amt = array_sum(array_column($addons,'amount'));
+
+            $total_amount += $addon_amt;
+            $total_payable += $addon_amt;
+        }
+        // =========================
+
         $data = array(
+            'sp_id'=>$sp_id,
             'customer_id'=>$this->input->post('customer_id'),
             'package_id'=>$this->input->post('package_id'),
             'vehicle_id'=>$this->input->post('vehicle_id'),
@@ -314,21 +364,112 @@ class AppointmentModel extends CI_Model {
             $this->db->insert('appointment_service',$data);
         }
 
-        $addOn = $this->Package->getDataById($this->input->post('addOn'));
-        foreach($addOn as $val){
-            $data = array(
-                'appointment_id'=>$id,
-                'addon_id'=>$val->id,
-                'amount'=>$val->amount,
-            );
-            $this->db->insert('appointment_addon',$data);
+        if($this->input->post('addOn')){
+            foreach($this->input->post('addOn') as $val){
+                // print_r($val);
+                $addon = $this->AddOn->getDataById($val);
+                $data = array(
+                    'appointment_id'=>$id,
+                    'addon_id'=>$val,
+                    'amount'=>$addon->amount,
+                );
+                $this->db->insert('appointment_addon',$data);
+            }
         }
 
         return $id;
     }
 
-    
-    
+    function bookScheduleSave(){
+        $sp_id = 0;
+        $payment_id = 0;
+        $appointment_type = 'schedule_book';
+        $total_amount = 0;
+        $total_payable = 0;
+        $additional_fee = 0;
+        $discount = 0;
+        $status_id = '1';
+        $date_time_ary = explode(' ',$this->input->post('date'));
+        $date = $date_time_ary[0];
+        $time = $date_time_ary[1];
+
+        // ========================== sp_id =================
+        $sps = $this->ServiceProvider->getServiceProviderInRadius($this->input->post('latitude'),$this->input->post('longitude'),10);
+        if(!empty($sps)){
+            $sort_by_km = array_column($sps, 'distance');
+            array_multisort($sort_by_km, SORT_ASC, $sps);
+            $sp_id = $sps[0]->sp_id;
+        }
+
+        if($sp_id == 0){
+            $spbyZip = $this->ServiceProvider->getDataByZip($this->input->post('zipcode'));
+            if($spbyZip){
+                $sp_id = $spbyZip->sp_id;
+            }
+        }
+        // =========================
+
+        // ========================= amount ================
+        if($this->input->post('addOn')){
+            $addons = $this->AddOn->getDataByIds($this->input->post('addOn'));
+            $addon_amt = array_sum(array_column($addons,'amount'));
+
+            $total_amount += $addon_amt;
+            $total_payable += $addon_amt;
+        }
+        // =========================
+
+        $data = array(
+            'sp_id'=>$sp_id,
+            'customer_id'=>$this->input->post('customer_id'),
+            'package_id'=>$this->input->post('package_id'),
+            'vehicle_id'=>$this->input->post('vehicle_id'),
+            'payment_id'=>$payment_id,
+            'date'=>$date,
+            'time'=>$time,
+            'appointment_type'=>$appointment_type,
+            'location'=>$this->input->post('location'),
+            'latitude'=>$this->input->post('latitude'),
+            'longitude'=>$this->input->post('longitude'),
+            'zipcode'=>$this->input->post('zipcode'),
+            'total_amount'=>$total_amount,
+            'total_payable'=>$total_payable,
+            'additional_fee'=>$additional_fee,
+            'discount'=>$discount,
+            'status_id'=>$status_id,
+        );
+
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+        // ================================
+
+        $package = $this->Package->getDataById($this->input->post('package_id'));
+        foreach($package->services as $val){
+            $data = array(
+                'appointment_id'=>$id,
+                'service_id'=>$val->id,
+                'service_in'=>'package',
+                'amount'=>$val->amount,
+            );
+            $this->db->insert('appointment_service',$data);
+        }
+
+        if($this->input->post('addOn')){
+            foreach($this->input->post('addOn') as $val){
+                // print_r($val);
+                $addon = $this->AddOn->getDataById($val);
+                $data = array(
+                    'appointment_id'=>$id,
+                    'addon_id'=>$val,
+                    'amount'=>$addon->amount,
+                );
+                $this->db->insert('appointment_addon',$data);
+            }
+        }
+
+        return $id;
+    }
+
     function deleteselected(){
         
         $arrcat = $this->input->post('u_list');

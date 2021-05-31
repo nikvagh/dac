@@ -26,12 +26,12 @@
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == 'book_now'){ ?>
+    <?php if($page == 'book_now' || $page == 'book_schedule'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
     <?php if($page == 'vehicle_add' || $page == 'vehicle_edit' || $page == 'paymentCard_add' || $page == 'paymentCard_edit' || $page == 'membership_add' || 
-            $page == 'membership_edit' || $page == 'book_now'){ ?>
+            $page == 'membership_edit' || $page == 'book_now' || $page == 'book_schedule'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -80,14 +80,15 @@
     <?php } ?>
 
     <?php if(isset($page) && ($page == "vehicle_list" || $page == "payment_list" || $page == "membership_list" || $page == "booking_list")){ ?>
-            $(".dataTable").dataTable({
+            var dataTable = $(".dataTable").dataTable({
                 language: {
                     paginate: {
                         next: '<i class="fa fa-angle-right"></i>',
                         previous: '<i class="fa fa-angle-left"></i>'
                     },
                     emptyTable: "No data available in table"
-                }
+                },
+                "aaSorting": []
             });
     <?php } ?>
 
@@ -187,18 +188,11 @@
         });
 
         // console.log(currentDateTime.getDay());
+        var date = new Date();
 
         var setTime = function(currentDateTime){
-
-            // console.log(currentDateTime);
-            // currentDateTime.toISOString();
-            // console.log(currentDateTime);
-            // // currentDateTime = currentDateTime.toUTCString()
-            // console.log(currentDateTime);
-            // console.log(currentDateTime.getHours());
-
-            if(currentDateTime.getHours() >= 7){
-                var minTime = currentDateTime.getHours()+":"+currentDateTime.getMinutes();
+            if(date.getHours() >= 7){
+                var minTime = date.getHours()+":"+date.getMinutes();
                 this.setOptions({
                     minTime:minTime,
                     maxTime:'18:00'
@@ -236,7 +230,7 @@
                         // console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = base+'payment';
+                            window.location.href = base+'booking';
                         }
                     }
                 });
@@ -266,6 +260,133 @@
                             alertStatus = true;
                         }
                         console.log(key);
+                        $('.validation-message[data-field="'+key+'"]').html(returnData.result[key]);
+                    }
+                // });
+
+                if(alertStatus){
+                    var alertModelHtml  = '<div class="modal-dialog">'+
+                                                '<div class="modal-content">'+
+                                                    '<div class="modal-body text-center">'+
+                                                        '<p>Please allow location services of your browser.</p>'+
+                                                        '<div class="text-center">'+
+                                                            '<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>';
+                    $('#confirm_model').html(alertModelHtml);
+                    $('#confirm_model').modal('show');
+                }
+                
+            } else {
+                return 'success';
+            }
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                console.log('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function showPosition(position) {
+            // console.log(position.coords.latitude)
+            // console.log(position.coords.longitude)
+            $("#latitude").val(position.coords.latitude);
+            $("#longitude").val(position.coords.longitude);
+        }
+    
+    <?php } ?>
+
+    <?php if($page == 'book_schedule'){ ?>
+        $('.select2').select2();
+
+        $('#zipcode').select2({
+            ajax: {
+                type: "post",
+                url: base+'booking/get_list_dropdown',
+                dataType: 'json',
+                data: function (params) {
+                    // console.log(params)
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    // console.log(data.result);
+                    return {
+                        results: data.result
+                    };
+                },
+                // cache: true,
+            },
+            placeholder: 'Search for a zip code',
+        });
+
+        var minDate = new Date();
+        minDate.setDate(minDate.getDate() + 1);
+
+        var maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 8);
+        
+        $('#date_time').datetimepicker({
+            format:'Y-m-d H:i',
+            step:15,
+            defaultDate: minDate,
+            // onShow:setDateTime,
+            timezone:'UTC',
+            minDate: minDate,
+            maxDate: maxDate,
+        });
+
+        // handlePermission();
+        getLocation();
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: base+'booking/bookNowSave', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        // console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = base+'booking';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: base+'booking/validationBookSchedule', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            var alertStatus = false;
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                // $('.validation-message').each(function () {
+                    // console.log(returnData.result);
+                    // return false;
+
+                    for (var key in returnData.result) {
+                        if(key == "latitude" || key == "longitude"){
+                            alertStatus = true;
+                        }
+                        // console.log(key);
                         $('.validation-message[data-field="'+key+'"]').html(returnData.result[key]);
                     }
                 // });

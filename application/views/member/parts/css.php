@@ -18,12 +18,12 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.css">
     <?php } ?>
 
-    <?php if($page == 'book_now'){ ?>
+    <?php if($page == 'book_now' || $page == 'book_schedule'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/jquery.datetimepicker.css">
     <?php } ?>
 
     <?php if($page == 'vehicle_add' || $page == 'vehicle_edit' || $page == 'paymentCard_add' || $page == 'paymentCard_edit' || $page == 'membership_add' || 
-            $page == 'membership_edit' || $page == 'book_now'){ ?>
+            $page == 'membership_edit' || $page == 'book_now' || $page == 'book_schedule'){ ?>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <?php } ?>
 

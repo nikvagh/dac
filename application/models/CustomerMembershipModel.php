@@ -7,6 +7,7 @@ class CustomerMembershipModel extends CI_Model {
         $this->primaryKey = 'id';
 
         $this->load->model('PackageModel','Package');
+        $this->load->model('OfferModel','Offer');
     }
 
     // function get_list($num="", $offset="",$where = []) {
@@ -62,11 +63,26 @@ class CustomerMembershipModel extends CI_Model {
         $validityAry = package_validity_converter($package->validity);
         // echo "<prE>";print_r($package);exit;
 
+        $total_amount = $package->amount;
+        $total_payable = $package->amount;
+        $discount = 0;
+
+        if($this->input->post('coupon')){
+            $package_coupon = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
+            // print_r($package_coupon);
+            // exit;
+
+            $discount = $package_coupon['result']['offer']->discount;
+
+            $discount = ($total_amount*$discount)/100;
+            $total_payable = $total_amount-$discount;
+        }
+
         // payment
         $payment = array(
             'user_id'=>$this->input->post('customer_id'),
             'user_type'=>'customer',
-            'amount' => $package->amount,
+            'amount' => $total_payable,
             'transaction_type' => 'Credit',
             'status' => 'Success',
             'description' => 'membership purchase',
@@ -80,6 +96,9 @@ class CustomerMembershipModel extends CI_Model {
             'payment_id'=>$payment_id,
             'start_date'=>$validityAry['start_date'],
             'end_date'=>$validityAry['end_date'],
+            'total_amount'=>$total_amount,
+            'total_payable'=>$total_payable,
+            'discount'=>$discount,
             // 'end_date'=>$end_date
         );
         $this->db->insert($this->table,$data);

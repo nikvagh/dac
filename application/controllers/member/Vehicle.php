@@ -29,6 +29,7 @@
             // }
             
             $content['list'] = $this->Vehicle->get_list();
+            $content['title_top'] = "Vehicles";
             $content['title'] = "Vehicle";
             $views["content"] = ["path"=>MEMBER.'vehicle_list',"data"=>$content];
             $layout['page'] = 'vehicle_list';
@@ -38,6 +39,7 @@
         }
 
         function add(){
+            $content['title_top'] = "Vehicles";
             $content['title'] = "Vehicle";
             $views["content"] = ["path"=>MEMBER.'vehicle_add',"data"=>$content];
             $layout['page'] = 'vehicle_add';
@@ -45,6 +47,7 @@
         }
 
         function edit($id = 0){
+            $content['title_top'] = "Vehicles";
             $content['title'] = "Vehicle";
             $content['form_data'] = $form_data = $this->Vehicle->getDataById($id);
             // echo "<pre>";print_r($content);

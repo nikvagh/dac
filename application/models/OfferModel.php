@@ -8,8 +8,8 @@ class OfferModel extends CI_Model {
     }
 
     function get_list($num="", $offset="") {
-        $this->db->select('s.*');
-        $this->db->from('offers as s');
+        $this->db->select('o.*');
+        $this->db->from('offers as o');
         $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
@@ -278,4 +278,33 @@ class OfferModel extends CI_Model {
         else
             return false;
     }
+
+    function checkCouponForPackage($package_id,$coupon){
+        if($coupon == ""){
+            return ['status'=>400,'title'=>'Coupon code is empty'];
+        }
+
+        if($package_id == ""){
+            return ['status'=>400,'title'=>'Package_id is empty'];
+        }
+
+        $curr_date = curr_date();
+        $offer = $this->db->where('code',$coupon)->where('start_date <= "'.$curr_date.'"')->where('end_date >= "'.$curr_date.'"')->get('offers as o')->row();
+        if($offer){
+            $offerPackages = $this->db->where('offer_id',$offer->id)->get('offer_package as op')->result_array();
+            if(!empty($offerPackages)){
+                $package_ids = array_column($offerPackages,'package_id');
+                if(in_array($package_id,$package_ids)){
+                    return ['status'=>200,'title'=>'Valid Coupon code','result'=>['offer'=>$offer]];
+                }else{
+                    return ['status'=>310,'title'=>'Invalid coupon code for selected package'];
+                }
+            }else{
+                return $result = ['status'=>330,'title'=>'Invalid Coupon Code'];
+            }
+        }else{
+            return $result = ['status'=>330,'title'=>'Invalid Coupon Code'];
+        }
+    }
+    
 }

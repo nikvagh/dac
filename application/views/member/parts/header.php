@@ -4,7 +4,7 @@
         <div class="header-body">
             <div class="row align-items-center py-4">
                 <div class="col-lg-3 col-3">
-                    <h6 class="h2 text-white d-inline-block mb-0"><?php echo $title; ?></h6>
+                    <h6 class="h2 text-white d-inline-block mb-0"><?php if(isset($title_top)){ echo $title_top; }else{ echo $title; } ?></h6>
                 </div>
                 <div class="col-lg-6 col-6">
                     <?php if ($this->session->flashdata('success')): ?>
@@ -32,11 +32,11 @@
                         <a href="<?php echo base_url(MEMBER.'payment/addCard'); ?>" class="btn btn-sm btn-neutral">New Card</a>
                     <?php } ?>
                     <?php if($page == 'membership_list'){ ?>
-                        <a href="<?php echo base_url(MEMBER.'membership/add'); ?>" class="btn btn-sm btn-neutral">New Package</a>
+                        <a href="<?php echo base_url(MEMBER.'membership/add'); ?>" class="btn btn-sm btn-neutral">Purchase Package</a>
                     <?php } ?>
                     <?php if($page == 'booking_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'booking/book_now'); ?>" class="btn btn-sm btn-neutral">Book Now</a>
-                        <a href="<?php echo base_url(MEMBER.'booking/add'); ?>" class="btn btn-sm btn-neutral">Schedule Service</a>
+                        <a href="<?php echo base_url(MEMBER.'booking/book_schedule'); ?>" class="btn btn-sm btn-neutral">Schedule Service</a>
                     <?php } ?>
 
                     

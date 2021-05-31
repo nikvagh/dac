@@ -68,8 +68,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-control-label">Date Time *</label>
-                                <input type="text" name="time" id="time" class="form-control"  autocomplete="off"/>
-                                <span class="error text-danger validation-message" data-field="time"></span>
+                                <input type="text" name="date_time" id="date_time" class="form-control" autocomplete="off"/>
+                                <span class="error text-danger validation-message" data-field="date_time"></span>
                             </div>
                         </div>
                     </div>

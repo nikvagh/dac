@@ -9,7 +9,7 @@
 
         function index(){
             $data['payment_manage'] = TRUE;
-            $data['title']="Payment";
+            $data['title']="Payments";
 
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Payment->st_update()) {
@@ -40,6 +40,7 @@
             $content['list'] = $this->Payment->get_list('','',$where);
 
             $content['listCard'] = $this->PaymentCard->get_list('','');
+            $content['title_top'] = "Payments";
             $content['title'] = "Payment";
             $views["content"] = ["path"=>MEMBER.'payment_list',"data"=>$content];
             $layout['page'] = 'payment_list';
