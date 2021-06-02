@@ -271,4 +271,115 @@ class ServiceProviderModel extends CI_Model {
         return $query->result();
     }
 
+    public function register(){
+        $status = 'Enable';
+
+        $data = array(
+            'company_name'=>$this->input->post('company_name'),
+            'email'=>$this->input->post('email'),
+            'phone_day'=>$this->input->post('phone'),
+            'password'=>md5($this->input->post('phone')),
+            'status'=>$status,
+            'EIN'=>$this->input->post('EIN'),
+        );
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+        
+        return $id;
+    }
+
+    public function profileUpdate(){
+        if($this->input->post('status')){
+            $status = '0';
+        }else{
+            $status = '1';
+        }
+
+        $image_name = $this->input->post('image_old');
+        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
+
+            // remove old file
+            if(file_exists(SP_IMG.$this->input->post('image_old'))){
+                @unlink(SP_IMG.$this->input->post('image_old'));
+            }
+                
+            $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
+            
+            $config['file_name'] = $image_name;
+            $config['upload_path'] = SP_IMG;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('image')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
+        $W9_name = $this->input->post('W9_old');
+        if(isset($_FILES['W9']['name']) && $_FILES['W9']['name'] != ""){
+            // remove old file
+            if(file_exists(W9_PATH.$this->input->post('W9_old'))){
+                @unlink(W9_PATH.$this->input->post('W9_old'));
+            }
+                
+            $W9_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['W9']['name']);
+            
+            $config['file_name'] = $W9_name;
+            $config['upload_path'] = W9_PATH;
+            $config['allowed_types'] = '*';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('W9')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
+        $COI_name = $this->input->post('COI_old');
+        if(isset($_FILES['COI']['name']) && $_FILES['COI']['name'] != ""){
+            // remove old file
+            if(file_exists(COI_PATH.$this->input->post('COI_old'))){
+                @unlink(COI_PATH.$this->input->post('COI_old'));
+            }
+                
+            $COI_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['COI']['name']);
+            
+            $config['file_name'] = $COI_name;
+            $config['upload_path'] = COI_PATH;
+            $config['allowed_types'] = '*';
+
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('COI')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+            }
+        }
+
+        $data = array(
+            'company_name'=>$this->input->post('company_name'),
+            'email'=>$this->input->post('email'),
+            'phone_day'=>$this->input->post('phone_day'),
+            'EIN'=>$this->input->post('EIN'),
+            'status'=>$status,
+            'profile'=>$image_name,
+            'W9'=>$W9_name,
+            'COI'=>$COI_name,
+        );
+
+        $password = $this->input->post('password');
+        if($password != ""){
+            $data['password'] = md5($password);
+        }
+
+        $this->db->set($data)->where('sp_id',$this->input->post('id'));
+        $this->db->update($this->table);
+
+        $this->sp->login('','',$this->input->post('id'));
+
+        // echo $this->db->last_query();
+        // exit;
+        return true;
+    }
+
 }

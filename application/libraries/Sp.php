@@ -69,7 +69,7 @@ class Sp {
 			}
 		}
 		
-		function login($username, $password)
+		function login($username, $password, $sp_id = "")
 		{
 //                    echo $username;
 //                    echo $password;exit;
@@ -85,7 +85,11 @@ class Sp {
 //			$this->obj->db->where('admin_password', md5($password));
 //			$this->obj->db->where('admin_status', '1');
                         
-            $this->obj->db->where("(username='$username' OR email ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+			if($sp_id != ""){
+				$this->obj->db->where("sp_id='$sp_id'");
+			}else{
+				$this->obj->db->where("(username='$username' OR email ='$username') AND password = '".$pass."' AND status = 'Enable' ");
+			}
 			
 			$query = $this->obj->db->get($this->table, 1);
 			// echo $this->obj->db->last_query();exit;

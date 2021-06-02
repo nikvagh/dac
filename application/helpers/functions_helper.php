@@ -72,12 +72,12 @@ if ( ! function_exists('checklogin'))
 		$err = "N";
 		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != ""){
 			if($_SESSION['user_type'] != $userType){
-				$err = "Y";	
+				$err = "Y";
 			}
 		}else{
-			$err = "Y";	
+			$err = "Y";
 		}
-
+		
 		if($err == 'Y'){
 			if($userType == 'member'){
 				header('Location:'.base_url().MEMBER.'login');
@@ -85,9 +85,9 @@ if ( ! function_exists('checklogin'))
 				// header('Location:'.base_url().ADMINPATH.'login');
 				header('Location:'.base_url().ADMIN.'login');
 			}elseif($userType == 'sp'){
-				header('Location:'.base_url().SPPATH.'login');
+				header('Location:'.base_url().SP.'login');
 			}else{
-				header('Location:'.base_url().MEMBERPATH.'login');
+				header('Location:'.base_url().MEMBER.'login');
 			}
 		}
 	}
