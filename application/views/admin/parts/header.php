@@ -61,6 +61,15 @@
                     <?php if($page == 'addOn_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'addOn/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
+                    <?php if($page == 'zone_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'zone/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'branch_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'branch/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'driver_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'driver/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
                 </div>
             </div>
 

@@ -17,7 +17,8 @@
 
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
-            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'role_list' || $page == 'package_list' || 
+            $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'zone_list' || $page == 'branch_list' ||
+            $page == 'driver_list' || $page == 'role_list' || $page == 'package_list' || 
             $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -27,17 +28,19 @@
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
             $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
             $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'settings_list' || $page == 'package_add' || 
-            $page == 'package_edit' || $page == 'profile_edit'){ ?>
+            $page == 'package_edit' || $page == 'profile_edit' || $page == 'driver_add' || $page == 'driver_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit' 
+            || $page == 'driver_add' || $page == 'driver_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
             $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add' || $page == 'settings_list' ||
-            $page == 'package_edit' || $page == 'package_add' || $page == 'dispatch_view'){ ?>
+            $page == 'package_edit' || $page == 'package_add' || $page == 'dispatch_view' || $page == 'branch_add' || $page == 'branch_edit' || 
+            $page == 'driver_add' || $page == 'driver_edit'){ ?>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <?php } ?>
 
@@ -86,8 +89,9 @@
     <?php } ?>
 
     <?php if(isset($page) && ($page == "category_list" || $page == "serviceProvider_list" || $page == "coWorker_list" || $page == "service_list" || $page == "offer_list" || 
-            $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list'  || $page == 'role_list' || $page == 'package_list' || 
-            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list')){ ?>
+            $page == "appointment_list" || $page == "adminUser_list" || $page == 'customer_list' || $page == 'faq_list' || $page == 'zone_list' || $page == 'branch_list' ||
+            $page == 'driver_list' || $page == 'role_list' || $page == 'package_list' || $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || 
+            $page == 'addOn_list')){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -1132,6 +1136,202 @@
             var returnData;
             $.ajax({
                 type: "post", url: admin_base+'faq/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'zone_add' || $page == 'zone_edit'){ ?>
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'zone/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'zone';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'zone/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'zone';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'zone/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'branch_add' || $page == 'branch_edit'){ ?>
+
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'branch/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'branch';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'branch/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'branch';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'branch/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+
+    <?php } ?>
+
+    <?php if($page == 'driver_add' || $page == 'driver_edit'){ ?>
+
+        $('#start_time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15
+        });
+
+        $('#end_time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15
+        });
+
+        $(".select2").select2();
+        function create_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'add');
+            
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'driver/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'driver';
+                        }
+                    }
+                });
+            }
+        }
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(validation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'driver/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        if(data.status == 200){
+                            window.location.href = admin_base+'driver';
+                        }
+                    }
+                });
+            }
+        }
+
+        function validation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'driver/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }
