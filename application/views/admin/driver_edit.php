@@ -11,48 +11,19 @@
             <div class="card-body">
                 <form id="form1" action="" method="post" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Zone *</label>
-                                <select name="zone_id" id="" class="form-control">
-                                    <option value="">--Select--</option>
-                                    <?php foreach($zones as $key=>$val){ ?>
-                                        <option value="<?php echo $val->id; ?>" <?php if($val->id == $form_data->zone_id){ echo "selected"; } ?>><?php echo $val->name; ?></option>
-                                    <?php } ?>
-                                </select>
-                                <span class="error text-danger validation-message" data-field="zone_id"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label class="form-control-label">Name *</label>
-                                <input type="text" name="name" class="form-control" placeholder="Name" value="<?php echo $form_data->name; ?>">
-                                <span class="error text-danger validation-message" data-field="name"></span>
+                                <label class="form-control-label">First Name *</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="First Name" value="<?php echo $form_data->first_name; ?>">
+                                <span class="error text-danger validation-message" data-field="first_name"></span>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Latitude *</label>
-                                <input type="text" name="latitude" class="form-control" placeholder="Latitude" value="<?php echo $form_data->latitude; ?>">
-                                <span class="error text-danger validation-message" data-field="latitude"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label">Longitude *</label>
-                                <input type="text" name="longitude" class="form-control" placeholder="Longitude" value="<?php echo $form_data->longitude; ?>">
-                                <span class="error text-danger validation-message" data-field="longitude"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-control-label">Radius *</label>
-                                <input type="text" name="radius" class="form-control" placeholder="Radius" value="<?php echo $form_data->radius; ?>">
-                                <span class="error text-danger validation-message" data-field="radius"></span>
+                                <label class="form-control-label">Last Name *</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="last Name" value="<?php echo $form_data->last_name; ?>">
+                                <span class="error text-danger validation-message" data-field="last_name"></span>
                             </div>
                         </div>
 
@@ -66,12 +37,38 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Active *</label>
-                                <br/>
-                                <label class="custom-toggle">
-                                    <input type="checkbox" name="status" <?php if($form_data->status == "Enable"){ echo "checked"; } ?>>
-                                    <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                </label>
+                                <label class="form-control-label">Pin code *</label>
+                                <input type="text" name="pincode" class="form-control" placeholder="Pin code" value="<?php echo $form_data->pincode; ?>">
+                                <span class="error text-danger validation-message" data-field="pincode"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Start Time *</label>
+                                <input type="text" name="start_time" id="start_time" class="form-control" placeholder="Start Time" value="<?php echo $form_data->start_time; ?>" autocomplete="off">
+                                <span class="error text-danger validation-message" data-field="start_time"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">End Time *</label>
+                                <input type="text" name="end_time" id="end_time" class="form-control" placeholder="End Time" value="<?php echo $form_data->end_time; ?>" autocomplete="off">
+                                <span class="error text-danger validation-message" data-field="end_time"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Branch *</label>
+                                <select name="branch[]" id="" class="form-control select2" multiple>
+                                    <option value="">--Select--</option>
+                                    <?php foreach($branches as $key=>$val){ ?>
+                                        <option value="<?php echo $val->id; ?>" <?php if(in_array($val->id,$form_data->branch_ids)){ echo "selected"; } ?>><?php echo $val->name; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <span class="error text-danger validation-message" data-field="branch[]"></span>
                             </div>
                         </div>
 

@@ -80,7 +80,6 @@
                                         <label class="form-control-label">Profile Pic</label>
                                         <label class="file-box">
                                             <span class="name-box">Drag or Select Files</span>
-                                            <input type="hidden" name="image_old" id="image_old" value=""/>
                                             <input type="file" name="image" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>
                                         </label>
                                     </div>
@@ -98,10 +97,9 @@
                                         <label class="form-control-label">Driver License *</label>
                                         <label class="file-box">
                                             <span class="name-box">Drag or Select Files</span>
-                                            <input type="hidden" name="driver_license_old" id="driver_license_old" value=""/>
-                                            <input type="file" name="driver_license" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>
+                                            <input type="file" name="driving_license" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>
                                         </label>
-                                        <span class="error text-danger validation-message" data-field="driver_license"></span>
+                                        <span class="error text-danger validation-message" data-field="driving_license"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 d-flex align-items-center pre-img-box">

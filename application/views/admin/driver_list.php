@@ -14,11 +14,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="sort">#</th>
-                                    <th scope="col" class="sort">Zone</th>
-                                    <th scope="col" class="sort">Name</th>
-                                    <th scope="col" class="sort">Latitude</th>
-                                    <th scope="col" class="sort">Longitude</th>
-                                    <th scope="col" class="sort">Radius</th>
+                                    <th scope="col" class="sort">Profile</th>
+                                    <th scope="col" class="sort">First Name</th>
+                                    <th scope="col" class="sort">Last Name</th>
+                                    <th scope="col" class="sort">Mobile</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -27,11 +26,14 @@
                                 <?php foreach($list as $key=>$val){ ?>
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
-                                        <td><?php echo $val->zone_name; ?></td>
-                                        <td><?php echo $val->name; ?></td>
-                                        <td><?php echo $val->latitude; ?></td>
-                                        <td><?php echo $val->longitude; ?></td>
-                                        <td><?php echo $val->radius; ?></td>
+                                        <td>
+                                            <?php if($val->profile != ""){ ?>
+                                                <img src="<?php echo base_url(DRIVER_IMG.$val->profile); ?>" width="50"/>
+                                            <?php } ?>
+                                        </td>
+                                        <td><?php echo $val->first_name; ?></td>
+                                        <td><?php echo $val->last_name; ?></td>
+                                        <td><?php echo $val->mobile; ?></td>
                                         <td>
                                             <label class="custom-toggle">
                                                 <?php 
@@ -48,7 +50,7 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url(ADMIN.'branch/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
+                                            <a href="<?php echo base_url(ADMIN.'driver/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
                                             <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Branch')" class="btn btn-sm btn-danger text-white">Delete</a>
                                         </td>
                                     </tr>

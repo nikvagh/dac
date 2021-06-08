@@ -62,7 +62,10 @@
             $this->form_validation->set_rules('start_time', 'Start Time', 'required');
             $this->form_validation->set_rules('end_time', 'End Time', 'required');
             $this->form_validation->set_rules('branch[]', 'Branch', 'required');
-            $this->form_validation->set_rules('driver_license', 'Driver License', 'required');
+            if(empty($_FILES['driving_license']['name'])){
+                $this->form_validation->set_rules('driving_license', 'Driving License', 'required');
+            }
+
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
             } else {

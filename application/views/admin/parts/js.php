@@ -1285,13 +1285,23 @@
         $('#start_time').datetimepicker({
             datepicker:false,
             format:'H:i',
-            step:15
+            step:15,
+            onShow:function(ct){
+                this.setOptions({
+                    maxTime:jQuery('#end_time').val()?jQuery('#end_time').val():false
+                })
+            },
         });
 
         $('#end_time').datetimepicker({
             datepicker:false,
             format:'H:i',
-            step:15
+            step:15,
+            onShow:function(ct){
+                this.setOptions({
+                    minTime:jQuery('#start_time').val()?jQuery('#start_time').val():false
+                })
+            },
         });
 
         $(".select2").select2();

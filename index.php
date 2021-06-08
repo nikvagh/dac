@@ -335,7 +335,7 @@ define('CUSTOMER_IMG', UPLOADS.'customer/');
 define('SYSTEM_IMG', UPLOADS.'system/');
 define('PACKAGE_IMG', UPLOADS.'package/');
 define('DRIVER_IMG', UPLOADS.'driver/');
-define('DRIVER_LICENSE_IMG', UPLOADS.'driver_license/');
+define('DRIVER_LICENSE_IMG', UPLOADS.'driving_license/');
 
 define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');
