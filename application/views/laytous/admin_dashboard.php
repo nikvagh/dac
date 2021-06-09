@@ -18,7 +18,8 @@
 
       <!-- Page content -->
       <div class="container-fluid mt--6">
-
+          
+        <?php if(isset($filter)){ echo $filter; } ?>
         <?php echo $content; ?>
         <?php $this->load->view(ADMIN . 'parts/footer'); ?>
 

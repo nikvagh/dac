@@ -2,6 +2,7 @@
 <div class="header bg-primary pb-6">
     <div class="container-fluid">
         <div class="header-body">
+
             <div class="row align-items-center py-4">
                 <div class="col-lg-3 col-3">
                     <h6 class="h2 text-white d-inline-block mb-0"><?php if(isset($title_top)){ echo $title_top; }else{ echo $title; } ?></h6>
@@ -69,6 +70,9 @@
                     <?php } ?>
                     <?php if($page == 'driver_list'){ ?>
                         <a href="<?php echo base_url(ADMIN.'driver/add'); ?>" class="btn btn-sm btn-neutral">New</a>
+                    <?php } ?>
+                    <?php if($page == 'vehicleType_list'){ ?>
+                        <a href="<?php echo base_url(ADMIN.'vehicleType/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                     <?php } ?>
                 </div>
             </div>

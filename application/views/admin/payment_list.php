@@ -18,6 +18,7 @@
                                     <th scope="col" class="sort">User Type</th>
                                     <th scope="col" class="sort">Amount</th>
                                     <th scope="col" class="sort">Transaction Type</th>
+                                    <th scope="col" class="sort">Date</th>
                                     <th scope="col">Status</th>
                                     <!-- <th scope="col">Action</th> -->
                                 </tr>
@@ -56,6 +57,7 @@
                                             ?>
                                         </td>
                                         <td><?php echo $val->transaction_type; ?></td>
+                                        <td><?php echo $val->created_at; ?></td>
                                         <td>
                                             <?php 
                                                 if($val->status == 'Pending'){

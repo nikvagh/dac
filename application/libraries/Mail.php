@@ -15,7 +15,7 @@ class Mail {
         require './PHPMailer/SMTP.php';
     }
 
-    public function send_email($to,$subject,$message,$attach=0,$cc="",$attachM = array())
+    public function send_email($to,$subject,$message,$attach=0,$cc = array(),$attachM = array())
 	{
 
         // date_default_timezone_set('Etc/UTC');
@@ -91,9 +91,9 @@ class Mail {
 		// }
 
 		// if($cc != ""){
-		// 	//$mail->AddCC($cc);
-		// 	$ccAry = explode(',',$cc);
-		// 	foreach($ccAry as $ccEmail){
+		// // 	//$mail->AddCC($cc);
+		// // 	$ccAry = explode(',',$cc);
+		// 	foreach($cc as $ccEmail){
 		// 		$mail->AddCC($ccEmail);
 		// 	}
 		// }
@@ -151,6 +151,12 @@ class Mail {
 				// $newurl = $_SERVER["DOCUMENT_ROOT"].'/'.$attach;
 				$newurl = $_SERVER["DOCUMENT_ROOT"].'/'.$attach;
 				$mail->addAttachment($newurl);
+			}
+		}
+
+		if($cc != ""){
+			foreach($cc as $ccEmail){
+				$mail->AddCC($ccEmail);
 			}
 		}
 

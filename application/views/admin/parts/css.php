@@ -9,7 +9,7 @@
 <?php if(isset($page)){ ?>
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
                 $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list'  || $page == 'zone_list' || $page == 'branch_list' ||
-                $page == 'driver_list' || $page == 'role_list' || $page == 'package_list' || 
+                $page == 'driver_list' || $page == 'role_list' || $page == 'package_list' || $page == 'vehicleType_list' ||
                 $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list'){ ?>
         <!-- dataTable -->
         <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
@@ -20,12 +20,13 @@
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
             $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
             $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'faq_add' || $page == 'faq_edit' || 
-            $page == 'settings_list' || $page == 'package_add' || $page == 'package_edit' || $page == 'profile_edit' || $page == 'driver_add' || $page == 'driver_edit'){ ?>
+            $page == 'settings_list' || $page == 'package_add' || $page == 'package_edit' || $page == 'profile_edit' || $page == 'driver_add' || $page == 'driver_edit' || 
+            $page == 'vehicleType_add' || $page == 'vehicleType_edit'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.css">
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit' ||
-            $page == 'driver_add' || $page == 'driver_edit'){ ?>
+            $page == 'driver_add' || $page == 'driver_edit' || $page == 'payment_list'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/jquery.datetimepicker.css">
     <?php } ?>
 

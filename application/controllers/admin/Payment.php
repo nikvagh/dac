@@ -29,9 +29,13 @@
             //     }
             // }
             
-            $content['list'] = $this->Payment->get_list();
+            $filterCheck = 'Y';
+            $content['list'] = $this->Payment->get_list('','','',$filterCheck);
             $content['title'] = "Payments";
             $views["content"] = ["path"=>ADMIN.'payment_list',"data"=>$content];
+
+            $filter = [];
+            $views["filter"] = ["path"=>ADMIN.'payment_filter',"data"=>$filter];
             $layout['page'] = 'payment_list';
 
             $this->layouts->view($views,'admin_dashboard',$layout);
@@ -92,6 +96,29 @@
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
             }
+        }
+
+        public function filter(){
+
+            $action = $this->input->post('submit');
+            if($action == 'Reset'){
+                $sessionData = [
+                        'payment_id_payment'=>'',
+                        'status_payment'=>'',
+                        'start_date_payment'=>'',
+                        'end_date_payment'=>'',
+                ];
+                $this->session->set_userdata($sessionData);
+            }else{
+                $sessionData = [
+                        'payment_id_payment'=>$this->input->post('payment_id'),
+                        'status_payment'=>$this->input->post('status'),
+                        'start_date_payment'=>$this->input->post('start_date'),
+                        'end_date_payment'=>$this->input->post('end_date'),
+                ];
+                $this->session->set_userdata($sessionData);
+            }
+            redirect(ADMIN.'payment');
         }
 
     }

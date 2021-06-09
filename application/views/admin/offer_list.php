@@ -42,7 +42,8 @@
                                             <td><?php echo implode(', ',$val->packages_names); ?></td>
                                             <td>
                                                 <a href="<?php echo base_url(ADMIN.'offer/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
-                                                <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Offer ')" class="btn btn-sm btn-danger text-white">Delete</a>
+                                                <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Offer')" class="btn btn-sm btn-danger text-white">Delete</a>
+                                                <a href="<?php echo base_url(ADMIN.'offer/sendToCustomerLoad/'.$val->id) ?>" class="btn btn-sm btn-warning text-white">Send To Customer</a>
                                             </td>
                                         </tr>
                                     <?php } ?>

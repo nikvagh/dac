@@ -1,53 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class PaymentModel extends CI_Model {
+class VehicleTypeModel extends CI_Model {
     function __construct() {
-        $this->table = 'payment';
+        $this->table = 'vehicle_type';
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where = [], $filterCheck = 'N') {
-        $this->db->select('p.*,c.firstname,c.lastname,sp.company_name');
-        $this->db->from('payment as p');
-        $this->db->join('customer as c','c.id = p.user_id AND p.user_type = "customer"','left');
-        $this->db->join('sp','sp.sp_id = p.user_id AND p.user_type = "sp"','left');
-        $this->db->order_by("p.id", "Desc");
-
-        if($filterCheck == 'Y'){
-            if($this->session->userdata('payment_id_payment') != ""){
-                $this->db->where('p.id',$this->session->userdata('payment_id_payment'));
-            }
-
-            if($this->session->userdata('status_payment') != ""){
-                $this->db->where('p.status',$this->session->userdata('status_payment'));
-            }
-
-            if($this->session->userdata('start_date_payment') != ""){
-                $this->db->where('p.created_at >= ',$this->session->userdata('start_date_payment'));
-            }
-
-            if($this->session->userdata('end_date_payment') != ""){
-                $this->db->where('p.created_at <= ',$this->session->userdata('end_date_payment'));
-            }
-        }
-
-        if(!empty($where)){
-            foreach($where as $key=>$val){
-                if($val['op'] == "="){
-                    $this->db->where($val['column'],$val['value']);
-                }
-            }
-        }
-
+    function get_list($num="", $offset="") {
+        $this->db->select('d.*');
+        $this->db->from('vehicle_type as d');
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
-
         $query = $this->db->get();
         $result = $query->result();
-
-        // echo "<pre>";print_r($result);exit;
         return $result;
     }
 
@@ -56,24 +23,10 @@ class PaymentModel extends CI_Model {
         $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         $row = $query->row();
-
-        $services = (object) [];
-        if(!empty($row)){
-            $query = $this->db->select('s.*')->from('payment_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.payment_id',$row->id)->get();
-            $services = $query->result();
-        }
-
-        $row->services = $services;
-        $row->services_ids = array_map(function($e) { return is_object($e) ? $e->id : $e['id']; }, $services);
         return $row;
     }
 
     function create(){
-        // echo "<pre>";
-        // print_r($_POST);
-        // print_r($_FILES);
-        // exit;
-
         if($this->input->post('status')){
             $status = 'Enable';
         }else{
@@ -82,48 +35,32 @@ class PaymentModel extends CI_Model {
 
         $image_name = "";
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
-                $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
+            $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
-                $config['file_name'] = $image_name;
-                $config['upload_path'] = PACKAGE_IMG;
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['file_name'] = $image_name;
+            $config['upload_path'] = VEHICLE_TYPE_IMG;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
-                $this->upload->initialize($config);
-                if (!$this->upload->do_upload('image')) {
-                        $data['error'] = array('error' => $this->upload->display_errors());
-                        // echo "<pre>";print_r($data['error']);
-                }
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('image')) {
+                $data['error'] = array('error' => $this->upload->display_errors());
+                // echo "<pre>";print_r($data['error']);
+                // exit;
+            }
         }
 
         $data = array(
             'name'=>$this->input->post('name'),
-            'amount'=>$this->input->post('amount'),
             'description'=>$this->input->post('description'),
-            'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
             'image'=>$image_name,
             'status'=>$status,
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
-        // ================================
-
-        foreach($this->input->post('services') as $val){
-            $data = array(
-                'payment_id'=>$id,
-                'service_id'=>$val
-            );
-            $this->db->insert('payment_service',$data);
-        }
-
         return $id;
     }
 
     function update(){
-        // echo "<pre>";
-        // print_r($_POST);
-        // print_r($_FILES);
-        // exit;
-
         if($this->input->post('status')){
             $status = 'Enable';
         }else{
@@ -134,49 +71,32 @@ class PaymentModel extends CI_Model {
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
 
             // remove old file
-            if(file_exists(PACKAGE_IMG.$this->input->post('image_old'))){
-                @unlink(PACKAGE_IMG.$this->input->post('image_old'));
+            if(file_exists(VEHICLE_TYPE_IMG.$this->input->post('image_old'))){
+                @unlink(VEHICLE_TYPE_IMG.$this->input->post('image_old'));
             }
                 
             $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
-            
             $config['file_name'] = $image_name;
-            $config['upload_path'] = PACKAGE_IMG;
+            $config['upload_path'] = VEHICLE_TYPE_IMG;
             $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
             $this->upload->initialize($config);
             if (!$this->upload->do_upload('image')) {
                 $data['error'] = array('error' => $this->upload->display_errors());
                 // echo "<pre>";print_r($data['error']);
+                // exit;
             }
         }
 
         $data = array(
             'name'=>$this->input->post('name'),
-            'amount'=>$this->input->post('amount'),
             'description'=>$this->input->post('description'),
-            'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
             'image'=>$image_name,
             'status'=>$status,
         );
         $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
 
-        // ============================
-
-        $this->db->where('payment_id', $this->input->post('id'));
-        $this->db->delete('payment_service');
-
-        foreach($this->input->post('services') as $val){
-            $data = array(
-                'payment_id'=>$this->input->post('id'),
-                'service_id'=>$val
-            );
-            $this->db->insert('payment_service',$data);
-        }
-
-        // echo $this->db->last_query();
-        // exit;
         return true;
     }
 
@@ -196,13 +116,10 @@ class PaymentModel extends CI_Model {
         $row = $this->getDataById($this->input->post('id'));
 
         // remove old file
-        if(file_exists(PACKAGE_IMG.$row->image)){
-            @unlink(PACKAGE_IMG.$row->image);
+        if(file_exists(VEHICLE_TYPE_IMG.$row->image)){
+            @unlink(VEHICLE_TYPE_IMG.$row->image);
         }
 
-        $this->db->where('payment_id', $this->input->post('id'));
-        $this->db->delete('payment_service');
-        
         $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;

@@ -105,9 +105,9 @@ class DriverModel extends CI_Model {
 
     function update(){
         if($this->input->post('status')){
-            $status = '0';
+            $status = 'Enable';
         }else{
-            $status = '1';
+            $status = 'Disable';
         }
 
         $image_name = $this->input->post('image_old');
@@ -193,7 +193,20 @@ class DriverModel extends CI_Model {
     }
 
     function delete(){
-        // $row = $this->getDataById($this->input->post('id'));
+        $row = $this->getDataById($this->input->post('id'));
+
+        // remove old file
+        if(file_exists(DRIVER_IMG.$row->profile)){
+            @unlink(DRIVER_IMG.$row->profile);
+        }
+        
+        if(file_exists(DRIVER_LICENSE_IMG.$row->driving_license)){
+            @unlink(DRIVER_LICENSE_IMG.$row->driving_license);
+        }
+
+        $this->db->where('driver_id', $this->input->post('id'));
+        $this->db->delete('driver_branch');
+
         $this->db->where('id', $this->input->post('id'));
         if ($query = $this->db->delete($this->table)){
             return true;

@@ -124,7 +124,7 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'customer'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(ADMIN.'driver'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="create_data()">Submit</button>
             </div>
         </div>

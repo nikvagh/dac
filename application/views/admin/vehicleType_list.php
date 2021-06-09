@@ -7,17 +7,15 @@
                     <h3 class="mb-0"></h3>
                 </div>
 
-                <form name="dataTableForm" id="dataTableForm" action="<?=base_url().ADMIN;?>driver" method="post" enctype="multipart/form-data">
+                <form name="dataTableForm" id="dataTableForm" action="<?=base_url().ADMIN;?>vehicleType" method="post" enctype="multipart/form-data">
                     <!-- Light table -->
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush dataTable table-hover">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" class="sort">#</th>
-                                    <th scope="col" class="sort">Profile</th>
-                                    <th scope="col" class="sort">First Name</th>
-                                    <th scope="col" class="sort">Last Name</th>
-                                    <th scope="col" class="sort">Mobile</th>
+                                    <th scope="col" class="sort">Image</th>
+                                    <th scope="col" class="sort">Name</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -27,16 +25,14 @@
                                     <tr>
                                         <td><?php echo $val->id; ?></td>
                                         <td>
-                                            <?php if($val->profile != ""){ ?>
-                                                <img src="<?php echo base_url(DRIVER_IMG.$val->profile); ?>" width="50"/>
+                                            <?php if($val->image != ""){ ?>
+                                                <img src="<?php echo base_url(VEHICLE_TYPE_IMG.$val->image); ?>" width="50"/>
                                             <?php } ?>
                                         </td>
-                                        <td><?php echo $val->first_name; ?></td>
-                                        <td><?php echo $val->last_name; ?></td>
-                                        <td><?php echo $val->mobile; ?></td>
+                                        <td><?php echo $val->name; ?></td>
                                         <td>
                                             <label class="custom-toggle">
-                                                <?php 
+                                                <?php
                                                     if($val->status == 'Enable'){
                                                         $checked = "checked";
                                                         $publish_st = "Disable";
@@ -50,8 +46,8 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url(ADMIN.'driver/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
-                                            <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Driver')" class="btn btn-sm btn-danger text-white">Delete</a>
+                                            <a href="<?php echo base_url(ADMIN.'vehicleType/edit/'.$val->id) ?>" class="btn btn-sm btn-default">Edit</a>
+                                            <a onClick="confirmDelete('dataTableForm',<?php echo $val->id ?>,'Vehicle Type')" class="btn btn-sm btn-danger text-white">Delete</a>
                                         </td>
                                     </tr>
                                 <?php } ?>

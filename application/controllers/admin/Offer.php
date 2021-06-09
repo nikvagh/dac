@@ -6,6 +6,8 @@
             $this->load->model('CategoryModel','Category');
             $this->load->model('ServiceModel','Service');
             $this->load->model('PackageModel','Package');
+            $this->load->model('CustomerModel','Customer');
+            $this->load->model('NotificationTemplateModel','NotificationTemplate');
             checkLogin('admin');
         }
 
@@ -70,12 +72,20 @@
             // echo "<pre>";print_r($_POST);print_r($_FILES);
             // $this->form_validation->set_data($_POST);
             // exit;
-            $this->form_validation->set_rules('code', 'Code', 'required');
-            $this->form_validation->set_rules('discount', 'Discount', 'required|numeric|less_than_equal_to[100]');
-            $this->form_validation->set_rules('start_date', 'Start Date', 'required');
-            $this->form_validation->set_rules('end_date', 'End Date', 'required');
-            // $this->form_validation->set_rules('categories[]', 'Categories', 'required');
-            $this->form_validation->set_rules('packages[]', 'Packages', 'required');
+
+            if($this->input->post('action') == 'add' || $this->input->post('action') == 'edit'){
+                $this->form_validation->set_rules('code', 'Code', 'required');
+                $this->form_validation->set_rules('discount', 'Discount', 'required|numeric|less_than_equal_to[100]');
+                $this->form_validation->set_rules('start_date', 'Start Date', 'required');
+                $this->form_validation->set_rules('end_date', 'End Date', 'required');
+                // $this->form_validation->set_rules('categories[]', 'Categories', 'required');
+                $this->form_validation->set_rules('packages[]', 'Packages', 'required');
+            }
+
+            if($this->input->post('action') == 'send'){
+                $this->form_validation->set_rules('customer[]', 'Customers', 'required');
+            }
+
             if ($this->form_validation->run()) {
                 // header("Content-type:application/json");
                 echo json_encode(['status'=>200]);
@@ -104,6 +114,65 @@
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
             }
+        }
+
+        public function sendToCustomerLoad($id = 0){
+            $content['title_top'] = "Send Coupon";
+            $content['title'] = "Coupon";
+            $content['form_data'] = $this->Offer->getDataById($id);
+            $content['customers'] = $this->Customer->get_list();
+            // $content['services'] = $this->Service->get_list();
+            $content['packages'] = $this->Package->get_list();
+            // echo "<pre>";print_r($content);
+            // exit;
+
+            $views["content"] = ["path"=>ADMIN.'offer_send',"data"=>$content];
+            $layout['page'] = 'offer_edit';
+            $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        public function sendMail(){
+
+            $offer = $this->Offer->getDataById($this->input->post('id'));
+            $template = $this->NotificationTemplate->getDataById(8);
+
+            // echo $template->mail_content;
+            // exit;
+
+            $search = array("{coupon}", "{coupon_percentage}", "{coupon_expiry}");
+            $replace = array($offer->code, $offer->discount.' %', date('d M, Y',strtotime($offer->end_date)) );
+            $content = str_replace($search, $replace, $template->mail_content);
+
+            $customer = $this->input->post('customer');
+            if(in_array('All',$customer)){
+                
+            }else{
+
+            }
+
+            // echo "<pre>";
+            // print_r($customer);
+            // exit;
+
+            // NotificationTemplate->getby
+            // CouponCode
+
+            // $dataHtml['name'] = $this->member->loginData->firstname.' '.$this->member->loginData->lastname;
+			$dataHtml['logo'] = base_url(SYSTEM_IMG).$this->system->company_logo;
+            $dataHtml['content'] = $content;
+			$html = $this->load->view('mail/coupon_code',$dataHtml,TRUE);
+
+			// echo $html;exit;
+			// $subject = "Drip Auto Care - Invitation";
+
+			if ($this->mail->send_email($this->input->post('email'),$template->subject,$html)){
+				$this->session->set_flashdata('success', 'Email sent successfully.');
+				echo json_encode(['status'=>200]);
+			}else{
+				$this->session->set_flashdata('error', 'Something went wrong, please try again.');
+				echo json_encode(['status'=>200]);
+			}
+
         }
 
     }

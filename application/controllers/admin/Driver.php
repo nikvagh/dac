@@ -62,8 +62,11 @@
             $this->form_validation->set_rules('start_time', 'Start Time', 'required');
             $this->form_validation->set_rules('end_time', 'End Time', 'required');
             $this->form_validation->set_rules('branch[]', 'Branch', 'required');
-            if(empty($_FILES['driving_license']['name'])){
-                $this->form_validation->set_rules('driving_license', 'Driving License', 'required');
+
+            if($this->input->post('action') == 'add'){
+                if(empty($_FILES['driving_license']['name'])){
+                    $this->form_validation->set_rules('driving_license', 'Driving License', 'required');
+                }
             }
 
             if ($this->form_validation->run()) {
@@ -75,14 +78,14 @@
 
         public function create(){
             if ($this->Driver->create()) {
-                $this->session->set_flashdata('success', 'Branch information has been saved successfully.');
+                $this->session->set_flashdata('success', 'Driver information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }
 
         public function update(){
             if ($this->Driver->update()) {
-                $this->session->set_flashdata('success', 'Branch information has been saved successfully.');
+                $this->session->set_flashdata('success', 'Driver information has been saved successfully.');
                 echo json_encode(['status'=>200]);
             }
         }

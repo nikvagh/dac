@@ -336,6 +336,7 @@ define('SYSTEM_IMG', UPLOADS.'system/');
 define('PACKAGE_IMG', UPLOADS.'package/');
 define('DRIVER_IMG', UPLOADS.'driver/');
 define('DRIVER_LICENSE_IMG', UPLOADS.'driving_license/');
+define('VEHICLE_TYPE_IMG', UPLOADS.'vehicleType/');
 
 define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');
@@ -343,6 +344,5 @@ define('INVOICE_PATH', UPLOADS.'invoice/');
 
 define('W9_PATH', UPLOADS.'w9/');
 define('COI_PATH', UPLOADS.'coi/');
-
 
 require_once BASEPATH.'core/CodeIgniter.php';

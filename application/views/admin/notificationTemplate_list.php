@@ -18,6 +18,9 @@
                             <p><code><mark>{service_name}</mark></code>: Name of service</p>
                             <p><code><mark>{company_name}</mark></code>: Name of company</p>
                             <p><code><mark>{company_website}</mark></code>: Website of company</p>
+                            <p><code><mark>{coupon}</mark></code>: Coupon Code</p>
+                            <p><code><mark>{coupon_percentage}</mark></code>: Coupon Percentage</p>
+                            <p><code><mark>{coupon_expiry}</mark></code>: Coupon Expiry</p>
                         </div>
                         <div class="col-9">
                             <div class="tab-content" id="v-pills-tabContent">

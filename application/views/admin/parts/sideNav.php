@@ -121,22 +121,29 @@
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'zone'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'zone'); ?>">
-                            <i class="fas fa-dot-circle <?php if($activeTab == 'zone'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                            <i class="fas fa-square text-primary"></i>
                             <span class="nav-link-text">Zones</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'branch'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'branch'); ?>">
-                            <i class="fas fa-dot-circle <?php if($activeTab == 'branch'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                            <i class="fas fa-code-branch text-primary"></i>
                             <span class="nav-link-text">Branches</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'driver'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'driver'); ?>">
-                            <i class="fas fa-dot-circle <?php if($activeTab == 'driver'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
+                            <i class="fas fa-user text-primary"></i>
                             <span class="nav-link-text">Drivers</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'vehicleType'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'vehicleType'); ?>">
+                            <i class="fas fa-truck-pickup text-primary"></i>
+                            <span class="nav-link-text">Vehicle Type</span>
                         </a>
                     </li>
 
