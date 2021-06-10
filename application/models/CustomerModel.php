@@ -7,12 +7,30 @@ class CustomerModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="", $where=[], $whereIn=[]) {
         $this->db->select('cr.*');
         $this->db->from('customer as cr');
         // $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
+        }
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($whereIn);
+        // exit;
+
+        if(!empty($whereIn)){
+            foreach($whereIn as $key=>$val){
+                $this->db->where_in($val['column'],implode(',',$val['value']));
+            }
         }
 
         $query = $this->db->get();

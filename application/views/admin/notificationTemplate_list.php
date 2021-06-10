@@ -67,7 +67,6 @@
                                                         </div>
 
                                                     </div>
-
                                                     <input type="hidden" name="heading_code" value="<?php echo $val->heading_code; ?>"/>
                                                 </form>
 

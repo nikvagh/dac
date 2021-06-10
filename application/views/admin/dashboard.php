@@ -5,12 +5,46 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase mb-0">Total Customer</h5>
+                        <h5 class="card-title text-uppercase mb-0">Customer</h5>
                         <span class="h2 font-weight-bold mb-0"><?php echo $customerTotal; ?></span>
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
                     <a href="<?php echo base_url(ADMIN.'customer'); ?>" class="text-white"> View</a>
+                    <!-- <span class="text-nowrap">Since last month</span> -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-teal">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Service Provider</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $serviceProviderTotal; ?></span>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(ADMIN.'serviceProvider'); ?>" class="text-white"> View</a>
+                    <!-- <span class="text-nowrap">Since last month</span> -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Driver</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $driverTotal; ?></span>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(ADMIN.'driver'); ?>" class="text-white"> View</a>
                     <!-- <span class="text-nowrap">Since last month</span> -->
                 </p>
             </div>
@@ -27,7 +61,7 @@
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'appointment'); ?>" class="text-white"> View</a>
+                    <a href="<?php echo base_url(ADMIN.'appointment').'?origin=dashboard'; ?>" class="text-white"> View</a>
                     <!-- <span class="text-nowrap">Since last month</span> -->
                 </p>
             </div>
@@ -39,12 +73,29 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase mb-0">Total Pending Jobs</h5>
+                        <h5 class="card-title text-uppercase mb-0">Ongoing Jobs</h5>
                         <span class="h2 font-weight-bold mb-0"><?php echo $appointmentPendingTotal; ?></span>
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'dispatch'); ?>" class="text-white"> View</a>
+                    <a href="<?php echo base_url(ADMIN.'dispatch').'?status=ongoing&origin=dashboard'; ?>" class="text-white"> View</a>
+                    <!-- <span class="text-nowrap">Since last month</span> -->
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-success">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Completed Jobs</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentSuccessTotal; ?></span>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(ADMIN.'appointment').'?status=success&origin=dashboard'; ?>" class="text-white"> View</a>
                     <!-- <span class="text-nowrap">Since last month</span> -->
                 </p>
             </div>
@@ -56,13 +107,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <h5 class="card-title text-uppercase mb-0">Total Success Jobs</h5>
-                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentSuccessTotal; ?></span>
+                        <h5 class="card-title text-uppercase mb-0">Cancelled Jobs</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentCancelledTotal; ?></span>
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'appointment'); ?>" class="text-white"> View</a>
-                <!-- <span class="text-nowrap">Since last month</span> -->
+                    <a href="<?php echo base_url(ADMIN.'appointment').'?status=cancel&origin=dashboard'; ?>" class="text-white"> View</a>
+                    <!-- <span class="text-nowrap">Since last month</span> -->
                 </p>
             </div>
         </div>

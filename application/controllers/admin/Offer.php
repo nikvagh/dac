@@ -8,6 +8,7 @@
             $this->load->model('PackageModel','Package');
             $this->load->model('CustomerModel','Customer');
             $this->load->model('NotificationTemplateModel','NotificationTemplate');
+            $this->load->library('mail');
             checkLogin('admin');
         }
 
@@ -145,13 +146,19 @@
 
             $customer = $this->input->post('customer');
             if(in_array('All',$customer)){
-                
+                $customer_list = $this->Customer->get_list();
             }else{
-
+                $whereIn[] = ['column'=>'cr.id','value'=>$this->input->post('customer')];
+                $customer_list = $this->Customer->get_list('','','',$whereIn);
             }
 
+            $all_emails = array_column($customer_list,'email');
+            $first_email = $all_emails[0];
+            array_shift($all_emails); // remove first element from array
+
             // echo "<pre>";
-            // print_r($customer);
+            // print_r($first_email);
+            // print_r($all_emails);
             // exit;
 
             // NotificationTemplate->getby
@@ -165,7 +172,7 @@
 			// echo $html;exit;
 			// $subject = "Drip Auto Care - Invitation";
 
-			if ($this->mail->send_email($this->input->post('email'),$template->subject,$html)){
+			if ($this->mail->send_email($first_email,$template->subject,$html,0,$all_emails)){
 				$this->session->set_flashdata('success', 'Email sent successfully.');
 				echo json_encode(['status'=>200]);
 			}else{

@@ -290,6 +290,19 @@ class AppointmentModel extends CI_Model {
         }
     }
 
+    function getTotalCancelledCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total")->where('status_id',2);
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
     function bookNowSave(){
         // echo "<pre>"; print_r($_POST); exit;
         $sp_id = 0;

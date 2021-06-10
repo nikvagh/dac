@@ -382,4 +382,13 @@ class ServiceProviderModel extends CI_Model {
         return true;
     }
 
+    function getTotalCount(){
+        $query = $this->db->select("COUNT(".$this->primaryKey.") AS total")->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
 }

@@ -17,7 +17,6 @@ class Mail {
 
     public function send_email($to,$subject,$message,$attach=0,$cc = array(),$attachM = array())
 	{
-
         // date_default_timezone_set('Etc/UTC');
 
         // =============
@@ -43,21 +42,21 @@ class Mail {
 
         // ============
 
-  //       $smtpUsername = "_mainaccount@igeekteam.net";
-  //       $smtpPassword = "R7qJxtd1@O";
+		//       $smtpUsername = "_mainaccount@igeekteam.net";
+		//       $smtpPassword = "R7qJxtd1@O";
 
-  //       $emailFrom = "nikul@kartuminfotech.com";
-  //       $emailFromName = "";
+		//       $emailFrom = "nikul@kartuminfotech.com";
+		//       $emailFromName = "";
 
-  //       $host = "ssl://smtp.gmail.com";
-  //       $port = "";
+		//       $host = "ssl://smtp.gmail.com";
+		//       $port = "";
 
-  //       $smtp_secure = "";
+		//       $smtp_secure = "";
 
-  //       // =============
+		//       // =============
 
-  //       $emailTo = $to;
-  //       $emailToName = '';
+		//       $emailTo = $to;
+		//       $emailToName = '';
 
 		// $mail = new PHPMailer;
 		// $mail->isSMTP(); 
@@ -102,7 +101,7 @@ class Mail {
 		// 	// echo "11";exit;
 		// 	// echo "<pre>";print_r($mail);exit;
 		// 	echo "Mailer Error: " . $mail->ErrorInfo;exit;
-  //           return FALSE;
+  		//           return FALSE;
 		// }else{
 		// 	// echo "22";exit;
 		// 	return TRUE;

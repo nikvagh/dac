@@ -251,4 +251,13 @@ class DriverModel extends CI_Model {
         else
             return false;
     }
+
+    function getTotalCount(){
+        $query = $this->db->select("COUNT(id) AS total")->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
 }

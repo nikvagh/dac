@@ -32,7 +32,25 @@
             //         redirect('membership');
             //     }
             // }
-                
+
+            if($this->input->get('origin')){
+                $origin = $this->input->get('origin');
+                if($origin == 'dashboard'){
+                    $this->session->set_userdata('serviceProvider_ap_f', '');
+                    $this->session->set_userdata('status_ap_f', '');
+                }
+            }
+
+            if($this->input->get('status')){
+                $status = $this->input->get('status');
+                if($status == 'success'){
+                    $this->session->set_userdata('status_ap_f', 5);
+                }
+                if($status == 'cancel'){
+                    $this->session->set_userdata('status_ap_f', 2);
+                }
+            }
+            
             $where = [];
             if($this->session->userdata('serviceProvider_ap_f')){
                 $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('serviceProvider_ap_f')];
@@ -44,6 +62,8 @@
             $content['sps'] = $this->Sp->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
             $content['title'] = "Bookings";
+
+            // exit;
 
             // echo "<pre>";print_r($content);exit;
             $views["content"] = ["path"=>ADMIN.'appointment_list',"data"=>$content];
@@ -107,13 +127,11 @@
 
             $html = $this->load->view(ADMIN.'invoice_pdf',$content,TRUE);
 
-
             // $dataPdf['form_data'] = $this->job->getDataById_invoice($id);
             // $dataPdf['services'] = $this->job->job_request_service($id);
             // $dataPdf['featured_services'] = $this->job->job_request_featured_services($id);
             // $invoice_number = sprintf("%05d", $dataPdf['form_data']['job_request_id']);
             // $html = $this->load->view(ADMINPATH.'job/invoice_pdf',$dataPdf,TRUE);
-
             // echo $html;exit;
 
             $pdf = array(
