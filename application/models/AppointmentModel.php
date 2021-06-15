@@ -9,7 +9,7 @@ class AppointmentModel extends CI_Model {
         $this->load->model('ServiceProviderModel','ServiceProvider');
     }
 
-    function get_list($num="", $offset="",$where = [],$where_or = []) {
+    function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = []) {
         $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt,ss.bgColor,ss.color');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
@@ -26,6 +26,11 @@ class AppointmentModel extends CI_Model {
         if(!empty($where_or)){
             foreach($where_or as $key=>$val){
                 $this->db->where($val);
+            }
+        }
+        if(!empty($where_in)){
+            foreach($where_in as $key=>$val){
+                $this->db->where_in($val['column'],$val['value']);
             }
         }
 
@@ -242,11 +247,20 @@ class AppointmentModel extends CI_Model {
         }
     }
 
-    function getTotalCount($sp_id=""){
+    function getTotalCount($sp_id="",$where=[]){
         $this->db->select("COUNT(id) AS total");
         if($sp_id != ""){
             $this->db->where('sp_id',$sp_id);
         }
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+        
         $query = $this->db->from($this->table)->get();
         if($query){ 
             return $query->row()->total;
@@ -304,19 +318,18 @@ class AppointmentModel extends CI_Model {
     }
 
     function bookNowSave(){
-        // echo "<pre>"; print_r($_POST); exit;
+        // echo "<pre>"; print_r($_SESSION); exit;
         $sp_id = 0;
         $payment_id = 0;
-        // echo "<pre>"; print_r($sps); exit;
         $date = date('Y-m-d');
-        $appointment_type = 'book_now';
+        $appointment_type = $this->input->post('appointment_type');
         $total_amount = 0;
         $total_payable = 0;
         $additional_fee = 0;
         $discount = 0;
         $status_id = '1';
 
-        // ========================== sp_id =================
+        // ================= sp_id =================
         $sps = $this->ServiceProvider->getServiceProviderInRadius($this->input->post('latitude'),$this->input->post('longitude'),10);
         if(!empty($sps)){
             $sort_by_km = array_column($sps, 'distance');
@@ -342,11 +355,21 @@ class AppointmentModel extends CI_Model {
         }
         // =========================
 
+        if($this->input->post('vehicle_id') != ""){
+            $vehicle_id = $this->input->post('vehicle_id');
+        }else{
+            $vehicle_data['member_id'] = $this->session->userdata('id');
+            $vehicle_data['name'] = $this->input->post('vehicle_name');
+            $vehicle_data['year'] = $this->input->post('vehicle_year');
+            $this->db->insert('customer_vehicle',$vehicle_data);
+            $vehicle_id = $this->db->insert_id();
+        }
+
         $data = array(
             'sp_id'=>$sp_id,
             'customer_id'=>$this->input->post('customer_id'),
             'package_id'=>$this->input->post('package_id'),
-            'vehicle_id'=>$this->input->post('vehicle_id'),
+            'vehicle_id'=>$vehicle_id,
             'payment_id'=>$payment_id,
             'date'=>$date,
             'time'=>$this->input->post('time'),
@@ -402,7 +425,7 @@ class AppointmentModel extends CI_Model {
         $additional_fee = 0;
         $discount = 0;
         $status_id = '1';
-        $date_time_ary = explode(' ',$this->input->post('date'));
+        $date_time_ary = explode(' ',$this->input->post('date_time'));
         $date = $date_time_ary[0];
         $time = $date_time_ary[1];
 

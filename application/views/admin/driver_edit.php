@@ -37,8 +37,8 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-control-label">Pin code *</label>
-                                <input type="text" name="pincode" class="form-control" placeholder="Pin code" value="<?php echo $form_data->pincode; ?>">
+                                <label class="form-control-label">Zip code *</label>
+                                <input type="text" name="pincode" class="form-control" placeholder="Zip code" value="<?php echo $form_data->pincode; ?>">
                                 <span class="error text-danger validation-message" data-field="pincode"></span>
                             </div>
                         </div>

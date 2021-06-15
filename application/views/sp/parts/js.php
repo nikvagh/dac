@@ -16,17 +16,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
 
 <?php if(isset($page)){ ?>
-    <?php if($page == ''){ ?>
+    <?php if($page == 'appointment_list' || $page == 'coWorker_list'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
     <?php } ?>
 
-    <?php if($page == 'profile_edit'){ ?>
+    <?php if($page == 'profile_edit' || $page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.js"></script>
     <?php } ?>
 
-    <?php if($page == ''){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
@@ -78,7 +78,7 @@
             });
     <?php } ?>
 
-    <?php if(isset($page) && ($page == "")){ ?>
+    <?php if(isset($page) && ($page == "appointment_list" || $page == "coWorker_list" )){ ?>
             $(".dataTable").dataTable({
                 language: {
                     paginate: {
@@ -90,25 +90,51 @@
             });
     <?php } ?>
 
-    <?php if($page == 'category_add' || $page == 'category_edit'){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
+        // $('.select2').select2();
+
+        $('#start_time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15,
+            onShow:function( ct ){
+                if($('#end_time').val() != '00:00:00' && $('#end_time').val() != '00:00'){
+                    this.setOptions({
+                        maxTime:$('#end_time').val()?$('#end_time').val():false
+                    })
+                }
+            },
+            onChangeDateTime:function(){
+                $("#end_time").val('');
+            }
+        });
+
+        $('#end_time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15,
+            onShow:function( ct ){
+                this.setOptions({
+                    minTime:$('#start_time').val()?$('#start_time').val():false
+                })
+            },
+        });
 
         function create_data(){
             // var formData = $('form').serialize();
             // console.log(validation(formData));
             // return false;
             var formData = new FormData(document.getElementById("form1"));
-
-            //  console.log(formData);
+            formData.append ('action', 'add');
             
             if(validation(formData) == 'success'){
-                // $.post(sp_base+'category/create', formData).done(function (data) {
                 $.ajax({
-                    type: "post", url: sp_base+'category/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    type: "post", url: sp_base+'coWorker/create', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
                         // console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = sp_base+'category';
+                            window.location.href = sp_base+'coWorker';
                         }
                     }
                 });
@@ -117,15 +143,16 @@
 
         function edit_data(){
             var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
             if(validation(formData) == 'success'){
-                // $.post(sp_base+'category/create', formData).done(function (data) {
                 $.ajax({
-                    type: "post", url: sp_base+'category/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    type: "post", url: sp_base+'coWorker/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                     success: function (data, textStatus, jqXHR) {
                         console.log(data);
                         // return false;
                         if(data.status == 200){
-                            window.location.href = sp_base+'category';
+                            window.location.href = sp_base+'coWorker';
                         }
                     }
                 });
@@ -136,7 +163,7 @@
             $(".btn-submit").html("Validating data, please wait...");
             var returnData;
             $.ajax({
-                type: "post", url: sp_base+'category/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                type: "post", url: sp_base+'coWorker/validation', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
                 success: function (data, textStatus, jqXHR) {
                     returnData = data;
                 }

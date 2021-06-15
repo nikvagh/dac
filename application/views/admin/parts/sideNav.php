@@ -143,7 +143,7 @@
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'vehicleType'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'vehicleType'); ?>">
                             <i class="fas fa-truck-pickup text-primary"></i>
-                            <span class="nav-link-text">Vehicle Type</span>
+                            <span class="nav-link-text">Vehicle Types</span>
                         </a>
                     </li>
 

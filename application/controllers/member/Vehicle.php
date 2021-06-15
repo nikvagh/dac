@@ -30,7 +30,7 @@
                 
             $where = [['column'=>'cv.member_id','op'=>'=','value'=>$this->member->id]];
             $content['list'] = $this->Vehicle->get_list('','',$where);
-            $content['title_top'] = "Vehicles";
+            $content['title_top'] = "My Vehicles";
             $content['title'] = "Vehicle";
             $views["content"] = ["path"=>MEMBER.'vehicle_list',"data"=>$content];
             $layout['page'] = 'vehicle_list';
@@ -40,7 +40,7 @@
         }
 
         function add(){
-            $content['title_top'] = "Vehicles";
+            $content['title_top'] = "My Vehicles";
             $content['title'] = "Vehicle";
             $views["content"] = ["path"=>MEMBER.'vehicle_add',"data"=>$content];
             $layout['page'] = 'vehicle_add';
@@ -48,7 +48,7 @@
         }
 
         function edit($id = 0){
-            $content['title_top'] = "Vehicles";
+            $content['title_top'] = "My Vehicles";
             $content['title'] = "Vehicle";
             $content['form_data'] = $form_data = $this->Vehicle->getDataById($id);
             // echo "<pre>";print_r($content);
@@ -58,7 +58,7 @@
             $layout['page'] = 'vehicle_edit';
             $this->layouts->view($views,'member_dashboard',$layout);
         }
-
+        
         public function validation() {
             $this->form_validation->set_rules('name', 'Name', 'required');
             $this->form_validation->set_rules('year', 'Year', 'required');

@@ -4,7 +4,7 @@
             parent::__construct();
             $this->load->model('CoWorkerModel','CoWorker');
             $this->load->model('ServiceProviderModel','Sp');
-            checkLogin('admin');
+            checkLogin('sp');
         }
 
         function index(){
@@ -13,12 +13,12 @@
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->CoWorker->st_update()) {
                     $this->session->set_flashdata('success', 'Co-Worker status has been update successfully.');
-                    redirect(ADMIN.'coWorker');
+                    redirect(SP.'coWorker');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "delete"){
                 if ($result = $this->CoWorker->delete()) {
                     $this->session->set_flashdata('success', 'Co-Worker Provider deleted successfully.');
-                    redirect(ADMIN.'coWorker');
+                    redirect(SP.'coWorker');
                 }
             }
             // elseif ($this->input->post('action') == "deleteselected") {
@@ -27,22 +27,24 @@
             //         redirect('membership');
             //     }
             // }
-            
-            $content['list'] = $this->CoWorker->get_list();
+            $where = [];
+            $where[] = ['column'=>'se.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+            $content['list'] = $this->CoWorker->get_list('','',$where);
+
             $content['title'] = "Co-Worker";
-            $views["content"] = ["path"=>ADMIN.'coWorker_list',"data"=>$content];
+            $views["content"] = ["path"=>SP.'coWorker_list',"data"=>$content];
             $layout['page'] = 'coWorker_list';
 
-            $this->layouts->view($views,'admin_dashboard',$layout);
-            // $this->load->view(ADMIN.'category/list',$data);
+            $this->layouts->view($views,'sp_dashboard',$layout);
+            // $this->load->view(SP.'category/list',$data);
         }
 
         function add(){
             $content['title'] = "Co-Worker";
             $content['serviceProvider'] = $this->Sp->get_list();
-            $views["content"] = ["path"=>ADMIN.'coWorker_add',"data"=>$content];
+            $views["content"] = ["path"=>SP.'coWorker_add',"data"=>$content];
             $layout['page'] = 'coWorker_add';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         function edit($id = 0){
@@ -53,20 +55,13 @@
             // print_r($content);
             // exit;
             
-            $views["content"] = ["path"=>ADMIN.'coWorker_edit',"data"=>$content];
+            $views["content"] = ["path"=>SP.'coWorker_edit',"data"=>$content];
             $layout['page'] = 'coWorker_edit';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         public function validation() {
-            // echo "<pre>";print_r($_POST);print_r($_FILES);
-            // $this->form_validation->set_data($_POST);
-            // exit;
-
-            // echo $_POST['start_time'];
-            // exit;
-
-            $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
+            // $this->form_validation->set_rules('sp_id', 'Service Provider', 'required');
             $this->form_validation->set_rules('name', 'Name', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             $this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
@@ -116,7 +111,6 @@
                 $this->form_validation->set_message('validate_time_hm', 'Invalid time');
                 return FALSE;
             }
-
 
             if(!empty($time)){
                 if(array_key_exists(0,$time)){

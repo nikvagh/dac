@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 d-flex align-items-center pre-img-box">
-                                    <img src="<?php echo base_url(ADMIN_IMG.$this->sp->loginData->profile); ?>" id="" class="img-fluid" />
+                                    <img src="<?php echo base_url(SP_IMG.$this->sp->loginData->profile); ?>" id="" class="img-fluid" />
                                 </div>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'dashboard'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(SP.'dashboard'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="edit_data()">Submit</button>
             </div>
         </div>

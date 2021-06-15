@@ -11,7 +11,7 @@
 
 		function index()
 		{
-			$content['title'] = "Refer Friend";
+			$content['title'] = "Refer A Friend";
 			$views["content"] = ["path"=>MEMBER.'refer_friend',"data"=>$content];
             $layout['page'] = 'refer_friend';
             $this->layouts->view($views,'member_dashboard',$layout);

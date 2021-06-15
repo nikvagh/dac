@@ -57,13 +57,19 @@ class CoWorkerModel extends CI_Model {
 
                 $this->upload->initialize($config);
                 if (!$this->upload->do_upload('image')) {
-                        $data['error'] = array('error' => $this->upload->display_errors());
-                        // echo "<pre>";print_r($data['error']);
+                    $data['error'] = array('error' => $this->upload->display_errors());
+                    // echo "<pre>";print_r($data['error']);
                 }
         }
 
+        if($this->session->userdata('user_type') == 'sp'){
+            $sp_id = $this->session->userdata('id');
+        }else{
+            $sp_id = $this->input->post('sp_id');
+        }
+
         $data = array(
-            'sp_id'=>$this->input->post('sp_id'),
+            'sp_id'=>$sp_id,
             'name'=>$this->input->post('name'),
             'email'=>$this->input->post('email'),
             'phone'=>$this->input->post('phone'),
@@ -82,20 +88,14 @@ class CoWorkerModel extends CI_Model {
     }
 
     function update(){
-        // echo "<pre>";
-        // print_r($_POST);
-        // print_r($_FILES);
-        // exit;
-
         if($this->input->post('status')){
-            $status = '0';
+            $status = 'Enable';
         }else{
-            $status = '1';
+            $status = 'Disable';
         }
 
         $image_name = $this->input->post('image_old');
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
-
             // remove old file
             if(file_exists(COWORKER_IMG.$this->input->post('image_old'))){
                 @unlink(COWORKER_IMG.$this->input->post('image_old'));
@@ -114,8 +114,14 @@ class CoWorkerModel extends CI_Model {
             }
         }
 
+        if($this->session->userdata('user_type') == 'sp'){
+            $sp_id = $this->session->userdata('id');
+        }else{
+            $sp_id = $this->input->post('sp_id');
+        }
+
         $data = array(
-            'sp_id'=>$this->input->post('sp_id'),
+            'sp_id'=>$sp_id,
             'name'=>$this->input->post('name'),
             'email'=>$this->input->post('email'),
             'phone'=>$this->input->post('phone'),

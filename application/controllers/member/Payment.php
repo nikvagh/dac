@@ -40,8 +40,8 @@
             $content['list'] = $this->Payment->get_list('','',$where);
 
             $content['listCard'] = $this->PaymentCard->get_list('','');
-            $content['title_top'] = "Payments";
-            $content['title'] = "Payment";
+            $content['title_top'] = "My Payments";
+            $content['title'] = "Payments";
             $views["content"] = ["path"=>MEMBER.'payment_list',"data"=>$content];
             $layout['page'] = 'payment_list';
 

@@ -16,12 +16,12 @@
                 <?php $activeTab4 = $this->uri->segment(4); ?>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="<?php echo base_url(); ?>">
                             <i class="fa fa-home"></i>
                             <span class="nav-link-text">Home</span>
                         </a>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'dashboard'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'dashboard'); ?>">
@@ -33,7 +33,7 @@
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'membership'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'membership'); ?>">
                             <i class="fas fa-id-card"></i>
-                            <span class="nav-link-text">Memberships</span>
+                            <span class="nav-link-text">My Memberships</span>
                         </a>
                     </li>
 
@@ -61,33 +61,33 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link <?php if($activeTab == 'booking' && $activeTab3 == 'book_schedule'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'booking/book_schedule'); ?>">
                                     <i class="fas fa-dot-circle <?php if($activeTab3 == 'book_schedule'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
                                     <span class="nav-link-text">Schedule Service</span>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'vehicle'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'vehicle'); ?>">
                             <i class="fas fa-car"></i>
-                            <span class="nav-link-text">Vehicles</span>
+                            <span class="nav-link-text">My Vehicles</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'payment'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'payment'); ?>">
                             <i class="fas fa-file-invoice-dollar"></i>
-                            <span class="nav-link-text">Payments</span>
+                            <span class="nav-link-text">My Payments</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'refer'){ echo 'active'; } ?>" href="<?php echo base_url(MEMBER.'refer'); ?>">
                             <i class="ni ni-ui-04"></i>
-                            <span class="nav-link-text">Refer Friends</span>
+                            <span class="nav-link-text">Refer A Friends</span>
                         </a>
                     </li>
 

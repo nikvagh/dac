@@ -187,6 +187,8 @@
             placeholder: 'Search for a zip code',
         });
 
+        // =============================
+
         // console.log(currentDateTime.getDay());
         var date = new Date();
 
@@ -212,6 +214,24 @@
 
             // minTime:'11:00',
             // maxTime:'18:00',
+        });
+
+        // =============================
+
+        var minDate = new Date();
+        minDate.setDate(minDate.getDate() + 1);
+
+        var maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 8);
+        
+        $('#date_time').datetimepicker({
+            format:'Y-m-d H:i',
+            step:15,
+            defaultDate: minDate,
+            // onShow:setDateTime,
+            timezone:'UTC',
+            minDate: minDate,
+            maxDate: maxDate,
         });
 
         // handlePermission();
@@ -295,6 +315,17 @@
             $("#latitude").val(position.coords.latitude);
             $("#longitude").val(position.coords.longitude);
         }
+
+        $(".date_time_box").hide();
+        $("input[name=appointment_type]").on('change',function(){
+            if($(this).val() == "book_now"){
+                $(".time_box").show();
+                $(".date_time_box").hide();
+            }else{
+                $(".date_time_box").show();
+                $(".time_box").hide();
+            }
+        });
     
     <?php } ?>
 

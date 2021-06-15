@@ -123,4 +123,23 @@ class VehicleModel extends CI_Model {
         else
             return false;
     }
+
+    function getTotalVehicleCount($where=[]){
+        $this->db->select("COUNT(cv.id) AS total");
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+        
+        $query = $this->db->from($this->table .' as cv')->get();
+        if($query){
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
 }

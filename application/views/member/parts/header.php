@@ -25,6 +25,7 @@
                 </div>
                 <div class="col-lg-3 col-3 text-right">
                     <?php if($page == 'vehicle_list'){ ?>
+                        <a href="<?php echo base_url(MEMBER.'booking/book_schedule'); ?>" class="btn btn-sm btn-neutral">Schedule Service</a>
                         <a href="<?php echo base_url(MEMBER.'vehicle/add'); ?>" class="btn btn-sm btn-neutral">New</a>
                         <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
                     <?php } ?>
@@ -36,9 +37,8 @@
                     <?php } ?>
                     <?php if($page == 'booking_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'booking/book_now'); ?>" class="btn btn-sm btn-neutral">Book Now</a>
-                        <a href="<?php echo base_url(MEMBER.'booking/book_schedule'); ?>" class="btn btn-sm btn-neutral">Schedule Service</a>
+                        <!-- <a href="<?php echo base_url(MEMBER.'booking/book_schedule'); ?>" class="btn btn-sm btn-neutral">Schedule Service</a> -->
                     <?php } ?>
-
                     
                     <?php if($page == 'offer_list'){ ?>
                         <a href="<?php echo base_url(MEMBER.'offer/add'); ?>" class="btn btn-sm btn-neutral">New</a>

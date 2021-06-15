@@ -201,4 +201,16 @@ class MembershipModel extends CI_Model {
             return false;
         }
     }
+
+    function getOngoingMembershipCountByMemberId($id){
+        $where[] = ["column"=>'cm.customer_id',"op"=>'=','value'=>$id];
+        $result = $this->get_list('','',$where);
+        $count = 0;
+        foreach($result as $key=>$val){
+            if($result[$key]->validity_status == "Ongoing"){
+                $count++;
+            }
+        }
+        return $count;
+    }
 }

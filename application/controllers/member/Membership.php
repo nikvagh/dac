@@ -35,7 +35,7 @@
             $where = [];
             $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
             $content['list'] = $this->Membership->get_list('','',$where);
-            $content['title_top'] = "Memberships";
+            $content['title_top'] = "My Memberships";
             $content['title'] = "Memberships";
             $views["content"] = ["path"=>MEMBER.'membership_list',"data"=>$content];
             $layout['page'] = 'membership_list';

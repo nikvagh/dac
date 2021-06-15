@@ -16,20 +16,15 @@
         <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/plug-ins/1.10.15/integration/font-awesome/dataTables.fontAwesome.css"> -->
     <?php } ?>
 
-    <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
-            $page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-            $page == 'adminUser_add' || $page == 'adminUser_edit' || $page == 'customer_add' || $page == 'customer_edit' || $page == 'faq_add' || $page == 'faq_edit' || 
-            $page == 'settings_list' || $page == 'package_add' || $page == 'package_edit' || $page == 'profile_edit'){ ?>
+    <?php if($page == 'profile_edit' || $page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/fileStyle/fileStyle.css">
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit'){ ?>
+    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/jquery.datetimepicker.css">
     <?php } ?>
 
-    <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'service_add' || $page == 'service_edit' || $page == 'offer_add' || $page == 'offer_edit' ||
-            $page == 'appointment_add' || $page == 'appointment_edit' || $page == 'notification_add' || $page == 'role_edit' || $page == 'role_add' || $page == 'settings_list' ||
-            $page == 'package_edit' || $page == 'package_add' || $page == 'dispatch_view'){ ?>
+    <?php if($page == ''){ ?>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <?php } ?>
 

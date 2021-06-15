@@ -10,11 +10,10 @@
             </div>
             <div class="card-body">
                 <form id="form1" action="" method="post" enctype="multipart/form-data">
-                    <h6 class="heading-small text-muted mb-4">Company information</h6>
 
                     <div class="pl-lg-4">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <!-- <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Service Provider *</label>
                                     <select name="sp_id" id="sp_id" class="form-control select2">
@@ -25,7 +24,7 @@
                                     </select>
                                     <span class="error text-danger validation-message" data-field="sp_id"></span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -53,6 +52,14 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label class="form-control-label">Password *</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password" value="">
+                                    <span class="error text-danger validation-message" data-field="password"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label class="form-control-label">Start Time *</label>
                                     <input type="text" name="start_time" id="start_time" class="form-control" placeholder="Start Time" value="" autocomplete="off">
                                     <span class="error text-danger validation-message" data-field="start_time"></span>
@@ -69,14 +76,6 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label">Password *</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Password" value="">
-                                    <span class="error text-danger validation-message" data-field="password"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
                                     <label class="form-control-label">Experience</label>
                                     <input type="text" name="experience" id="experience" class="form-control" placeholder="Experience" value="">
                                     <span class="error text-danger validation-message" data-field="experience"></span>
@@ -88,6 +87,23 @@
                                     <label class="form-control-label">Description</label>
                                     <textarea name="description" class="form-control" placeholder="Description"></textarea>
                                     <span class="error text-danger validation-message" data-field="description"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-10 file-box-wrapper">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Image</label>
+                                            <label class="file-box">
+                                                <span class="name-box">Drag or Select Files</span>
+                                                <input type="file" name="image" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 d-flex align-items-center pre-img-box">
+                                        <img src="" id="" class="img-fluid" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -112,7 +128,7 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <a href="<?php echo base_url(ADMIN.'serviceProvider'); ?>" class="btn btn-default">Cancel</a>
+                <a href="<?php echo base_url(SP.'coWorker'); ?>" class="btn btn-default">Cancel</a>
                 <button class="btn btn-primary btn-submit" onclick="create_data()">Submit</button>
             </div>
         </div>

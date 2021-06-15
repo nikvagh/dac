@@ -120,14 +120,21 @@
         // }
 
         public function validationBookNow(){
+            $this->form_validation->set_rules('appointment_type', 'Time', 'required');
             $this->form_validation->set_rules('location', 'Location', 'required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'required');
             $this->form_validation->set_rules('longitude', 'Longitude', 'required');
             $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
-            $this->form_validation->set_rules('vehicle_id', 'Vehicle', 'required');
             $this->form_validation->set_rules('package_id', 'Package', 'required');
+
+            $this->form_validation->set_rules('vehicle_id', 'Vehicle', 'callback_vehicle_check');
             // $this->form_validation->set_rules('addOn[]', 'Add On', 'required');
-            $this->form_validation->set_rules('time', 'Time', 'required');
+
+            if($this->input->post('appointment_type') == "book_now"){
+                $this->form_validation->set_rules('time', 'Time', 'required');
+            }else{
+                $this->form_validation->set_rules('date_time', 'date Time', 'required');
+            }
 
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
@@ -135,13 +142,14 @@
                 echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
             }
         }
-
+        
         public function validationBookSchedule(){
             $this->form_validation->set_rules('location', 'Location', 'required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'required');
             $this->form_validation->set_rules('longitude', 'Longitude', 'required');
             $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
             $this->form_validation->set_rules('vehicle_id', 'Vehicle', 'required');
+
             $this->form_validation->set_rules('package_id', 'Package', 'required');
             // $this->form_validation->set_rules('addOn[]', 'Add On', 'required');
             $this->form_validation->set_rules('date_time', 'date Time', 'required');
@@ -154,7 +162,13 @@
         }
 
         public function bookNowSave(){
-            if ($this->Appointment->bookNowSave()) {
+            if($this->input->post('appointment_type') == "book_now"){
+                $booked = $this->Appointment->bookNowSave();
+            }else{
+                $booked = $this->Appointment->bookScheduleSave();
+            }
+
+            if($booked){
                 $this->session->set_flashdata('success', 'Appointment Booked successfully');
                 echo json_encode(['status'=>200]);
             }
@@ -249,6 +263,15 @@
             }
 
             echo json_encode(['result'=>$result]);
+        }
+
+        public function vehicle_check(){
+            if($this->input->post('vehicle_id') == "" && ($this->input->post('vehicle_name') == "" || $this->input->post('vehicle_year') == "")){
+                $this->form_validation->set_message('vehicle_check', 'Please select vehicle or add new vehicle');
+                return false;
+            }else{
+                return true;
+            }
         }
 
     }

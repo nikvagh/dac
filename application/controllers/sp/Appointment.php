@@ -9,7 +9,7 @@
             $this->load->model('CustomerModel','Customer');
             $this->load->model('ServiceProviderModel','Sp');
             $this->load->model('PackageModel','Package');
-            checkLogin('admin');
+            checkLogin('sp');
         }
 
         function index(){
@@ -18,12 +18,12 @@
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Appointment->st_update()) {
                     $this->session->set_flashdata('success', 'Appointment status has been update successfully.');
-                    redirect(ADMIN.'appointment');
+                    redirect(SP.'appointment');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "delete"){
                 if ($result = $this->Appointment->delete()) {
                     $this->session->set_flashdata('success', 'Appointment deleted successfully.');
-                    redirect(ADMIN.'appointment');
+                    redirect(SP.'appointment');
                 }
             }
             // elseif ($this->input->post('action') == "deleteselected") {
@@ -32,39 +32,47 @@
             //         redirect('membership');
             //     }
             // }
+
+            //    echo "<pre>";print_r($_SESSION);exit;
+
                 
             $where = [];
-            if($this->session->userdata('serviceProvider_ap_f')){
-                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('serviceProvider_ap_f')];
-            }
+            $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+
             if($this->session->userdata('status_ap_f')){
                 $where[] = ['column'=>'a.status_id','op'=>'=','value'=>$this->session->userdata('status_ap_f')];
             }
-            $content['list'] = $this->Appointment->get_list('','',$where);
-            $content['sps'] = $this->Sp->get_list();
+
+            $where_in[] = ['column'=>'a.status_id','op'=>'=','value'=>[1,4]];
+            $content['list'] = $this->Appointment->get_list('','',$where,[],$where_in);
+
+            $where1[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+            $where_in1[] = ['column'=>'a.status_id','op'=>'=','value'=>[2,3,5]];
+            $content['list_prev'] = $this->Appointment->get_list('','',$where1,[],$where_in1);
+
+            // $content['sps'] = $this->Sp->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
             $content['title'] = "Bookings";
 
-            // echo "<pre>";print_r($content);exit;
-            $views["content"] = ["path"=>ADMIN.'appointment_list',"data"=>$content];
+            
+            $views["content"] = ["path"=>SP.'appointment_list',"data"=>$content];
             $layout['page'] = 'appointment_list';
 
-            $this->layouts->view($views,'admin_dashboard',$layout);
-            // $this->load->view(ADMIN.'category/list',$data);
+            $this->layouts->view($views,'sp_dashboard',$layout);
+            // $this->load->view(SP.'category/list',$data);
         }
 
         function add(){
             $content['title_top'] = "Bookings";
             $content['title'] = "Booking";
             $content['packages'] = $this->Package->get_list();
-            $content['sps'] = $this->Sp->get_list();
             $content['services'] = $this->Service->get_list();
             $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
 
-            $views["content"] = ["path"=>ADMIN.'appointment_add',"data"=>$content];
+            $views["content"] = ["path"=>SP.'appointment_add',"data"=>$content];
             $layout['page'] = 'appointment_add';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         function edit($id = 0){
@@ -76,12 +84,25 @@
             $content['services'] = $this->Service->get_list();
             $content['customers'] = $this->Customer->get_list();
             $content['statuses'] = $this->ServiceStatus->get_list();
-            // echo "<pre>";print_r($content);
-            // exit;
 
-            $views["content"] = ["path"=>ADMIN.'appointment_edit',"data"=>$content];
+            $views["content"] = ["path"=>SP.'appointment_edit',"data"=>$content];
             $layout['page'] = 'appointment_edit';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
+        }
+
+        function view($id = 0){
+            $content['title_top'] = "Bookings";
+            $content['title'] = "Booking";
+            $content['form_data'] = $this->Appointment->getDataById($id);
+            $content['packages'] = $this->Package->get_list();
+            $content['sps'] = $this->Sp->get_list();
+            $content['services'] = $this->Service->get_list();
+            $content['customers'] = $this->Customer->get_list();
+            $content['statuses'] = $this->ServiceStatus->get_list();
+
+            $views["content"] = ["path"=>SP.'appointment_view',"data"=>$content];
+            $layout['page'] = 'appointment_view';
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         function filter(){
@@ -92,7 +113,7 @@
                 $this->session->unset_userdata('serviceProvider_ap_f');
                 $this->session->unset_userdata('status_ap_f');
             }
-            redirect(ADMIN.'appointment');
+            redirect(SP.'appointment');
         }
 
         function invoice($id = 0){
@@ -105,14 +126,14 @@
             // echo "<pre>";print_r($content);
             // exit;
 
-            $html = $this->load->view(ADMIN.'invoice_pdf',$content,TRUE);
+            $html = $this->load->view(SP.'invoice_pdf',$content,TRUE);
 
 
             // $dataPdf['form_data'] = $this->job->getDataById_invoice($id);
             // $dataPdf['services'] = $this->job->job_request_service($id);
             // $dataPdf['featured_services'] = $this->job->job_request_featured_services($id);
             // $invoice_number = sprintf("%05d", $dataPdf['form_data']['job_request_id']);
-            // $html = $this->load->view(ADMINPATH.'job/invoice_pdf',$dataPdf,TRUE);
+            // $html = $this->load->view(SPPATH.'job/invoice_pdf',$dataPdf,TRUE);
 
             // echo $html;exit;
 
