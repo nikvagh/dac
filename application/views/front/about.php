@@ -15,7 +15,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-heading">
-						<h1>About Page</h1>
+						<h1>About</h1>
 						<ul>
 							<li><a href="index.php">Home</a></li>
 							<li><a href="#">About Us</a></li>

@@ -80,11 +80,12 @@ if ( ! function_exists('checklogin'))
 		
 		if($err == 'Y'){
 			if($userType == 'member'){
-				header('Location:'.base_url().MEMBER.'login');
-			}elseif($userType == 'admin'){
+				// header('Location:'.base_url().MEMBER.'login');
+				header('Location:'.base_url().'memberLogin');
+			}else if($userType == 'admin'){
 				// header('Location:'.base_url().ADMINPATH.'login');
 				header('Location:'.base_url().ADMIN.'login');
-			}elseif($userType == 'sp'){
+			}else if($userType == 'sp'){
 				header('Location:'.base_url().SP.'login');
 			}else{
 				header('Location:'.base_url().MEMBER.'login');

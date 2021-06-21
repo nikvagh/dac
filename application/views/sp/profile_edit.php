@@ -116,6 +116,15 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label">COI Expiration Date *</label>
+                                <input type="text" name="email" class="form-control" placeholder="Email" value="<?php echo $this->sp->loginData->email; ?>">
+                                <span class="error text-danger validation-message" data-field="email"></span>
+                            </div>
+                        </div>
+
                     </div>
 
                 </form>

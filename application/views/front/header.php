@@ -47,14 +47,15 @@
 							<div class="col-md-9">
 								<div class="menu">
 
+									<?php $menu_sel = $this->uri->segment(1); ?>
 									<nav id="main-menu" class="main-menu">
 										<ul>
-											<li class="active"><a href="<?php echo base_url(); ?>">Home</a></li>
-											<li><a href="<?php echo base_url(); ?>about">About</a></li>
-											<li><a href="<?php echo base_url(); ?>service">Services</a></li>
-											<!-- <li><a href="<?php echo base_url(); ?>account">My Account</a></li> -->
-											<li><a href="<?php echo base_url(); ?>contact">Contact</a></li>
-											<li><a href="<?php echo base_url(); ?>faq">FAQ</a></li>
+											<li class="<?php if($menu_sel == "" || $menu_sel == "home"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>">Home</a></li>
+											<li class="<?php if($menu_sel == "about"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>about">About</a></li>
+											<li class="<?php if($menu_sel == "service"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>service">Services</a></li>
+											<li class="<?php if($menu_sel == "account"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>memberAccount">My Account</a></li>
+											<li class="<?php if($menu_sel == "contact"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>contact">Contact</a></li>
+											<li class="<?php if($menu_sel == "faq"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>faq">FAQ</a></li>
 										</ul>
 									</nav>
 

@@ -1,8 +1,12 @@
 /*Input Your Custom CSS Here*/
-
+.logo a{
+    display: inline-block;
+    width: 90px;
+}
 .logo img {
-    width: 129px;
-    padding-top: 4px;
+    /* width: 129px; */
+    /* padding-top: 4px; */
+    padding: 10px;
 }
 /* div#appoitment {
     margin-bottom: 80px;
@@ -269,3 +273,4 @@
     }
 }
 
+/* ====================================== */

@@ -1,22 +1,4 @@
 <div class="row">
-
-    <div class="col-3">
-        <div class="card bg-gradient-success">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase mb-0">Total Customer</h5>
-                        <span class="h2 font-weight-bold mb-0"><?php echo $customerTotal; ?></span>
-                    </div>
-                </div>
-                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'customer'); ?>" class="text-white"> View</a>
-                    <!-- <span class="text-nowrap">Since last month</span> -->
-                </p>
-            </div>
-        </div>
-    </div>
-
     <div class="col-3">
         <div class="card bg-gradient-primary">
             <div class="card-body">
@@ -27,8 +9,7 @@
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'appointment'); ?>" class="text-white"> View</a>
-                    <!-- <span class="text-nowrap">Since last month</span> -->
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
                 </p>
             </div>
         </div>
@@ -44,15 +25,14 @@
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'dispatch'); ?>" class="text-white"> View</a>
-                    <!-- <span class="text-nowrap">Since last month</span> -->
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
                 </p>
             </div>
         </div>
     </div>
 
     <div class="col-3">
-        <div class="card bg-gradient-warning">
+        <div class="card bg-gradient-success">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -61,12 +41,60 @@
                     </div>
                 </div>
                 <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
-                    <a href="<?php echo base_url(ADMIN.'appointment'); ?>" class="text-white"> View</a>
-                <!-- <span class="text-nowrap">Since last month</span> -->
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
                 </p>
             </div>
         </div>
     </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-danger">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Total Reject Jobs</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentRejectTotal; ?></span>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-gray">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Accept JOb %</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentSuccessPer; ?> %</span>
+                    </div>
+                </div>
+                <!-- <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
+                </p> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <div class="card bg-gradient-gray">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase mb-0">Reject JOb %</h5>
+                        <span class="h2 font-weight-bold mb-0"><?php echo $appointmentRejectPer; ?> %</span>
+                    </div>
+                </div>
+                <!-- <p class="mt-3 mb-0 text-sm text-right font-weight-bold">
+                    <a href="<?php echo base_url(SP.'appointment'); ?>" class="text-white"> View</a>
+                </p> -->
+            </div>
+        </div>
+    </div>
+
 
     <!-- <div class="col-3">
         <div class="card bg-gradient-dark">
@@ -94,7 +122,7 @@
         </div>
     </div> -->
 
-    <div class="col-xl-8">
+    <!-- <div class="col-xl-8">
         <div class="card bg-default">
             <div class="card-header bg-transparent">
                 <div class="row align-items-center">
@@ -122,7 +150,6 @@
             </div>
             <div class="card-body">
                 <div class="chart">
-                    <!-- Chart wrapper -->
                     <canvas id="chart-sales-dark" class="chart-canvas"></canvas>
                 </div>
             </div>
@@ -139,11 +166,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- Chart -->
                 <div class="chart">
                     <canvas id="chart-bars" class="chart-canvas"></canvas>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

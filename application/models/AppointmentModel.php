@@ -269,8 +269,12 @@ class AppointmentModel extends CI_Model {
         }
     }
 
-    function getTotalPendingCount(){
-        $query = $this->db->select("COUNT(id) AS total")->where('status_id',1)->from($this->table)->get();
+    function getTotalPendingCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total")->where('status_id',1)->from($this->table);
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->get();
         if($query){ 
             return $query->row()->total;
         }else{
@@ -280,6 +284,19 @@ class AppointmentModel extends CI_Model {
 
     function getTotalSuccessCount($sp_id=""){
         $this->db->select("COUNT(id) AS total")->where('status_id',5);
+        if($sp_id != ""){
+            $this->db->where('sp_id',$sp_id);
+        }
+        $query = $this->db->from($this->table)->get();
+        if($query){ 
+            return $query->row()->total;
+        }else{
+            return 0;
+        }
+    }
+
+    function getTotalRejectCount($sp_id=""){
+        $this->db->select("COUNT(id) AS total")->where('status_id',3);
         if($sp_id != ""){
             $this->db->where('sp_id',$sp_id);
         }

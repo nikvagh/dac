@@ -320,6 +320,8 @@ switch (ENVIRONMENT)
 define('ADMIN', 'admin/');
 define('MEMBER', 'member/');
 define('SP', 'sp/');
+define('FRONT', 'front/');
+
 define('ADMINPATH', 'admin_portal/');
 define('MEMBERPATH', 'member_portal/');
 define('SPPATH', 'sp_portal/');

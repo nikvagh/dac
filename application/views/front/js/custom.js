@@ -142,8 +142,8 @@ $(document).ready(function(){
             dots: true,
             autoplay: true,
             loop: true,
-    animateOut: 'slideOutDown',
-    animateIn: 'flipInX',
+			animateOut: 'slideOutDown',
+			animateIn: 'flipInX',
             mouseDrag: false,
             touchDrag: false,
         });
@@ -303,8 +303,29 @@ $(document).ready(function(){
 		/*
 		Wow Js
 		============================*/	
-		new WOW().init();		
+		new WOW().init();	
+		
 		
 	});	
 })(jQuery);
+
+// ==========================
+setTimeout(function (event) {
+	$(".alert.fadeOut").fadeOut();
+}, 2000);
+
+
+function preview(input) {
+
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.readAsDataURL(input.files[0]);
+		reader.onload = function (e) {
+			// console.log($(input).closest('.file-box-wrapper').parent().attr(''));
+			// console.log(e);
+			$(input).closest('.file-box-wrapper').parent().find('.pre-img-box img').attr('src', e.target.result);
+		}
+
+	}
+}
 

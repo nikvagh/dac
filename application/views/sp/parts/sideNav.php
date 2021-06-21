@@ -112,37 +112,18 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link <?php if($activeTab == 'customer'){ echo 'active'; } ?>" href="<?php echo base_url(SP.'customer'); ?>">
                             <i class="ni ni-single-02 text-primary"></i>
                             <span class="nav-link-text">Members</span>
                         </a>
-                    </li>
+                    </li> -->
 
-                    <?php 
-                        $serviceProvider_t = false;
-                        if($activeTab == 'serviceProvider' || $activeTab == 'coWorker'){ $serviceProvider_t = true; } 
-                    ?>
-                    <li class="nav-item menu-is-opening menu-open">
-                        <a class="nav-link <?php if($serviceProvider_t){ echo 'active'; }else{ echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#serviceProviderMenu" class="collapsed">
-                            <i class="fas fa-building text-pink"></i>
-                            <span class="nav-link-text">Service Providers</span>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(SP.'coWorker'); ?>">
+                            <i class="ni ni-single-02 text-primary"></i>
+                            <span class="nav-link-text">Co-Workers</span>
                         </a>
-                        <ul class="nav nav-treeView sub-menu collapse <?php if($serviceProvider_t){ echo 'show'; } ?>" id="serviceProviderMenu">
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'serviceProvider'){ echo 'active'; } ?>" href="<?php echo base_url(SP.'serviceProvider'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'serviceProvider'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Service Providers</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link <?php if($activeTab == 'coWorker'){ echo 'active'; } ?>" href="<?php echo base_url(SP.'coWorker'); ?>">
-                                    <i class="fas fa-dot-circle <?php if($activeTab == 'coWorker'){ echo 'text-dark'; }else{ echo "text-yellow"; } ?>"></i>
-                                    <span class="nav-link-text">Co-Workers</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
 
                     <!-- <li class="nav-item">

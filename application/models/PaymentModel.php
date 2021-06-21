@@ -47,7 +47,10 @@ class PaymentModel extends CI_Model {
         $query = $this->db->get();
         $result = $query->result();
 
+        // echo  $this->db->last_query();
+        // exit;
         // echo "<pre>";print_r($result);exit;
+        
         return $result;
     }
 

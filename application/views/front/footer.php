@@ -74,6 +74,10 @@
 	<!-- Scripts Js Start -->
     <script src="<?php echo $this->front; ?>js/jquery-2.2.4.min.js"></script>
 	<script src="<?php echo $this->front; ?>js/bootstrap.min.js"></script>
+
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+
 	<script src="<?php echo $this->front; ?>js/imagesloaded.pkgd.min.js"></script>
 	<script src="<?php echo $this->front; ?>js/isotope.pkgd.min.js"></script>
 	<script src="<?php echo $this->front; ?>js/owl.carousel.min.js"></script>
@@ -87,4 +91,14 @@
 	<script src="<?php echo $this->front; ?>js/jquery.meanmenu.min.js"></script>
 	<script src="<?php echo $this->front; ?>js/jquery.sticky.js"></script>
 	<script src="<?php echo $this->front; ?>js/custom.js"></script>
+
+	<?php if(isset($page) && ($page == 'memberAccount')){ ?>
+		<script src="<?php echo $this->front; ?>plugins/fileStyle/fileStyle.js"></script>
+
+		<?php if($page == 'memberAccount'){ ?>
+			<script src="<?php echo $this->front; ?>js/memberAccount.js"></script>
+		<?php } ?>
+
+	<?php } ?>
+	
 	<!-- Scripts Js End -->	

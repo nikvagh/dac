@@ -13,7 +13,7 @@
             $this->load->model('AppointmentModel','Appointment');
             $this->load->model('PaymentModel','Payment');
             $this->load->model('MembershipModel','Membership');
-            checkLogin('admin');
+            checkLogin('sp');
         }
 
         function index(){
@@ -22,34 +22,34 @@
             if($this->input->post('action') == "change_publish"){
                 if ($result = $this->Report->st_update()) {
                     $this->session->set_flashdata('success', 'Report status has been update successfully.');
-                    redirect(ADMIN.'report');
+                    redirect(SP.'report');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "delete"){
                 if ($result = $this->Report->delete()) {
                     $this->session->set_flashdata('success', 'Report deleted successfully.');
-                    redirect(ADMIN.'report');
+                    redirect(SP.'report');
                 }
             }
             
             // $content['appointments'] = $this->Appointment->get_list();
             $content['title'] = "Report";
-            $views["content"] = ["path"=>ADMIN.'report_list',"data"=>$content];
+            $views["content"] = ["path"=>SP.'report_list',"data"=>$content];
             $layout['page'] = 'report_list';
 
-            $this->layouts->view($views,'admin_dashboard',$layout);
-            // $this->load->view(ADMIN.'category/list',$data);
+            $this->layouts->view($views,'sp_dashboard',$layout);
+            // $this->load->view(SP.'category/list',$data);
         }
 
         function jobs($name=""){
-
             if($name == "all"){
-                $headers = ['Customer','Service Provider','Date','Amount','Service At','Status'];
-                $list = $this->Appointment->get_list();
+                $headers = ['Customer','Date','Amount','Status'];
+                
+                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+                $list = $this->Appointment->get_list('','',$where);
                 $data = [];
                 foreach($list as $key=>$val){
-
                     // echo "<pre>";print_r($val);exit;
-                    $data[] = [$val->firstname.' '.$val->lastname,$val->company_name,$val->date,$val->amount,$val->service_at,$val->status_txt];
+                    $data[] = [$val->firstname.' '.$val->lastname,$val->date,$val->amount,$val->status_txt];
                 }
 
                 $spreadsheet = new PhpSpreadsheet1();
@@ -57,12 +57,15 @@
             }
 
             if($name == "pending"){
-                $headers = ['Customer','Service Provider','Date','Amount','Service At'];
-                $where = ['status_id','=',1];
-                $list = $this->Appointment->get_list($where);
+                $headers = ['Customer','Date','Amount'];
+
+                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+                $where[] = ['column'=>'a.status_id','op'=>'=','value'=>1];
+
+                $list = $this->Appointment->get_list('','',$where);
                 $data = [];
                 foreach($list as $key=>$val){
-                    $data[] = [$val->firstname.' '.$val->lastname,$val->company_name,$val->date,$val->amount,$val->service_at];
+                    $data[] = [$val->firstname.' '.$val->lastname,$val->date,$val->amount];
                 }
 
                 $spreadsheet = new PhpSpreadsheet1();
@@ -70,39 +73,42 @@
             }
 
             if($name == "complete"){
-                $headers = ['Customer','Service Provider','Date','Amount','Service At'];
-                $where = ['status_id','=',5];
-                $list = $this->Appointment->get_list($where);
+                $headers = ['Customer','Date','Amount'];
+                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+                $where[] = ['column'=>'a.status_id','op'=>'=','value'=>5];
+                $list = $this->Appointment->get_list('','',$where);
                 $data = [];
                 foreach($list as $key=>$val){
-                    $data[] = [$val->firstname.' '.$val->lastname,$val->company_name,$val->date,$val->amount,$val->service_at];
+                    $data[] = [$val->firstname.' '.$val->lastname,$val->date,$val->amount];
                 }
 
                 $spreadsheet = new PhpSpreadsheet1();
                 $spreadsheet->downloadExcel($data,$headers,'completeJobs.xlsx');
             }
 
-        }
-
-        function payment($name=""){
-            if($name == "customerPayment"){
-                $headers = ['Customer Name','Amount','Transaction Type','Status'];
-                $where = ['user_type','=','customer'];
-                $list = $this->Payment->get_list($where);
+            if($name == "reject"){
+                $headers = ['Customer','Date','Amount'];
+                $where[] = ['column'=>'a.sp_id','op'=>'=','value'=>$this->session->userdata('id')];
+                $where[] = ['column'=>'a.status_id','op'=>'=','value'=>3];
+                $list = $this->Appointment->get_list('','',$where);
                 $data = [];
                 foreach($list as $key=>$val){
-                    // echo "<pre>";print_r($val);exit;
-                    $data[] = [$val->firstname.' '.$val->lastname,$val->amount,$val->transaction_type,$val->status];
+                    $data[] = [$val->firstname.' '.$val->lastname,$val->date,$val->amount];
                 }
 
                 $spreadsheet = new PhpSpreadsheet1();
-                $spreadsheet->downloadExcel($data,$headers,'customerPayment.xlsx');
+                $spreadsheet->downloadExcel($data,$headers,'rejectedJobs.xlsx');
             }
+        }
+
+        function payment($name=""){
 
             if($name == "spPayout"){
                 $headers = ['Service Provider','Amount','Transaction Type','Status'];
-                $where = ['user_type','=','sp'];
-                $list = $this->Payment->get_list($where);
+
+                $where[] = ['column'=>'p.user_id','op'=>'=','value'=>$this->session->userdata('id')];
+                $where[] = ['column'=>'p.user_type','op'=>'=','value'=>'sp'];
+                $list = $this->Payment->get_list('','',$where);
                 $data = [];
                 foreach($list as $key=>$val){
                     $data[] = [$val->company_name,$val->amount,$val->transaction_type,$val->status];
@@ -113,29 +119,13 @@
             }
         }
 
-        function customer($name=""){
-            if($name == "membership"){
-                $headers = ['Customer Name','Package','Start Date','End Date','Validity Status'];
-                // $where = ['user_type','=','customer'];
-                $list = $this->Membership->get_list();
-                $data = [];
-                foreach($list as $key=>$val){
-                    // echo "<pre>";print_r($val);exit;
-                    $data[] = [$val->firstname.' '.$val->lastname,$val->package_name,$val->start_date,$val->end_date,$val->validity_status];
-                }
-
-                $spreadsheet = new PhpSpreadsheet1();
-                $spreadsheet->downloadExcel($data,$headers,'customerPayment.xlsx');
-            }
-        }
-
         function add(){
             $content['title'] = "Report";
             $content['categories'] = $this->Category->get_list();
             $content['services'] = $this->Service->get_list();
-            $views["content"] = ["path"=>ADMIN.'report_add',"data"=>$content];
+            $views["content"] = ["path"=>SP.'report_add',"data"=>$content];
             $layout['page'] = 'report_add';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         function edit($id = 0){
@@ -146,9 +136,9 @@
             // echo "<pre>";print_r($content);
             // exit;
 
-            $views["content"] = ["path"=>ADMIN.'report_edit',"data"=>$content];
+            $views["content"] = ["path"=>SP.'report_edit',"data"=>$content];
             $layout['page'] = 'report_edit';
-            $this->layouts->view($views,'admin_dashboard',$layout);
+            $this->layouts->view($views,'sp_dashboard',$layout);
         }
 
         public function validation() {
