@@ -22,7 +22,6 @@
 								<ul>
 									<li><i class="fa fa-envelope"></i> dripautocare@gmail.com</li>
 									<li><i class="fa fa-phone"></i>(888) 010203-4567</li>
-
 								</ul>
 							</div>
 						</div>

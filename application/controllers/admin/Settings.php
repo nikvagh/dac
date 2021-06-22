@@ -52,6 +52,7 @@
 				$this->form_validation->set_rules('currency', 'Currency', 'required');
 				$this->form_validation->set_rules('company_name', 'Company name', 'required');
 				$this->form_validation->set_rules('company_phone1', 'Company Phone', 'required|numeric');
+				$this->form_validation->set_rules('company_email', 'Company Email', 'required|valid_email');
 				$this->form_validation->set_rules('company_address', 'Company Address', 'required');
 				if ($this->form_validation->run()) {
 					// header("Content-type:application/json");

@@ -68,6 +68,8 @@ if ( ! function_exists('checklogin'))
 		// print_r($_SESSION);
 		// echo "<pre>";
 		// exit;
+		$CI =& get_instance();
+
 
 		$err = "N";
 		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != ""){
@@ -77,20 +79,32 @@ if ( ! function_exists('checklogin'))
 		}else{
 			$err = "Y";
 		}
-		
-		if($err == 'Y'){
-			if($userType == 'member'){
-				// header('Location:'.base_url().MEMBER.'login');
-				header('Location:'.base_url().'memberLogin');
-			}else if($userType == 'admin'){
-				// header('Location:'.base_url().ADMINPATH.'login');
-				header('Location:'.base_url().ADMIN.'login');
-			}else if($userType == 'sp'){
-				header('Location:'.base_url().SP.'login');
-			}else{
-				header('Location:'.base_url().MEMBER.'login');
+
+		if ($CI->input->is_ajax_request()) {
+			if($err == 'Y'){
+				if($userType == 'member'){
+					echo json_encode(['status'=>401,'result'=>[], 'message'=>'invalid auth']);exit;
+				}else if($userType == 'admin'){
+				}else if($userType == 'sp'){
+				}else{
+				}
+			}
+		}else{
+			if($err == 'Y'){
+				if($userType == 'member'){
+					// header('Location:'.base_url().MEMBER.'login');
+					header('Location:'.base_url().'memberLogin');
+				}else if($userType == 'admin'){
+					// header('Location:'.base_url().ADMINPATH.'login');
+					header('Location:'.base_url().ADMIN.'login');
+				}else if($userType == 'sp'){
+					header('Location:'.base_url().SP.'login');
+				}else{
+					header('Location:'.base_url().MEMBER.'login');
+				}
 			}
 		}
+		
 	}
 }
 

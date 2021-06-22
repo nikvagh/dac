@@ -1,5 +1,8 @@
 (function ($) {
  "use strict";
+// base_url = 'http://localhost/dac';
+// base_url = 'http://dac.igeekteam.org';
+
 $(document).ready(function(){
 	  
 		/*
@@ -329,3 +332,30 @@ function preview(input) {
 	}
 }
 
+function ajaxCall(url,method,datatype,data,headers){
+	// console.log(base_url);
+	return $.ajax({
+		url: url,
+		method: method,
+		headers: headers,
+		cache: false,
+		contentType: false,
+		processData: false,
+		async: false,
+		dataType: datatype,
+		data: data,
+		// success: function(result){
+		//   // sendNotificationResult(result);
+		//   console.log(result);
+		//   // return result;
+		// }
+	});
+}
+
+function userAuth(data){
+	base_url = $('.logo a').attr("href");
+	// console.log(data);
+	if(data.status == 401){
+		window.location.replace(base_url+'memberLogin');
+	}
+}

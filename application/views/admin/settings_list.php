@@ -93,6 +93,14 @@
                                                             </div>
                                                         </div>
 
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label class="form-control-label">Company Email *</label>
+                                                                <input type="text" name="company_email" class="form-control" placeholder="Company Email" value="<?php echo $this->system->company_email; ?>">
+                                                                <span class="error text-danger validation-message" data-field="company_email"></span>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
                                                                 <label class="form-control-label">Company Address *</label>

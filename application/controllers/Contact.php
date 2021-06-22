@@ -36,17 +36,6 @@
             // print_r($_POST);
             // exit;
 
-            $data['form_data'] = $_POST;
-
-            // print_r($data);
-            // exit;
-
-            // $message = $this->load->view('front/contact_email',$data, true);
-
-            // print_r($message);
-            // echo $message;
-            // exit;
-
             $config = [
                 [
                         'field' => 'name',
@@ -95,9 +84,15 @@
                 $this->load->library('mail');
 
                 $subject = "DAC - Contact Inquiry";
-                $message = $this->load->view('front/contact_email',$data, true);
 
-                if($this->mail->send_email($this->system->from_email_address,$subject,$message)){
+                $data['form_data'] = $_POST;
+                $data['logo'] = base_url(SYSTEM_IMG).$this->system->company_logo;
+
+                $message = $this->load->view('mail/contact',$data, true);
+                $replyTo = ['email'=>$_POST['email'],'name'=>$_POST['name']];
+                // echo $message;exit;
+
+                if($this->mail->send_email($this->system->company_email,$subject,$message,0,[],[],$replyTo)){
                     // send mail
                     $array['status'] = 200;
                     $array['title'] = 'Success! Email Sent Successfully';

@@ -1,4 +1,4 @@
-<form id="form1" action="" method="post" enctype="multipart/form-data">
+<form id="profile_form" action="" method="post" enctype="multipart/form-data">
 	<table class="profile-table table-striped">
 		<tr>
 			<td>User Name</td>
@@ -79,5 +79,5 @@
 </form>
 
 <div class="text-right">
-	<button class="btn btn-primary btn-submit btn-flat btn-pill" onclick="edit_data()">Save</button>
+	<button class="btn btn-primary btn-submit btn-flat btn-pill" onclick="saveProfile()">Save</button>
 </div>

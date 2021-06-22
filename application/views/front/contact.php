@@ -17,7 +17,7 @@
 					<div class="page-heading">
 						<h1>Contact Us</h1>
 						<ul>
-							<li><a href="index.php">Home</a></li>
+							<li><a href="<?php echo base_url(); ?>">Home</a></li>
 							<li><a href="#">Contact Us</a></li>
 						</ul>
 					</div>

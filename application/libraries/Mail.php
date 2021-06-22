@@ -15,7 +15,7 @@ class Mail {
         require './PHPMailer/SMTP.php';
     }
 
-    public function send_email($to,$subject,$message,$attach=0,$cc = array(),$attachM = array())
+    public function send_email($to,$subject,$message,$attach=0,$cc = array(),$attachM = array(),$replyTo = [])
 	{
         // date_default_timezone_set('Etc/UTC');
 
@@ -122,7 +122,9 @@ class Mail {
 	    // $mail->addAddress("recepient1@example.com"); //Recipient name is optional
 
 	    //Address to which recipient will reply
-	    // $mail->addReplyTo("dac.igeekteam.net", "Reply");
+		if(!empty($replyTo)){
+			$mail->addReplyTo($replyTo['email'], $replyTo['name']);
+		}
 
 	    //CC and BCC
 	    // $mail->addCC("cc@example.com");
@@ -160,7 +162,6 @@ class Mail {
 		}
 
 	    // $mail->AltBody = "This is the plain text version of the email content";
-
 	    try {
 	        if($mail->send()){
 	        	return true;
