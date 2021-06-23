@@ -36,6 +36,14 @@
 				</div>
 			</div>
 		</div>
+		<div class="row flex-row">
+			<div class="col-md-12">
+				<div class="alert alert-danger margin-top-15 margin-bottom-0" id="error-alert" style="display: none;">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<i class="fa-fw fa fa-check"></i> <strong>Error!</strong> <span class="error_msg"></span>
+				</div>
+			</div>
+		</div>
 
 		<div class="row flex-row my-account">
 			<div class="col-md-3 sidebar">
@@ -48,7 +56,7 @@
 					<li><a data-toggle="pill" href="#bookings"> Bookings </a></li>
 					<li><a data-toggle="pill" href="#vehicle"> My Vehicles </a></li>
 					<li><a data-toggle="pill" href="#payment"> My Payments </a></li>
-					<li><a data-toggle="pill" href="#refer"> Refer A Friends </a></li>
+					<li><a data-toggle="pill" href="#refer"> Refer A Friend </a></li>
 					<li><a data-toggle="pill" href="#profile"> Profile </a></li>
 					<li><a href="<?php echo base_url('memberLogin/logout'); ?>"> Sign out </a></li>
 				</ul>
@@ -211,67 +219,24 @@
 						<div id="vehicle" class="tab-pane fade">
 							<div class="row">
 								<div class="col-sm-9"><h3>vehicle</h3></div>
-								<div class="col-sm-3 text-right"><a href="" class="btn-sm btn-default">Add New Vehicle</a></div>
 							</div>
-							
-							<ul class="vehicle_ul">
-								<li>
-									<div class="row">
-										<div class="col-md-9"> Honda City - 2012 </div>
-										<div class="col-md-3 text-right"> 
-											<a class="btn btn-sm btn-pill btn-secondary"><i class="fa fa-edit"> </i></a>
-											<a class="btn btn-sm btn-pill btn-transparent"><i class="fa fa-trash"> </i></a>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-md-3"></div>
-									</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-md-3"></div>
-									</div>
-								</li>
-							</ul>
-
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label class="form-control-label">Name *</label>
-										<input type="text" name="name" class="form-control" placeholder="Name" value="<?php //echo $form_data->name; ?>">
-										<span class="error text-danger validation-message" data-field="name"></span>
-									</div>
-								</div>
-
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label class="form-control-label">Year *</label>
-										<select name="year" id="" class="form-control select2">
-											<?php foreach(get_last_30_yr() as $val){ ?>
-												<option value="<?php echo $val; ?>" <?php //if($val == $form_data->year){ echo "selected"; } ?>><?php echo $val; ?></option>
-											<?php } ?>
-										</select>
-										<span class="error text-danger validation-message" data-field="year"></span>
-									</div>
-								</div>
-							</div>
-							<div class="text-right">
-								<button class="btn btn-primary btn-submit btn-pill" onclick="edit_data()">Save</button>
-							</div>
+							<div class="member_ac_vehicle"></div>
 						</div>
 
 						<div id="payment" class="tab-pane fade">
+							<h3>My Cards</h3>
+							<div class="member_ac_card"></div>
+							
+							<br/>
 							<h3>My payments</h3>
+							<div class="member_ac_payment"></div>
 
-							<ul class="vehicle_ul">
+							<!-- <ul class="vehicle_ul">
 								<li>
 									<div class="row">
 										<div class="col-md-9"> Honda City - 2012 </div>
 										<div class="col-md-3 text-right">
 											<a class="btn btn-sm btn-pill btn-secondary"><i class="fa fa-edit"> </i></a>
-											<!-- <a class="btn btn-sm btn-pill btn-transparent"><i class="fa fa-trash"> </i></a> -->
 										</div>
 									</div>
 								</li>
@@ -280,11 +245,11 @@
 										<div class="col-md-3"></div>
 									</div>
 								</li>
-							</ul>
+							</ul> -->
 						</div>
 
 						<div id="refer" class="tab-pane fade in active">
-							<h3>refer</h3>
+							<h3>Refer A Friend</h3>
 							<div class="member_ac_refer"></div>
 						</div>
 
@@ -299,7 +264,8 @@
 
 		</div>
 	</div>
-
+	<div class="modal fade" id="confirm_model" role="dialog"></div>
+	
 	<?php $this->load->view('front/footer'); ?>
 </body>
 </html>

@@ -359,3 +359,35 @@ function userAuth(data){
 		window.location.replace(base_url+'memberLogin');
 	}
 }
+
+
+function confirmDelete(id, item_name)
+{
+	// console.log(frm);
+	// console.log(id);
+	// console.log(item_name);
+	// return false;
+
+	// '<div class="modal-header">'+
+	// 						'<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>'+
+	// 						'<h4 class="modal-title">Delete Confirmation</h4>'+
+	// 					'</div>'+
+
+	var html  = '<div class="modal-dialog">'+
+					'<div class="modal-content">'+
+						
+						'<div class="modal-body">'+
+							'<div id="modal_error"></div>'+
+							'<p>Are you sure to delete this '+item_name+'? </p>'+
+						'</div>'+
+				
+						'<div class="modal-footer with-border">'+
+							'<button type="button" class="btn btn-default btn-flat btn-pill" data-dismiss="modal">Cancel</button>'+
+							'<button class="btn btn-danger btn-flat send_btn btn-pill" onclick="'+item_name+'Delete(\''+id+'\')"> Delete</button>'+
+						'</div>'+
+					'</div>'+
+				'</div>';
+
+	$('#confirm_model').html(html);
+	$('#confirm_model').modal('show');
+}

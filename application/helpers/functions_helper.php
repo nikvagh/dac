@@ -70,7 +70,6 @@ if ( ! function_exists('checklogin'))
 		// exit;
 		$CI =& get_instance();
 
-
 		$err = "N";
 		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != ""){
 			if($_SESSION['user_type'] != $userType){

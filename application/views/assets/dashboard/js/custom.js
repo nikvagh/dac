@@ -148,8 +148,8 @@ function handlePermission() {
 			report(result.state);
 		}
 	});
-  }
+}
 
-  function report(state) {
+function report(state) {
 	console.log('Permission ' + state);
-  }
+}
