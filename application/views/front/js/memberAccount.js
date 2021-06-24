@@ -1,5 +1,8 @@
 base_url = $('.logo a').attr("href");
 // console.log(base_url);
+$(document).ready(function(){
+	$(".sidebar-ul li [href='#membership']").trigger("click");
+});
 
 $('.sidebar-ul li').on('click', function (e) {
 	var target = $(e.target).attr("href");
@@ -34,17 +37,40 @@ $('.sidebar-ul li').on('click', function (e) {
 	}
 
 	if(target == "#payment"){
-		var call1 = ajaxCall(base_url+'memberAccount/load_payment_list','post','json',[],[]);
-		call1.success(function(data) {
-
-			console.log(data);
-
-			userAuth(data);
-			$('.member_ac_payment').html(data.result.html1);
-			$('.member_ac_card').html(data.result.html2);
-		})
+		load_payment_list();
 	}
 
+	if(target == "#membership"){
+		load_membership_list();
+	}
+
+	if(target == "#booking"){
+		load_booking_list();
+		member_ac_booking_list_prev();
+	}
+});
+
+$('body').on('click','.pagination_wrapper a',function(e){
+	e.preventDefault(); 
+	var pageNo = $(this).attr('data-ci-pagination-page');
+
+	var pagination_wrapper = $(this).parent('.pagination_wrapper');
+	
+	if(pagination_wrapper.hasClass('payment_pagination')){
+		load_payment_list(pageNo);
+	}
+
+	if(pagination_wrapper.hasClass('membership_pagination')){
+		load_membership_list(pageNo);
+	}
+
+	if(pagination_wrapper.hasClass('booking_pagination')){
+		load_booking_list(pageNo);
+	}
+
+	if(pagination_wrapper.hasClass('booking_prev_pagination')){
+		member_ac_booking_list_prev(pageNo);
+	}
 });
 
 function saveProfile_validation(formData){
@@ -241,6 +267,20 @@ function vehicleDelete(id){
 	});
 }
 
+function load_payment_list(pageNo){
+	if(typeof pageNo == 'undefined'){ pageNo=1; }
+	var call1 = ajaxCall(base_url+'memberAccount/load_payment_list/'+pageNo,'post','json',[],[]);
+	call1.success(function(data) {
+		// console.log(data);
+
+		userAuth(data);
+		$('.member_ac_payment').html(data.result.html1);
+		// $('.pagination1').html(data.result.pagination1);
+
+		$('.member_ac_card').html(data.result.html2);
+	})
+}
+
 function load_card_add(){
 	var call = ajaxCall(base_url+'memberAccount/load_card_add','post','json',[],[]);
 	call.success(function(data) {
@@ -278,7 +318,6 @@ function cardCreate(){
 
 	}
 }
-
 
 function cardUpdate(){
 	var formData = new FormData(document.getElementById("card_form"));
@@ -340,4 +379,253 @@ function cardDelete(id){
 			$("#success-alert").slideUp(500);
 		});
 	});
+}
+
+function load_membership_list(pageNo){
+	if(typeof pageNo == 'undefined'){ pageNo=1; }
+	var call1 = ajaxCall(base_url+'memberAccount/load_membership_list/'+pageNo,'post','json',[],[]);
+	call1.success(function(data) {
+		userAuth(data);
+		$('.member_ac_membership').html(data.result.html1);
+	})
+}
+
+function load_membership_add(){
+	var call = ajaxCall(base_url+'memberAccount/load_membership_add','post','json',[],[]);
+	call.success(function(data) {
+		userAuth(data);
+		$('.member_ac_membership').html(data.result.html);
+	})
+}
+
+function membershipCreate(){
+	var formData = new FormData(document.getElementById("membership_form"));
+	if(membershipValidation(formData) == 'success'){
+
+		$(".btn-submit").html("Saving data, please wait...");
+		var call = ajaxCall(base_url+'memberAccount/membershipCreate','post','json',formData,[]);
+		call.success(function(data) {
+			userAuth(data);
+			$(".btn-submit").html("Save");
+			load_membership_list();
+
+			$(".success_msg").html(data.message);
+			$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
+				$("#success-alert").slideUp(500);
+			});
+		});
+
+	}
+}
+
+function membershipValidation(formData){
+	$(".btn-submit").html("Validating data, please wait...");
+	var call = ajaxCall(base_url+'memberAccount/membershipValidation','post','json',formData,[]);
+	var returnData;
+	call.success(function(data) {
+		userAuth(data);
+		returnData = data;
+	});
+	
+	$('.validation-message').html('');
+	if (returnData.status != 200) {
+		$(".btn-submit").html("Submit");
+		$('.validation-message').each(function () {
+			for (var key in returnData.result) {
+				if ($(this).attr('data-field') == key) {
+					$(this).html(returnData.result[key]);
+				}
+			}
+		});
+	} else {
+		return 'success';
+	}
+}
+
+function load_booking_list(pageNo){
+	if(typeof pageNo == 'undefined'){ pageNo=1; }
+	var call1 = ajaxCall(base_url+'memberAccount/load_booking_list/'+pageNo,'post','json',[],[]);
+	call1.success(function(data) {
+		userAuth(data);
+		$('.member_ac_booking').html(data.result.html1);
+	})
+}
+
+function member_ac_booking_list_prev(pageNo){
+	if(typeof pageNo == 'undefined'){ pageNo=1; }
+	var call1 = ajaxCall(base_url+'memberAccount/load_booking_prev_list/'+pageNo,'post','json',[],[]);
+
+	call1.success(function(data) {
+		userAuth(data);
+
+		console.log(data);
+
+		$('.member_ac_booking_prev').html(data.result.html1);
+	})
+}
+
+function load_booking_add(){
+	var call = ajaxCall(base_url+'memberAccount/load_booking_add','post','json',[],[]);
+	call.success(function(data) {
+		userAuth(data);
+		$('.member_ac_booking').html(data.result.html);
+		$('.member_ac_booking_prev').html('');
+
+		// ===================================
+		$('.select2').select2();
+
+        $('#zipcode').select2({
+            ajax: {
+                type: "post",
+                url: base_url+'memberAccount/get_list_dropdown',
+                dataType: 'json',
+                data: function (params) {
+                    // console.log(params)
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    // console.log(data.result);
+                    return {
+                        results: data.result
+                    };
+                },
+                // cache: true,
+            },
+            placeholder: 'Search for a zip code',
+        });
+
+		var date = new Date();
+
+        var setTime = function(currentDateTime){
+            if(date.getHours() >= 7){
+                var minTime = date.getHours()+":"+date.getMinutes();
+            }else{
+                var minTime = '7:00';
+            }
+
+            this.setOptions({
+                minTime:minTime,
+                maxTime:'18:15'
+            });
+        };
+
+        $('#time').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:15,
+            onShow:setTime,
+            timezone:'UTC'
+
+            // minTime:'11:00',
+            // maxTime:'18:00',
+        });
+
+        // =============================
+
+        var minDate = new Date();
+        minDate.setDate(minDate.getDate() + 1);
+
+        var maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 8);
+        
+        $('#date_time').datetimepicker({
+            format:'Y-m-d H:i',
+            step:15,
+            defaultDate: minDate,
+            // onShow:setDateTime,
+            timezone:'UTC',
+            minDate: minDate,
+            maxDate: maxDate,
+        });
+
+        // handlePermission();
+        getLocation();
+
+		$(".date_time_box").hide();
+        $("input[name=appointment_type]").on('change',function(){
+            if($(this).val() == "book_now"){
+                $(".time_box").show();
+                $(".date_time_box").hide();
+            }else{
+                $(".date_time_box").show();
+                $(".time_box").hide();
+            }
+        });
+
+	})
+}
+
+getLocation();
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+		console.log('Geolocation is not supported by this browser.');
+	}
+}
+
+function showPosition(position) {
+	// console.log(position.coords.latitude)
+	// console.log(position.coords.longitude)
+	$("#latitude").val(position.coords.latitude);
+	$("#longitude").val(position.coords.longitude);
+}
+
+function bookingCreate(){
+	var formData = new FormData(document.getElementById("booking_form"));
+	if(bookingValidation(formData) == 'success'){
+
+		$(".btn-submit").html("Saving data, please wait...");
+		var call = ajaxCall(base_url+'memberAccount/bookingCreate','post','json',formData,[]);
+		call.success(function(data) {
+			userAuth(data);
+			$(".btn-submit").html("Save");
+			load_booking_list();
+
+			$(".success_msg").html(data.message);
+			$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
+				$("#success-alert").slideUp(500);
+			});
+		});
+
+	}
+}
+
+function bookingValidation(formData){
+	$(".btn-submit").html("Validating data, please wait...");
+	var call = ajaxCall(base_url+'memberAccount/bookingValidation','post','json',formData,[]);
+	var returnData;
+	call.success(function(data) {
+		userAuth(data);
+		returnData = data;
+	});
+	
+	$('.validation-message').html('');
+	if (returnData.status != 200) {
+		$(".btn-submit").html("Submit");
+		$('.validation-message').each(function () {
+			for (var key in returnData.result) {
+				if ($(this).attr('data-field') == key) {
+					$(this).html(returnData.result[key]);
+				}
+			}
+		});
+	} else {
+		return 'success';
+	}
+}
+
+function load_booking_view(id){
+	var formData = new FormData();
+	formData.append('id', id);
+	var call = ajaxCall(base_url+'memberAccount/load_booking_view','post','json',formData,[]);
+	call.success(function(data) {
+		userAuth(data);
+		$('.member_ac_booking').html(data.result.html);
+		$('.member_ac_booking_prev').html('');
+	})
 }

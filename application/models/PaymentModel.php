@@ -7,7 +7,18 @@ class PaymentModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where = [], $filterCheck = 'N') {
+    function get_list($num="", $offset="",$where = [], $filterCheck = 'N', $isTotalQuery = 'N') {
+        $query = $this->list_query($num,$offset,$where,$filterCheck);
+        if($isTotalQuery == 'N'){
+            $result = $query->result();
+            return $result;
+        }else{
+            $result = $query->num_rows();
+            return $result;
+        }
+    }
+
+    function list_query($num="", $offset="",$where = [], $filterCheck = 'N'){
         $this->db->select('p.*,c.firstname,c.lastname,sp.company_name');
         $this->db->from('payment as p');
         $this->db->join('customer as c','c.id = p.user_id AND p.user_type = "customer"','left');
@@ -40,18 +51,15 @@ class PaymentModel extends CI_Model {
             }
         }
 
-        if($num != "" && $offset != ""){
+        if($num != ""){
             $this->db->limit($num, $offset);
         }
 
         $query = $this->db->get();
-        $result = $query->result();
 
-        // echo  $this->db->last_query();
-        // exit;
-        // echo "<pre>";print_r($result);exit;
+        // echo $this->db->last_query();
         
-        return $result;
+        return $query;
     }
 
     function getDataById($id){

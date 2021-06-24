@@ -52,7 +52,7 @@
 											<li class="<?php if($menu_sel == "" || $menu_sel == "home"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>">Home</a></li>
 											<li class="<?php if($menu_sel == "about"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>about">About</a></li>
 											<li class="<?php if($menu_sel == "service"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>service">Services</a></li>
-											<li class="<?php if($menu_sel == "account"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>memberAccount">My Account</a></li>
+											<li class="<?php if($menu_sel == "memberAccount"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>memberAccount">My Account</a></li>
 											<li class="<?php if($menu_sel == "contact"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>contact">Contact</a></li>
 											<li class="<?php if($menu_sel == "faq"){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>faq">FAQ</a></li>
 										</ul>

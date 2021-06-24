@@ -7,7 +7,22 @@ class MembershipModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where = []) {
+    function get_list($num="", $offset="",$where = [], $isTotalQuery = 'N') {
+        $query = $this->list_query($num,$offset,$where);
+
+        if($isTotalQuery == 'N'){
+            $result = $query->result();
+            foreach($result as $key=>$val){
+                $result[$key]->validity_status = get_membership_validity_status($val->start_date,$val->end_date);
+            }
+            return $result;
+        }else{
+            $result = $query->num_rows();
+            return $result;
+        }
+    }
+
+    function list_query($num="", $offset="",$where = []){
         $this->db->select('cm.*,c.firstname,c.lastname,c.username,c.email,c.phone,p.name as package_name,p.validity');
         $this->db->from('customer_membership as cm');
         $this->db->join('customer c','c.id=cm.customer_id','left')
@@ -24,23 +39,15 @@ class MembershipModel extends CI_Model {
                 }
             }
         }
-        
-        $query = $this->db->get();
-        $result = $query->result();
 
-        foreach($result as $key=>$val){
-        //     $query = $this->db->select('s.*')->from('membership_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.membership_id',$val->id)->get();
-        //     $result[$key]->services = $query->result();
-        //     $result[$key]->service_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services );
-            // echo date('Y-m-d');
-            // exit;
-
-            $result[$key]->validity_status = get_membership_validity_status($val->start_date,$val->end_date);
+        if($num != ""){
+            $this->db->limit($num, $offset);
         }
 
-        // echo "<pre>";print_r($result);exit;
-        return $result;
+        $query = $this->db->get();
+        return $query;
     }
+
 
     function getDataById($id){
         $this->db->select('*');

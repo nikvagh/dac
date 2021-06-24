@@ -94,6 +94,8 @@
 
 	<?php if(isset($page) && ($page == 'memberAccount')){ ?>
 		<script src="<?php echo $this->front; ?>plugins/fileStyle/fileStyle.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script src="<?php echo $this->front; ?>plugins/datetimepicker/build/jquery.datetimepicker.full.js"></script>
 
 		<?php if($page == 'memberAccount'){ ?>
 			<script src="<?php echo $this->front; ?>js/memberAccount.js"></script>

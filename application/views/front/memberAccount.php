@@ -53,7 +53,7 @@
 						<span class="">Account since <?php echo date('M d, Y',strtotime($this->member->loginData->datecreated)); ?></span>
 					</li>
 					<li class="active"><a data-toggle="pill" href="#membership"> My Membership </a></li>
-					<li><a data-toggle="pill" href="#bookings"> Bookings </a></li>
+					<li><a data-toggle="pill" href="#booking"> Bookings </a></li>
 					<li><a data-toggle="pill" href="#vehicle"> My Vehicles </a></li>
 					<li><a data-toggle="pill" href="#payment"> My Payments </a></li>
 					<li><a data-toggle="pill" href="#refer"> Refer A Friend </a></li>
@@ -65,155 +65,17 @@
 			<div class="col-md-9">
 				<div class="tab-content-box">
 					<div class="tab-content">
-						<div id="membership" class="tab-pane fade">
-							<!-- <h3>Ongoing Memberships</h3> -->
-
-							<div class="panel panel-primary">
-								<div class="panel-heading">
-									<span class=""></span>Ongoing Memberships
-								</div>
-								<div class="panel-body">
-									<ul class="list-group">
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-									</ul>
-								</div>
-								<!-- <div class="panel-footer">
-									<div class="row">
-										<div class="col-md-6">
-											<h6>Total Count <span class="label label-info">25</span></h6>
-										</div>
-										<div class="col-md-6">
-											<ul class="pagination pagination-sm pull-right">
-												<li class="disabled"><a href="javascript:void(0)">«</a></li>
-												<li class="active"><a href="javascript:void(0)">1 <span class="sr-only">(current)</span></a></li>
-												<li><a href="http://www.jquery2dotnet.com">2</a></li>
-												<li><a href="http://www.jquery2dotnet.com">3</a></li>
-												<li><a href="http://www.jquery2dotnet.com">4</a></li>
-												<li><a href="http://www.jquery2dotnet.com">5</a></li>
-												<li><a href="javascript:void(0)">»</a></li>
-											</ul>
-										</div>
-									</div>
-								</div> -->
-							</div>
-
-							<div class="panel panel-primary">
-								<div class="panel-heading">
-									<span class=""></span>Expired Memberships
-								</div>
-								<div class="panel-body">
-									<ul class="list-group">
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-										<li class="list-group-item">
-											<div class="checkbox">
-												<label for="checkbox"> List group item heading </label>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-
+						<div id="membership" class="tab-pane fade in active">
+							<h3>My Memberships</h3>
+							<div class="member_ac_membership"></div>
 						</div>
 
-						<div id="bookings" class="tab-pane fade">
-							<h3>bookings</h3>
-							<table class="table align-items-center table-flush dataTable table-hover">
-								<thead class="thead-dark">
-									<tr>
-										<th scope="col" class="sort">#</th>
-										<th scope="col" class="sort">Service Provider</th>
-										<th scope="col" class="sort">Date</th>
-										<th scope="col" class="sort">Time</th>
-										<th scope="col" class="sort">Total Amount</th>
-										<th scope="col" class="sort">Payable Amount</th>
-										<th scope="col" class="sort">Status</th>
-										<th scope="col">Action</th>
-									</tr>
-								</thead>
-								<!-- <tbody class="list">
-									<?php foreach($list_current as $key=>$val){ ?>
-										<tr>
-											<td><?php echo $val->id; //echo "<pre>";print_r($val);  ?></td>
-											<td>
-												<?php
-													if($val->company_name == ""){
-														if($val->status_id == 1){
-															echo 'Service Provider is not assigned.';
-														}else{
-															echo 'Service Provider is Deleted';
-														}
-													}else{
-														// echo '<a href="'.base_url(MEMBER.'serviceProvider/view/'.$val->sp_id).'">'.$val->company_name.'</a>';
-														echo $val->company_name;
-													}
-												?>
-											</td>
-											<td><?php echo $val->date; ?></td>
-											<td><?php echo $val->time; ?></td>
-											<td><?php echo $val->amount; ?></td>
-											<td><?php echo $val->amount; ?></td>
-											<td><?php echo $val->status_txt; ?></td>
-											<td>
-												<a href="<?php echo base_url(MEMBER.'booking/view/'.$val->id) ?>" class="btn btn-sm bg-default text-white">View</a>
-												<a href="<?php echo base_url(MEMBER.'booking/invoice/'.$val->id) ?>" class="btn btn-sm bg-gray text-white">Invoice</a>
-											</td>
-										</tr>
-									<?php } ?>
-								</tbody> -->
-							</table>
+						<div id="booking" class="tab-pane fade">
+							<h3>Bookings</h3>
+							<div class="member_ac_booking"></div>
+							<br>
+
+							<div class="member_ac_booking_prev"></div>
 						</div>
 
 						<div id="vehicle" class="tab-pane fade">
@@ -248,7 +110,7 @@
 							</ul> -->
 						</div>
 
-						<div id="refer" class="tab-pane fade in active">
+						<div id="refer" class="tab-pane fade">
 							<h3>Refer A Friend</h3>
 							<div class="member_ac_refer"></div>
 						</div>

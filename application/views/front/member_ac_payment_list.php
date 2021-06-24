@@ -31,3 +31,7 @@
 		</li>
 	<?php } ?>
 </ul>
+<br/>
+<div class="pagination_wrapper payment_pagination">
+	<?php echo $pagination; ?>
+</div>

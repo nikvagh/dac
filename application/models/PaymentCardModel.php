@@ -32,6 +32,28 @@ class PaymentCardModel extends CI_Model {
         return $result;
     }
 
+
+    function get_list_total($num="", $offset="",$where = []){
+        $this->db->select('pc.*');
+        $this->db->from('payment_cards as pc');
+        $this->db->join('customer as c','c.id = pc.customer_id','left');
+        $this->db->order_by("pc.id", "Desc");
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+
+        $query = $this->db->get();
+        $result = $query->result();
+
+        // echo "<pre>";print_r($result);exit;
+        return $result;
+    }
+
     function getDataById($id){
         $this->db->select('*');
         $this->db->where('id',$id);
