@@ -65,6 +65,14 @@
                         </div>
 
                         <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="form-control-label">Total Wash *</label>
+                                <input type="text" name="total_wash" class="form-control" placeholder="Total Wash" value="">
+                                <span class="error text-danger validation-message" data-field="total_wash"></span>
+                            </div>   
+                        </div>
+
+                        <div class="col-lg-12">
                             <label class="form-control-label">Validity *</label>
                         </div>
                         <div class="col-lg-4">

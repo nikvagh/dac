@@ -35,7 +35,7 @@ function confirmDelete(frm, id, item_name,action)
 	// console.log(frm);
 	// console.log(id);
 	// console.log(item_name);
-	// return false;
+	// console.log(action);
 
 	// '<div class="modal-header">'+
 	// 						'<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>'+
@@ -66,7 +66,6 @@ function confirmDelete(frm, id, item_name,action)
 }
 
 function delete_items(frm,id,action){
-	// console.log(frm);
 	$("#id").val(id);
 	$("#action").val(action);
 	$("#"+frm).submit();
@@ -151,4 +150,13 @@ function handlePermission() {
 
 function report(state) {
 	console.log('Permission ' + state);
+}
+
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		return false;
+	}
+	return true;
 }

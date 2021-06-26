@@ -53,7 +53,31 @@ class CustomerModel extends CI_Model {
 
         $row->categories = $categories;
         $row->category_ids = array_map(function($e) { return is_object($e) ? $e->category_id : $e['category_id']; }, $categories);
-        // $row->category_ids = array_column($categories,'category_id');
+
+        $home_address = $this->db->select('ca.*')->from('customer_address as ca')->where('ca.type','home')->where('ca.customer_id',$row->id)->get()->row();
+        $row->home_address = $home_address;
+
+        $addresses = (object) [];
+        if(!empty($row)){
+            $query = $this->db->select('ca.*')->from('customer_address as ca')->where('ca.type !=','home')->where('ca.customer_id',$row->id)->get();
+            $addresses = $query->result();
+        }
+        $row->addresses = $addresses;
+
+        $vehicles = (object) [];
+        if(!empty($row)){
+            $query = $this->db->select('cv.*')->from('customer_vehicle as cv')->where('cv.member_id',$row->id)->get();
+            $vehicles = $query->result();
+        }
+        $row->vehicles = $vehicles;
+
+        $cards = (object) [];
+        if(!empty($row)){
+            $query = $this->db->select('pc.*')->from('payment_cards as pc')->where('pc.customer_id',$row->id)->get();
+            $cards = $query->result();
+        }
+        $row->cards = $cards;
+
         return $row;
     }
 
@@ -66,19 +90,19 @@ class CustomerModel extends CI_Model {
 
         $image_name = "";
         if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != ""){
-                $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
+            $image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['image']['name']);
 
-                $config['file_name'] = $image_name;
-                $config['upload_path'] = CUSTOMER_IMG;
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['file_name'] = $image_name;
+            $config['upload_path'] = CUSTOMER_IMG;
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
 
 
-                $this->upload->initialize($config);
-                if (!$this->upload->do_upload('image')) {
-                        $data['error'] = array('error' => $this->upload->display_errors());
-                        // echo "<pre>";print_r($data['error']);
-                        // exit;
-                }
+            $this->upload->initialize($config);
+            if (!$this->upload->do_upload('image')) {
+                    $data['error'] = array('error' => $this->upload->display_errors());
+                    // echo "<pre>";print_r($data['error']);
+                    // exit;
+            }
         }
 
         $data = array(
@@ -93,6 +117,104 @@ class CustomerModel extends CI_Model {
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
+
+        // =============================
+
+        $customer_address = array(
+            'customer_id'=>$id,
+            'type'=> 'home',
+            'address'=>$this->input->post('address'),
+            'zipcode'=>$this->input->post('zipcode'),
+        );
+        $this->db->insert('customer_address',$customer_address);
+
+        if($this->input->post('address_type')){
+            foreach($this->input->post('address_type') as $key=>$val){
+
+                $type = $this->input->post('address_type')[$key];
+                $address = $this->input->post('address_address')[$key];
+                $zipcode = $this->input->post('address_zipcode')[$key];
+
+                if($address != ""){
+                    $customer_address = array(
+                        'customer_id'=>$id,
+                        'type'=> $type,
+                        'address'=> $address,
+                        'zipcode'=> $zipcode,
+                    );
+                    $this->db->insert('customer_address',$customer_address);
+                }
+
+            }
+        }
+
+        // ============================
+
+        if($this->input->post('vehicle_name')){
+            foreach($this->input->post('vehicle_name') as $key=>$val){
+
+                $name = $this->input->post('vehicle_name')[$key];
+                $year = $this->input->post('vehicle_year')[$key];
+
+                if($name != "" && $year != ""){
+                    $vehicle_image_name = "";
+                    if(isset($_FILES['vehicle_image']['name'][$key]) && $_FILES['vehicle_image']['name'][$key] != ""){
+
+                        $_FILES['vehicle_image1']['name'] = $_FILES['vehicle_image']['name'][$key];
+                        $_FILES['vehicle_image1']['type'] = $_FILES['vehicle_image']['type'][$key];
+                        $_FILES['vehicle_image1']['tmp_name'] = $_FILES['vehicle_image']['tmp_name'][$key];
+                        $_FILES['vehicle_image1']['error'] = $_FILES['vehicle_image']['error'][$key];
+                        $_FILES['vehicle_image1']['size'] = $_FILES['vehicle_image']['size'][$key];
+                            
+                        $vehicle_image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['vehicle_image1']['name']);
+                        $config['file_name'] = $vehicle_image_name;
+                        $config['upload_path'] = VEHICLE_IMG;
+                        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('vehicle_image1')) {
+                            $data['error'] = array('error' => $this->upload->display_errors());
+                            // echo "<pre>";print_r($data['error']);
+                            // exit;
+                        }
+                    }
+                
+                    $customer_vehicle = array(
+                        'member_id'=> $id,
+                        'name'=> $name,
+                        'year'=> $year,
+                        'image'=> $vehicle_image_name
+                    );
+                    $this->db->insert('customer_vehicle',$customer_vehicle);
+                }
+                
+            }
+        }
+
+        // ============================
+
+        if($this->input->post('card_name')){
+            foreach($this->input->post('card_name') as $key=>$val){
+                $name = $this->input->post('card_name')[$key];
+                $number = $this->input->post('card_number')[$key];
+                $expiry_month = $this->input->post('card_expiry_month')[$key];
+                $expiry_year = $this->input->post('card_expiry_year')[$key];
+                $cvv = $this->input->post('card_cvv')[$key];
+
+                if($name != "" && $number != "" && $expiry_month != "" && $expiry_year != "" && $cvv != ""){
+                    $payment_cards = array(
+                        'customer_id'=> $id,
+                        'name'=> $name,
+                        'number'=> $number,
+                        'expiry_month'=> $expiry_month,
+                        'expiry_year'=> $expiry_year,
+                        'cvv'=> $cvv
+                    );
+                    $this->db->insert('payment_cards',$payment_cards);
+                }
+
+            }
+        }
         
         return $id;
     }
@@ -147,6 +269,122 @@ class CustomerModel extends CI_Model {
 
         $this->db->set($data)->where('id',$this->input->post('id'));
         $this->db->update($this->table);
+
+        // ==================
+        $this->db->where('customer_id', $this->input->post('id'));
+        $this->db->delete('customer_address');
+
+        $customer_address = array(
+            'customer_id'=>$this->input->post('id'),
+            'type'=> 'home',
+            'address'=>$this->input->post('address'),
+            'zipcode'=>$this->input->post('zipcode'),
+        );
+        $this->db->insert('customer_address',$customer_address);
+
+        if($this->input->post('address_type')){
+            foreach($this->input->post('address_type') as $key=>$val){
+
+                $type = $this->input->post('address_type')[$key];
+                $address = $this->input->post('address_address')[$key];
+                $zipcode = $this->input->post('address_zipcode')[$key];
+
+                if($address != ""){
+                    $customer_address = array(
+                        'customer_id'=>$this->input->post('id'),
+                        'type'=> $type,
+                        'address'=> $address,
+                        'zipcode'=> $zipcode,
+                    );
+                    $this->db->insert('customer_address',$customer_address);
+                }
+
+            }
+        }
+
+        // ===============
+
+        $this->db->where('member_id', $this->input->post('id'));
+        $this->db->delete('customer_vehicle');
+
+        // echo "<pre>";
+        // print_r($_FILES);
+        // exit;
+
+        if($this->input->post('vehicle_name')){
+            foreach($this->input->post('vehicle_name') as $key=>$val){
+
+                $name = $this->input->post('vehicle_name')[$key];
+                $year = $this->input->post('vehicle_year')[$key];
+
+                if($name != "" && $year != ""){
+                    $vehicle_image_name = $this->input->post('vehicle_image_old')[$key];
+                    if(isset($_FILES['vehicle_image']['name'][$key]) && $_FILES['vehicle_image']['name'][$key] != ""){
+
+                        $_FILES['vehicle_image1']['name'] = $_FILES['vehicle_image']['name'][$key];
+                        $_FILES['vehicle_image1']['type'] = $_FILES['vehicle_image']['type'][$key];
+                        $_FILES['vehicle_image1']['tmp_name'] = $_FILES['vehicle_image']['tmp_name'][$key];
+                        $_FILES['vehicle_image1']['error'] = $_FILES['vehicle_image']['error'][$key];
+                        $_FILES['vehicle_image1']['size'] = $_FILES['vehicle_image']['size'][$key];
+
+                        // remove old file
+                        if(file_exists(VEHICLE_IMG.$this->input->post('vehicle_image_old')[$key])){
+                            @unlink(VEHICLE_IMG.$this->input->post('vehicle_image_old')[$key]);
+                        }
+                            
+                        $vehicle_image_name = time() .'_'.preg_replace("/\s+/", "_", $_FILES['vehicle_image1']['name']);
+                        $config['file_name'] = $vehicle_image_name;
+                        $config['upload_path'] = VEHICLE_IMG;
+                        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('vehicle_image1')) {
+                            $data['error'] = array('error' => $this->upload->display_errors());
+                            // echo "<pre>";print_r($data['error']);
+                            // exit;
+                        }
+                    }
+
+                
+                    $customer_vehicle = array(
+                        'member_id'=> $this->input->post('id'),
+                        'name'=> $name,
+                        'year'=> $year,
+                        'image'=> $vehicle_image_name
+                    );
+                    $this->db->insert('customer_vehicle',$customer_vehicle);
+                }
+
+            }
+        }
+
+        // ===========================
+
+        $this->db->where('customer_id', $this->input->post('id'));
+        $this->db->delete('payment_cards');
+
+        if($this->input->post('card_name')){
+            foreach($this->input->post('card_name') as $key=>$val){
+                $name = $this->input->post('card_name')[$key];
+                $number = $this->input->post('card_number')[$key];
+                $expiry_month = $this->input->post('card_expiry_month')[$key];
+                $expiry_year = $this->input->post('card_expiry_year')[$key];
+                $cvv = $this->input->post('card_cvv')[$key];
+
+                if($name != "" && $number != "" && $expiry_month != "" && $expiry_year != "" && $cvv != ""){
+                    $payment_cards = array(
+                        'customer_id'=> $this->input->post('id'),
+                        'name'=> $name,
+                        'number'=> $number,
+                        'expiry_month'=> $expiry_month,
+                        'expiry_year'=> $expiry_year,
+                        'cvv'=> $cvv
+                    );
+                    $this->db->insert('payment_cards',$payment_cards);
+                }
+
+            }
+        }
 
         // echo $this->db->last_query();
         // exit;

@@ -359,8 +359,9 @@
                         ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id],
                         ['column'=>'cm.start_date','op'=>'<=','value'=>curr_date()],
                         ['column'=>'cm.end_date','op'=>'>=','value'=>curr_date()]
-                    ];
-            $content['packages'] = $this->Package->get_list('','',$where2);
+                    ];  
+            $group_by = 'cm.id';
+            $content['packages'] = $this->Package->get_list('','',$where2,$group_by);
 
             $where3 = [['column'=>'a.status','op'=>'=','value'=>'Enable']];
             $content['addOns'] = $this->AddOn->get_list('','',$where3);

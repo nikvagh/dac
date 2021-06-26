@@ -7,10 +7,16 @@ class PackageModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where = []) {
-        $this->db->select('p.*');
+    function get_list($num="", $offset="",$where = [],$group_by='') {
+        $this->db->select('p.*,cm.id as customer_membership_id,cm.start_date,cm.end_date');
         $this->db->from('package as p')->join('customer_membership as cm','cm.package_id=p.id','left');
-        $this->db->group_by("p.id");
+        
+        if($group_by != ""){
+            $this->db->group_by($group_by);
+        }else{
+            $this->db->group_by("p.id");
+        }
+
         $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
@@ -86,6 +92,7 @@ class PackageModel extends CI_Model {
             'amount'=>$this->input->post('amount'),
             'description'=>$this->input->post('description'),
             'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
+            'total_wash'=>$this->input->post('total_wash'),
             'image'=>$image_name,
             'status'=>$status,
         );
@@ -142,6 +149,7 @@ class PackageModel extends CI_Model {
             'amount'=>$this->input->post('amount'),
             'description'=>$this->input->post('description'),
             'validity'=>$this->input->post('year').':'.$this->input->post('month').':'.$this->input->post('day'),
+            'total_wash'=>$this->input->post('total_wash'),
             'image'=>$image_name,
             'status'=>$status,
         );

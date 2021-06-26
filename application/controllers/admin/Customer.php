@@ -4,6 +4,7 @@
             parent::__construct();
             $this->load->model('CustomerModel','Customer');
             $this->load->model('CategoryModel','Category');
+            $this->load->model('MembershipModel','Membership');
             checkLogin('admin');
         }
 
@@ -20,6 +21,15 @@
                     $this->session->set_flashdata('success', 'Customer deleted successfully.');
                     redirect(ADMIN.'customer');
                 }
+            }elseif(isset($_POST['action']) && $_POST['action'] == "deleteCustomerPackage"){
+
+                echo "<pre>";print_r($_POST);
+                exit;
+                
+                // if ($result = $this->Customer->deleteCustomerPackage()) {
+                //     $this->session->set_flashdata('success', 'Customer package deleted successfully.');
+                //     $this->view();
+                // }
             }
             // elseif ($this->input->post('action') == "deleteselected") {
             //     if ($result = $this->membership->deleteselected()) {
@@ -64,8 +74,20 @@
             $content['title'] = "Customer";
             $content['form_data'] = $this->Customer->getDataById($id);
 
+            // $where[] = [];
+            $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$id];
+            $where[] = ['column'=>'cm.start_date','op'=>'<=','value'=>curr_date()];
+            $where[] = ['column'=>'cm.end_date','op'=>'>=','value'=>curr_date()];
+
+            // echo "<pre>";
+            // print_r($where);
+            // exit;
+
+            $content['ongoing_packages'] = $this->Membership->get_list('','',$where);
             $views["content"] = ["path"=>ADMIN.'customer_view',"data"=>$content];
             $layout['page'] = 'customer_view';
+
+            // exit;
             $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
@@ -75,6 +97,8 @@
             $this->form_validation->set_rules('username', 'User Name', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
             $this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
+            $this->form_validation->set_rules('address', 'Home Address', 'required');
+            $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
             if($_POST['action'] == 'add'){
                 $this->form_validation->set_rules('password', 'Password', 'required');
             }

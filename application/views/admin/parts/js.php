@@ -1131,6 +1131,137 @@
             }
         }
 
+        $('.new_address_btn').click(function(e){
+            e.preventDefault();
+            var html = '<div class="row address_row mb-2">'+
+                            '<div class="col-md-2">'+
+                                '<select name="address_type[]" class="form-control">'+
+                                    '<option value="work">work</option>'+
+                                    '<option value="gym">gym</option>'+
+                                    '<option value="school">school</option>'+
+                                '</select>'+
+                            '</div>'+
+                            '<div class="col-md-6">'+
+                                '<input type="text" name="address_address[]" class="form-control" placeholder="Address">'+
+                            '</div>'+
+                            '<div class="col-md-3">'+
+                                '<input type="text" name="address_zipcode[]" class="form-control" placeholder="Zip Code">'+
+                            '</div>'+
+                            '<div class="col-md-1">'+
+                                '<button class="btn btn-danger dlt_address_btn" onclick="deleteAddress()"><i class="fa fa-trash"></i></button>'+
+                            '</div>'+
+                        '</div>';
+
+            if($('.multiAddressBox .row').length){
+                $('.multiAddressBox .row').last().after(html);
+            }else{
+                $('.multiAddressBox').html(html);
+            }
+        });
+
+        $(document).on('click', '.dlt_address_btn', function(e){ 
+            e.preventDefault();
+            $(this).parents('.address_row').remove();
+        });
+
+        $('.new_vehicle_btn').click(function(e){
+            e.preventDefault();
+            var html = '<div class="row vehicle_row mb-2">'+
+                            '<div class="col-md-4">'+
+                                '<input type="text" name="vehicle_name[]" class="form-control" placeholder="Vehicle Name" value="">'+
+                            '</div>'+
+                            '<div class="col-md-3">'+
+                                '<select name="vehicle_year[]" id="" class="form-control select2">'+
+                                    <?php foreach(get_last_30_yr() as $val1){ ?>
+                                        '<option value="<?php echo $val1; ?>"><?php echo $val1; ?></option>'+
+                                    <?php } ?>
+                                '</select>'+
+                            '</div>'+
+
+                            '<div class="col-md-4">'+
+                                '<div class="row">'+
+                                    '<div class="col-lg-10 file-box-wrapper">'+
+                                        '<label class="file-box">'+
+                                            '<span class="name-box">Drag or Select Files</span>'+
+                                            '<input type="hidden" name="vehicle_image_old[]" id="image_old" value=""/>'+
+                                            '<input type="file" name="vehicle_image[]" class="form-control input-single" onchange="preview(this);" accept=".png, .jpg, .jpeg, .svg"/>'+
+                                        '</label>'+
+                                    '</div>'+
+                                    '<div class="col-lg-2 d-flex1 align-items-center pre-img-box">'+
+                                        '<img src="" id="" class="img-fluid" />'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+
+                            '<div class="col-md-1">'+
+                                '<button class="btn btn-danger dlt_vehicle_btn"><i class="fa fa-trash"></i></button>'+
+                            '</div>'+
+                        '</div>';
+
+            if($('.multiVehicleBox > .row').length){
+                $('.multiVehicleBox > .row').last().after(html);
+            }else{
+                $('.multiVehicleBox').html(html);
+            }
+        });
+
+        $(document).on('click', '.dlt_vehicle_btn', function(e){ 
+            e.preventDefault();
+            $(this).parents('.vehicle_row').remove();
+        });
+
+        $('.new_card_btn').click(function(e){
+            e.preventDefault();
+            var html = '<div class="row card_row mb-2">'+
+                            '<div class="col-lg-6 mb-3">'+
+                                '<input type="text" name="card_name[]" class="form-control" placeholder="Name" value="">'+
+                            '</div>'+
+
+                            '<div class="col-lg-6 mb-2">'+
+                                '<input type="text" name="card_number[]" class="form-control" placeholder="Number" onkeypress="return isNumber(event)" value="">'+
+                            '</div>'+
+
+                            '<div class="col-lg-3 mb-3">'+
+                                '<select name="card_expiry_month[]" id="expiry_month" class="form-control select2">'+
+                                    '<option value=""> -- Expiry Month --</option>'+
+                                    <?php foreach(get_month() as $val){ ?>
+                                        '<option value="<?php echo $val; ?>" ><?php echo $val; ?></option>'+
+                                    <?php } ?>
+                               '</select>'+
+                            '</div>'+
+
+                            '<div class="col-lg-3 mb-3">'+
+                                '<select name="card_expiry_year[]" id="" class="form-control select2">'+
+                                    '<option value=""> -- Expiry Year --</option>'+
+                                    <?php foreach(get_next_30_yr() as $val){ ?>
+                                        '<option value="<?php echo $val; ?>" ><?php echo $val; ?></option>'+
+                                    <?php } ?>
+                                '</select>'+
+                            '</div>'+
+
+                            '<div class="col-lg-3 mb-3">'+
+                                '<input type="text" name="card_cvv[]" class="form-control" placeholder="CVV" onkeypress="return isNumber(event)" value="">'+
+                                '<span class="error text-danger validation-message" data-field="cvv"></span>'+
+                            '</div>'+
+
+                            '<div class="col-md-3 text-right">'+
+                                '<button class="btn btn-danger dlt_card_btn"><i class="fa fa-trash"></i></button>'+
+                            '</div>'+
+                        '</div>';
+
+            if($('.multiCardBox > .row').length){
+                if($('.multiCardBox > .row').length < 3){
+                    $('.multiCardBox > .row').last().after(html);
+                }
+            }else{
+                $('.multiCardBox').html(html);
+            }
+        });
+
+        $(document).on('click', '.dlt_card_btn', function(e){ 
+            e.preventDefault();
+            $(this).parents('.card_row').remove();
+        });
     <?php } ?>
 
     <?php if($page == 'faq_add' || $page == 'faq_edit'){ ?>
@@ -1197,6 +1328,10 @@
             } else {
                 return 'success';
             }
+        }
+
+        function deleteAddress(){
+            $('.parent')
         }
 
     <?php } ?>

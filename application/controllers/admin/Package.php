@@ -68,13 +68,14 @@
             $this->form_validation->set_rules('month', 'Month', 'required|numeric');
             $this->form_validation->set_rules('day', 'Day', 'required|numeric');
             $this->form_validation->set_rules('services[]', 'Services', 'required');
+            $this->form_validation->set_rules('total_wash', 'Total Wash', 'required|numeric');
             if ($this->form_validation->run()) {
                 echo json_encode(['status'=>200]);
             } else {
                 echo json_encode(['status'=>400,'result'=>$this->form_validation->error_array()]);
             }
         }
-
+        
         public function create(){
             if ($this->Package->create()) {
                 $this->session->set_flashdata('success', 'Package information has been saved successfully.');

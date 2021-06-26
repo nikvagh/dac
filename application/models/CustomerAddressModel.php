@@ -1,42 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AppointmentModel extends CI_Model {
+class CustomerAddressModel extends CI_Model {
     function __construct() {
-        $this->table = 'appointment';
+        $this->table = 'customer_address';
         $this->primaryKey = 'id';
-        $this->load->model('PackageModel','Package');
-        $this->load->model('ServiceProviderModel','ServiceProvider');
-        $this->load->model('CustomerMembershipModel','CustomerMembership');
+        // $this->load->model('PackageModel','Package');
     }
 
     function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = [], $isTotalQuery = 'N') {
-
         $query = $this->list_query($num,$offset,$where,$where_or,$where_in);
         if($isTotalQuery == "N"){
             $result = $query->result();
-            foreach($result as $key=>$val){
-                $query = $this->db->select('s.*')->from('appointment_service as as')->join('service as s','s.id=as.service_id','left')->where('as.appointment_id',$val->id)->get();
-
-                $result[$key]->services = $query->result();
-                $result[$key]->service_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->services);
-
-                $duration = 0; $amount = 0;
-                foreach($result[$key]->services as $key1=>$val1){
-                    $amount+= $val1->amount;
-                    $duration+= $val1->duration;
-                }
-                $result[$key]->amount = $amount;
-                $result[$key]->duration = $duration;
-
-                // ============== add on ==================
-
-                $query = $this->db->select('a.id,a.name,aa.amount')->from('appointment_addon as aa')->join('addon as a','a.id=aa.addon_id','left')->where('aa.appointment_id',$val->id)->get();
-                $result[$key]->addons = $query->result();
-                $result[$key]->addon_names = array_map(function($e) { return is_object($e) ? $e->name : $e['name']; }, $result[$key]->addons);
-            }
-
-            // echo "<pre>";print_r($result);exit;
             return $result;
         }else{
             $result = $query->num_rows();
@@ -45,11 +20,9 @@ class AppointmentModel extends CI_Model {
     }
 
     function list_query($num="", $offset="",$where = [],$where_or = [],$where_in = [], $filterCheck = 'N'){
-        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt,ss.bgColor,ss.color');
+        $this->db->select('ca.*,cr.firstname,cr.lastname');
         $this->db->from('appointment as a')
-            ->join('customer as cr','cr.id = a.customer_id','left')
-            ->join('sp','sp.sp_id = a.sp_id','left')
-            ->join('service_status as ss','ss.id = a.status_id','left');
+            ->join('customer as cr','cr.id = a.customer_id','left');
 
         if(!empty($where)){
             foreach($where as $key=>$val){
@@ -386,17 +359,12 @@ class AppointmentModel extends CI_Model {
             $vehicle_id = $this->db->insert_id();
         }
 
-        $customer_membership_id = $this->input->post('package_id');
-        $customer_membership = $this->CustomerMembership->getDataById($customer_membership_id);
-        $package_id = $customer_membership->package_id;
-
         $data = array(
             'sp_id'=>$sp_id,
             'customer_id'=>$this->input->post('customer_id'),
-            'package_id'=>$package_id,
+            'package_id'=>$this->input->post('package_id'),
             'vehicle_id'=>$vehicle_id,
             'payment_id'=>$payment_id,
-            'customer_membership_id'=>$customer_membership_id,
             'date'=>$date,
             'time'=>$this->input->post('time'),
             'appointment_type'=>$appointment_type,
@@ -415,7 +383,7 @@ class AppointmentModel extends CI_Model {
         $id = $this->db->insert_id();
         // ================================
 
-        $package = $this->Package->getDataById($package_id);
+        $package = $this->Package->getDataById($this->input->post('package_id'));
         foreach($package->services as $val){
             $data = array(
                 'appointment_id'=>$id,

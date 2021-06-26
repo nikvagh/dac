@@ -63,7 +63,7 @@
 				<select name="package_id" id="package_id" class="form-control select2">
 					<option value="">--select--</option>
 					<?php foreach ($packages as $val) { ?>
-						<option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
+						<option value="<?php echo $val->customer_membership_id; ?>"><?php echo '#'.$val->customer_membership_id.' - '. $val->name.' - (Expire On - '.date('d M,y',strtotime($val->end_date)).')'; ?></option>
 					<?php } ?>
 				</select>
 				<span class="error text-danger validation-message" data-field="package_id"></span>

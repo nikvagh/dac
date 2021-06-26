@@ -339,6 +339,7 @@ define('PACKAGE_IMG', UPLOADS.'package/');
 define('DRIVER_IMG', UPLOADS.'driver/');
 define('DRIVER_LICENSE_IMG', UPLOADS.'driving_license/');
 define('VEHICLE_TYPE_IMG', UPLOADS.'vehicleType/');
+define('VEHICLE_IMG', UPLOADS.'vehicle/');
 
 define('PROFILE_PATH', UPLOADS.'profile/');
 define('SPDOC_PATH', UPLOADS.'sp_document/');

@@ -5,6 +5,7 @@ class MembershipModel extends CI_Model {
     function __construct() {
         $this->table = 'customer_membership';
         $this->primaryKey = 'id';
+        $this->load->model('AppointmentModel','Appointment');
     }
 
     function get_list($num="", $offset="",$where = [], $isTotalQuery = 'N') {
@@ -14,6 +15,7 @@ class MembershipModel extends CI_Model {
             $result = $query->result();
             foreach($result as $key=>$val){
                 $result[$key]->validity_status = get_membership_validity_status($val->start_date,$val->end_date);
+                $result[$key]->service_used_count = $this->service_usage_total($val->id);
             }
             return $result;
         }else{
@@ -23,7 +25,7 @@ class MembershipModel extends CI_Model {
     }
 
     function list_query($num="", $offset="",$where = []){
-        $this->db->select('cm.*,c.firstname,c.lastname,c.username,c.email,c.phone,p.name as package_name,p.validity');
+        $this->db->select('cm.*,c.firstname,c.lastname,c.username,c.email,c.phone,p.name as package_name,p.validity,p.total_wash');
         $this->db->from('customer_membership as cm');
         $this->db->join('customer c','c.id=cm.customer_id','left')
                 ->join('package as p','p.id=cm.package_id','left');
@@ -37,6 +39,9 @@ class MembershipModel extends CI_Model {
                 if($val['op'] == "="){
                     $this->db->where($val['column'],$val['value']);
                 }
+                if($val['op'] == "<=" || $val['op'] == ">="){
+                    $this->db->where($val['column'].' '.$val['op'],$val['value']);
+                }
             }
         }
 
@@ -48,6 +53,10 @@ class MembershipModel extends CI_Model {
         return $query;
     }
 
+    function service_usage_total($customer_membership_id){
+        $where = [['column'=>'a.customer_membership_id','op'=>'=','value'=>$customer_membership_id]];
+        return $res = $this->Appointment->get_list('','',$where,[],[],'Y');
+    }
 
     function getDataById($id){
         $this->db->select('*');
