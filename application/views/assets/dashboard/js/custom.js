@@ -43,7 +43,7 @@ function confirmDelete(frm, id, item_name,action)
 	// 					'</div>'+
 
 	if (typeof action === "undefined") {
-		action = 'delete'
+		action = 'delete';
 	}
 
 	var html  = '<div class="modal-dialog">'+

@@ -3347,6 +3347,7 @@ a.manager:hover {
 .my-account .sidebar-ul li{
     border-collapse: collapse;
     border-bottom: 1px solid rgb(214 214 213);
+	background: #ffffff;
 }
 
 .my-account .sidebar-ul li.active{
@@ -3366,8 +3367,12 @@ a.manager:hover {
 
 .my-account .sidebar-ul .name-box{
 	padding: 20px;
+	background: #f7f7f7;
 }
 
+.main-menu ul li:hover{
+	background: #f7f7f7;
+}
 .main-menu ul li.active{
 	background: #131d33;
 	border-top: 3px solid #00aeef;
@@ -3378,6 +3383,7 @@ a.manager:hover {
 .tab-content-box{
 	border: 1px solid rgb(214 214 213);
 	padding: 15px;
+	background: #f7f7f7;
 }
 .profile-table{
 	width: 100%;
@@ -3479,12 +3485,23 @@ label{
     padding: 10px 0px;
 }
 
+.membership_ul{
+	max-width: 800px;
+	margin: auto;
+}
 .membership_ul li{
+	/* box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px; */
 	padding: 10px;
+	/* margin-bottom:20px; */
+	border-radius: 4px;
+	
+	display: inline-block;
+	width: 100%;
 }
 .membership_ul li > .row{
-	box-shadow: 0 1px 2px 1px #e3e3e4;
-    padding: 10px 0px;
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+	background: #ffffff;
+	min-height: 100px;
 }
 
 .booking_ul li{
@@ -3528,3 +3545,19 @@ label{
 .margin-bottom-10{
 	margin-bottom: 10px;
 }
+
+.join_date_span{
+	border-radius: 16px;
+	background: red;
+	color: white;
+	padding: 2px 6px;
+}
+
+.account-page{
+	/* background-color: #f7f7f7; */
+	height: auto;
+}
+
+/* .container-large{
+	background-color: #f7f7f7;
+} */

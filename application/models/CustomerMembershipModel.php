@@ -40,9 +40,9 @@ class CustomerMembershipModel extends CI_Model {
     // }
 
     function getDataById($id){
-        $this->db->select('*');
-        $this->db->where('id',$id);
-        $query = $this->db->get($this->table);
+        $this->db->select('cm.*,p.name as package_name');
+        $this->db->where('cm.id',$id)->join('package as p','p.id = cm.package_id','left');
+        $query = $this->db->get('customer_membership cm');
         $row = $query->row();
 
         $services = (object) [];

@@ -33,7 +33,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit' 
-            || $page == 'driver_add' || $page == 'driver_edit' || $page == 'payment_list'){ ?>
+            || $page == 'driver_add' || $page == 'driver_edit' || $page == 'payment_list' || $page == 'customer_package_add' || $page == 'customer_package_edit'){ ?>
         <script src="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/build/jquery.datetimepicker.full.js"></script>
     <?php } ?>
 
@@ -1982,6 +1982,75 @@
             }
         }
 
+    <?php } ?>
+
+    <?php if($page == 'customer_package_add' || $page == 'customer_package_edit'){ ?>
+
+        $('#start_date').datetimepicker({
+            timepicker:false,
+            format:'Y-m-d',
+            // step:15,
+            // onShow:function(ct){
+            //     this.setOptions({
+            //         maxTime:jQuery('#end_time').val()?jQuery('#end_time').val():false
+            //     })
+            // },
+        });
+
+        $('#end_date').datetimepicker({
+            timepicker:false,
+            format:'Y-m-d',
+            // step:15,
+            // onShow:function(ct){
+            //     this.setOptions({
+            //         minTime:jQuery('#start_time').val()?jQuery('#start_time').val():false
+            //     })
+            // },
+        });
+
+        function edit_data(){
+            var formData = new FormData(document.getElementById("form1"));
+            formData.append ('action', 'edit');
+
+            if(editValidation(formData) == 'success'){
+                $.ajax({
+                    type: "post", url: admin_base+'customer/update', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        // return false;
+                        if(data.status == 200){
+                            window.location.href = admin_base+'profile';
+                        }
+                    }
+                });
+            }
+        }
+
+        function editValidation(formData){
+            $(".btn-submit").html("Validating data, please wait...");
+            var returnData;
+            $.ajax({
+                type: "post", url: admin_base+'customer/customerPackageValidationEdit', async: false, dataType: "json", cache: false, processData: false, contentType: false, data:formData,
+                success: function (data, textStatus, jqXHR) {
+                    returnData = data;
+                }
+            });
+
+            $('.validation-message').html('');
+            if (returnData.status != 200) {
+                $(".btn-submit").html("Submit");
+                $('.validation-message').each(function () {
+                    for (var key in returnData.result) {
+                        if ($(this).attr('data-field') == key) {
+                            $(this).html(returnData.result[key]);
+                        }
+                    }
+                });
+            } else {
+                return 'success';
+            }
+        }
+        
     <?php } ?>
 
 // You can get calendar instance

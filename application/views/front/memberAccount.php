@@ -5,7 +5,7 @@
 	<?php $this->load->view('front/head'); ?>
 </head>
 <?php $this->load->view('front/header'); ?>
-<body>
+<body class="account-page">
 
 	<!-- Page Heading Section Start -->
 	<div class="pagehding-sec">
@@ -26,7 +26,7 @@
 	</div>
 	<!-- Page Heading Section End -->
 
-	<div class="container">
+	<div class="container container-large">
 
 		<div class="row flex-row">
 			<div class="col-md-12">
@@ -50,7 +50,7 @@
 				<ul class="sidebar-ul">
 					<li class="text-center name-box">
 						<h2 class="text-center">Hello, <?php echo $this->member->loginData->firstname.' '.$this->member->loginData->lastname; ?></h2>
-						<span class="">Account since <?php echo date('M d, Y',strtotime($this->member->loginData->datecreated)); ?></span>
+						<span class="join_date_span">Account since <?php echo date('M d, Y',strtotime($this->member->loginData->datecreated)); ?></span>
 					</li>
 					<li class="active"><a data-toggle="pill" href="#membership"> My Membership </a></li>
 					<li><a data-toggle="pill" href="#booking"> Bookings </a></li>

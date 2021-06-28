@@ -419,6 +419,15 @@ class CustomerModel extends CI_Model {
         }
     }
 
+    function deleteCustomerPackage(){
+        $this->db->where('id', $this->input->post('id'));
+        if ($query = $this->db->delete('customer_membership')){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     function getTotalCount(){
         $query = $this->db->select("COUNT(id) AS total")->from($this->table)->get();
         if($query){ 

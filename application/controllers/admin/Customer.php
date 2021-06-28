@@ -5,6 +5,7 @@
             $this->load->model('CustomerModel','Customer');
             $this->load->model('CategoryModel','Category');
             $this->load->model('MembershipModel','Membership');
+            $this->load->model('CustomerMembershipModel','CustomerMembership');
             checkLogin('admin');
         }
 
@@ -22,21 +23,12 @@
                     redirect(ADMIN.'customer');
                 }
             }elseif(isset($_POST['action']) && $_POST['action'] == "deleteCustomerPackage"){
-
-                echo "<pre>";print_r($_POST);
-                exit;
-                
-                // if ($result = $this->Customer->deleteCustomerPackage()) {
-                //     $this->session->set_flashdata('success', 'Customer package deleted successfully.');
-                //     $this->view();
-                // }
+                $ids = explode('_',$_POST['id']);
+                if ($result = $this->Customer->deleteCustomerPackage($ids[0])) {
+                    $this->session->set_flashdata('success', 'Package deleted successfully.');
+                    redirect(ADMIN.'customer/view/'.$ids[1]);
+                }
             }
-            // elseif ($this->input->post('action') == "deleteselected") {
-            //     if ($result = $this->membership->deleteselected()) {
-            //         $this->session->set_flashdata('notification', 'categoty has been deleted successfully.');
-            //         redirect('membership');
-            //     }
-            // }
             
             $content['list'] = $this->Customer->get_list();
             $content['title'] = "Members";
@@ -130,6 +122,39 @@
                 $this->session->set_flashdata('success', 'Items deleted successfully.');
                 // echo json_encode(['status'=>200]);
             }
+        }
+
+        function memberPackageAdd($customer_id = 0){
+            $content['title_top'] = "Members / Package";
+            $content['title'] = "Member / Package";
+
+            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
+            $content['packages'] = $this->Package->get_list('','',$where2);
+            $content['customer_id'] = $customer_id;
+            $views["content"] = ["path"=>ADMIN.'customer_package_add',"data"=>$content];
+
+            $layout['page'] = 'customer_package_add';
+            $this->layouts->view($views,'admin_dashboard',$layout);
+        }
+
+        function memberPackageEdit($customer_id = 0, $id = 0){
+            $content['title_top'] = "Members / Package";
+            $content['title'] = "Package Details";
+
+            $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
+            $content['packages'] = $this->Package->get_list('','',$where2);
+            // $content['packages'] = $this->Package->get_list($id);
+
+            $content['form_data'] = $this->CustomerMembership->getDataById($id);
+
+            $content['customer_id'] = $customer_id;
+            $views["content"] = ["path"=>ADMIN.'customer_package_edit',"data"=>$content];
+
+            // echo "<pre>";print_r($content['form_data']);
+            // exit;
+
+            $layout['page'] = 'customer_package_edit';
+            $this->layouts->view($views,'admin_dashboard',$layout);
         }
 
     }

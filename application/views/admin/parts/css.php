@@ -26,7 +26,7 @@
     <?php } ?>
 
     <?php if($page == 'coWorker_add' || $page == 'coWorker_edit' || $page == 'offer_add' || $page == 'offer_edit' || $page == 'appointment_add' || $page == 'appointment_edit' ||
-            $page == 'driver_add' || $page == 'driver_edit' || $page == 'payment_list'){ ?>
+            $page == 'driver_add' || $page == 'driver_edit' || $page == 'payment_list' || $page == 'customer_package_add' || $page == 'customer_package_edit'){ ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->dash_assets; ?>custom-plugin/datetimepicker/jquery.datetimepicker.css">
     <?php } ?>
 
