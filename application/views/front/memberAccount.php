@@ -46,7 +46,7 @@
 		</div>
 
 		<div class="row flex-row my-account">
-			<div class="col-md-3 sidebar">
+			<div class="col-md-3 col-xs-12 sidebar">
 				<ul class="sidebar-ul">
 					<li class="text-center name-box">
 						<h2 class="text-center">Hello, <?php echo $this->member->loginData->firstname.' '.$this->member->loginData->lastname; ?></h2>
@@ -62,7 +62,7 @@
 				</ul>
 			</div>
 
-			<div class="col-md-9">
+			<div class="col-md-9 col-xs-12">
 				<div class="tab-content-box">
 					<div class="tab-content">
 						<div id="membership" class="tab-pane fade in active">
