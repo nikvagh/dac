@@ -29,7 +29,7 @@
 	<div class="container">
 	
 		<div class="row flex-row my-account">
-			<div class="col-md-6 col-md-offset-3 tab-content-box">
+			<div class="col-md-6 col-md-offset-3 tab-content-box memberRegister">
 
 				<?php if ($this->session->flashdata('error')): ?>
 					<div class="alert alert-danger">

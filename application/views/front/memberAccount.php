@@ -45,7 +45,7 @@
 			</div>
 		</div>
 
-		<div class="row flex-row my-account">
+		<div class="row flex-row my-account ">
 			<div class="col-md-3 col-xs-12 sidebar">
 				<ul class="sidebar-ul">
 					<li class="text-center name-box">
@@ -63,7 +63,7 @@
 			</div>
 
 			<div class="col-md-9 col-xs-12">
-				<div class="tab-content-box">
+				<div class="tab-content-box <?php echo $page; ?>">
 					<div class="tab-content">
 						<div id="membership" class="tab-pane fade in active">
 							<h3>My Memberships</h3>
