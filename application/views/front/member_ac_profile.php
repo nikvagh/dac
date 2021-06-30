@@ -61,7 +61,7 @@
 					</div>
 				</div>
 				<div class="col-lg-2 d-flex align-items-center pre-img-box">
-					<img src="<?php echo base_url(CUSTOMER_IMG.$this->member->loginData->profile); ?>" id="" class="img-fluid" />
+					<img src="<?php echo base_url(CUSTOMER_IMG.$this->member->loginData->profile); ?>" id="" class="img-fluid" style="border-radius:20px;"/>
 				</div>
 			</div>
 		</div>

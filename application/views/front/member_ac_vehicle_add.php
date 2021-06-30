@@ -26,5 +26,6 @@
 </form>
 
 <div class="text-right">
+	<button class="btn btn-default btn-flat btn-pill" onclick="cancel('vehicle')">Cancel</button>
 	<button class="btn btn-primary btn-submit btn-pill" onclick="vehicleCreate()">Save</button>
 </div>

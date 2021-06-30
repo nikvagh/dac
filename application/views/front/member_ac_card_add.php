@@ -57,5 +57,6 @@
 </form>
 
 <div class="text-right">
+	<button class="btn btn-default btn-flat btn-pill" onclick="cancel('card')">Cancel</button>
 	<button class="btn btn-primary btn-submit btn-pill" onclick="cardCreate()">Save</button>
 </div>

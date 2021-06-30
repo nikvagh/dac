@@ -53,7 +53,6 @@ $('.sidebar-ul li').on('click', function (e) {
 $('body').on('click','.pagination_wrapper a',function(e){
 	e.preventDefault(); 
 	var pageNo = $(this).attr('data-ci-pagination-page');
-
 	var pagination_wrapper = $(this).parent('.pagination_wrapper');
 	
 	if(pagination_wrapper.hasClass('payment_pagination')){
@@ -72,6 +71,19 @@ $('body').on('click','.pagination_wrapper a',function(e){
 		member_ac_booking_list_prev(pageNo);
 	}
 });
+
+function cancel(href){
+	if(href == "card"){
+		load_payment_list();
+	}else if(href == 'vehicle'){
+		$('.sidebar-ul li [href="#'+href+'"]').trigger("click");
+	}else if(href=='booking'){
+		load_booking_list();
+		member_ac_booking_list_prev();
+	}else if(href=='membership'){
+		$(".sidebar-ul li [href='#membership']").trigger("click");
+	}
+}
 
 function saveProfile_validation(formData){
 	$(".btn-submit").html("Validating data, please wait...");
@@ -234,7 +246,7 @@ function vehicleUpdate(){
 	if(vehicleValidation(formData) == 'success'){
 
 		$(".btn-submit").html("Saving data, please wait...");
-		var call = ajaxCall(base_url+'memberAccount/vehicleCreate','post','json',formData,[]);
+		var call = ajaxCall(base_url+'memberAccount/vehicleUpdate','post','json',formData,[]);
 		call.success(function(data) {
 			userAuth(data);
 			$(".btn-submit").html("Save");
@@ -258,7 +270,8 @@ function vehicleDelete(id){
 	call.success(function(data) {
 		userAuth(data);
 		// $(".btn-submit").html("Save");
-		// $(".sidebar-ul li [href='#vehicle']").trigger("click");
+		$('.sidebar-ul li [href="#vehicle"]').trigger("click");
+
 		$('.vehicle_ul').find('[row-id="'+id+'"]').hide();
 		$(".success_msg").html(data.message);
 		$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
@@ -373,7 +386,8 @@ function cardDelete(id){
 		userAuth(data);
 		// $(".btn-submit").html("Save");
 		// $(".sidebar-ul li [href='#vehicle']").trigger("click");
-		$('.card_ul').find('[row-id="'+id+'"]').hide();
+		// $('.card_ul').find('[row-id="'+id+'"]').hide();
+		load_payment_list();
 		$(".success_msg").html(data.message);
 		$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
 			$("#success-alert").slideUp(500);

@@ -1,5 +1,6 @@
 <h5>Previous Bookings</h5>
 
+<?php if(!empty($list)){ ?>
 <ul class="booking_ul">
 	<?php foreach($list as $key=>$val){ ?>
 		<li row-id="<?php echo $val->id; ?>">
@@ -39,3 +40,8 @@
 <div class="pagination_wrapper booking_prev_pagination">
 	<?php echo $pagination; ?>
 </div>
+
+<?php }else{ 
+		$this->load->view(FRONT.'no_data_found');
+	}
+?>

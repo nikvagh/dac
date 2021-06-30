@@ -136,6 +136,7 @@ width: 100%;
 .pb-70{padding-bottom:70px}
 .pb-20{padding-bottom:20px}
 .pb-50{padding-bottom:50px}
+.mt-0{margin-top:0px!important;}
 .mt-10{margin-top:10px}
 .mb-10{margin-bottom:10px}
 .mt-20{margin-top:20px}
@@ -3358,6 +3359,10 @@ a.manager:hover {
 	background: #ffffff;
 }
 
+.my-account .sidebar-ul li:hover{
+	background: #f7f7f7;
+}
+
 .my-account .sidebar-ul li.active{
 	/* background: rgb(247, 247, 247); */
 	background: #131d33;
@@ -3392,6 +3397,7 @@ a.manager:hover {
 	border: 1px dashed rgb(214 214 213);
 	padding: 15px;
 	background: #f7f7f7;
+	min-height: 600px;
 }
 .profile-table{
 	width: 100%;
@@ -3465,6 +3471,11 @@ label{
 	background-color: #00aeef;
     border-color: #00aeef;
 }
+
+.vehicle_ul{
+	max-width: 800px;
+	margin: auto;
+}
 .vehicle_ul li{
 	padding: 10px;
 }
@@ -3478,23 +3489,73 @@ label{
 }
 
 .vehicle_ul .vehicle_box{
-	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+	/* box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+	background: #ffffff; */
+	/* padding: 0;
+	margin:0 15px; */
+	margin-bottom: 30px;
 }
 
+.vehicle_ul .vehicle_box > div{
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+	background: #ffffff;
+	height: 100%;
+}
+
+.vehicle_box .md-details{
+	padding: 10px;
+}
+
+.payment_ul{
+	max-width: 800px;
+	margin: auto;
+}
 .payment_ul li{
 	padding: 10px;
 }
 .payment_ul li > .row{
-	box-shadow: 0 1px 2px 1px #e3e3e4;
-    padding: 10px 0px;
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+    /* padding: 10px 0px; */
+	background: #ffffff;
+	min-height: 100px;
+}
+.payment_ul .status-box{
+	padding: 10px;
+}
+.payment_ul .status-box .btn-success{
+	background-color: #449d44;
+}
+.payment_ul .status-box .btn-danger{
+	background-color: #c9302c;
+}
+.payment_ul .status-box .btn-primary{
+	background-color: #286090;
 }
 
+
+
+.card_ul{
+	max-width: 800px;
+	margin: auto;
+}
 .card_ul li{
 	padding: 10px;
 }
 .card_ul li > .row{
 	box-shadow: 0 1px 2px 1px #e3e3e4;
     padding: 10px 0px;
+}
+.card_ul .card_box{
+	/* padding: 0;
+	margin: 0 10px; */
+	margin-bottom: 20px;
+}
+.card_ul .card_box > div{
+	background: #ffffff;
+	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
+}
+.card_ul .card_box .md-details{
+	padding: 10px;
 }
 
 .membership_ul{
@@ -3619,15 +3680,17 @@ label{
 }
 
 .membership_box{
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.membership_box > div{
+	height: 100%;
 	box-shadow: rgb(0 0 0 / 15%) 0px 2px 5px 0px;
 	background-color: #ffffff;
-	text-align: center;
-	padding: 0px;
-	/* border: 1px dotted #000; */
-	margin-right: 15px;
-    margin-left: 15px;
-	margin-bottom: 15px;
+	max-width: 100%;
 }
+
 .membership_box .md-box{
 	border-bottom: 1px dotted gray;
 	padding: 10px 0px;
@@ -3648,22 +3711,44 @@ label{
 }
 
 .md-box.md-price{
-	background:#131d33;
+	background:#00aeef;
 	color:#ffffff;
 }
 .md-box.md-radio{
 	/* position: relative; */
-	height: 70px;
+	height: 60px;
 }
 .md-box.md-radio > div{
 	height: 32px;
     position: absolute;
     width: 100%;
     left: 0;
-    bottom: 24px;
+    bottom: 10px;
 }
 .md-box.md-radio > div input[type=radio]{
 	align-items: flex-end!important;
+}
+
+.member_ac_refer{
+	max-width: 800px;
+	margin: auto;
+}
+
+.member_ac_profile{
+	max-width: 800px;
+	margin: auto;
+}
+
+.no_data_found_box{
+	display: inline-block;
+	width: 100%;
+	opacity: 0.7;
+	text-align: center;
+	padding: 30px 0;
+}
+.no_data_found_box img{
+	width: 150px;
+	margin-bottom: 20px;
 }
 
 /* ============================================== checkbox css */

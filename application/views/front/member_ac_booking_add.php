@@ -115,5 +115,6 @@
 </form>
 
 <div class="text-right">
+	<button class="btn btn-default btn-pill" onclick="cancel('booking')">Cancel</button>
 	<button class="btn btn-primary btn-submit btn-pill" onclick="bookingCreate()">Save</button>
 </div>
