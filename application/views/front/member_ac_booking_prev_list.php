@@ -27,8 +27,8 @@
 					<?php echo 'Payable Amount: $'.$val->total_payable; ?>
 				 </div>
 				<div class="col-md-3 text-right right-box">
-					<a class="btn btn-sm btn-pill btn-default margin-bottom-10" style="<?php echo 'background:'.$val->bgColor.';'.'color:'.$val->color.'!important'; ?>"><?php echo $val->status_txt; ?></a><br>
-					<a class="btn btn-sm btn-pill btn-secondary" onclick="load_booking_view('<?php echo $val->id; ?>')"><i class="fa fa-eye"></i></a>
+					<a class="btn btn-sm btn-pill btn-default margin-bottom-10" style="<?php echo 'background:'.$val->bgColor.';'.'color:'.$val->color.'!important'; ?>"><?php echo $val->status_past_txt; ?></a><br>
+					<a class="btn btn-sm btn-pill btn-secondary" onclick="load_booking_view('<?php echo $val->id; ?>')" title="View Details"><i class="fa fa-eye"></i></a>
 					<a class="btn btn-sm btn-pill btn-primary" href="<?php echo base_url('memberAccount/load_booking_invoice/'.$val->id) ?>"><i class="fa fa-download"></i> Invoice</a>
 				</div>
 			</div>

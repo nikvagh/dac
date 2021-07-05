@@ -45,7 +45,7 @@ class AppointmentModel extends CI_Model {
     }
 
     function list_query($num="", $offset="",$where = [],$where_or = [],$where_in = [], $filterCheck = 'N'){
-        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_txt,ss.bgColor,ss.color');
+        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_past_txt,ss.status_txt,ss.bgColor,ss.color');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')

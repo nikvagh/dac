@@ -40,9 +40,11 @@ class CustomerModel extends CI_Model {
     }
 
     function getDataById($id){
-        $this->db->select('*');
-        $this->db->where('id',$id);
-        $query = $this->db->get($this->table);
+        $this->db->select('c.*,cou.name as country_name,s.name as state_name')
+                ->join('countries as cou','cou.id = c.country','left')
+                ->join('states as s','s.id = c.state','left');
+        $this->db->where('c.id',$id);
+        $query = $this->db->get('customer as c');
         $row = $query->row();
 
         $categories = (object) [];
@@ -530,6 +532,10 @@ class CustomerModel extends CI_Model {
             'firstname'=>$this->input->post('firstname'),
             'lastname'=>$this->input->post('lastname'),
             'phone'=>$this->input->post('phone'),
+            'country'=>$this->input->post('country'),
+            'state'=>$this->input->post('state'),
+            'city'=>$this->input->post('city'),
+            'zip'=>$this->input->post('zip'),
             'address'=>$this->input->post('address'),
             'profile'=>$image_name
         );

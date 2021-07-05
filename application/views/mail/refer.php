@@ -195,7 +195,9 @@
                               <div style="line-height: 120%; text-align: center; word-wrap: break-word;">
                                 <div style="font-family: arial, helvetica, sans-serif;">
                                   <div>
-                                    <span style="font-size: 14px; color: #999999; line-height: 14.4px;">Your friend <?php echo $name; ?> invite you to join Drip Auto Care Services.</span>
+                                    <span style="font-size: 14px; color: #999999; line-height: 14.4px;">
+                                      <?php echo $content; ?>
+                                    </span>
                                   </div>
                                   <!-- <div>&nbsp;</div> -->
                                   <!-- <div><span style="font-size: 12px; color: #999999; line-height: 14.4px;">Unsubscribe</span> </div> -->

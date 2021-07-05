@@ -14,6 +14,8 @@
             $this->load->model('OfferModel','Offer');
             $this->load->model('AddOnModel','AddOn');
             $this->load->model('ZipcodeModel','Zipcode');
+            $this->load->model('CountryModel','Country');
+            $this->load->model('StateModel','State');
             $this->load->model('AppointmentModel','Appointment');
             $this->load->library('mail');
             $this->load->library('pagination');
@@ -33,6 +35,7 @@
 
         function load_profile_edit(){
             $content = [];
+            $content['form_data'] = $this->Customer->getDataById($this->member->loginData->id);
             $data['html'] = $this->load->view(FRONT.'member_ac_profile',$content,TRUE);
             echo json_encode(['status'=>200,'result'=>$data]);
         }
@@ -41,6 +44,10 @@
 			$this->form_validation->set_rules('firstname', 'First Name', 'required');
 			$this->form_validation->set_rules('lastname', 'Last Name', 'required');
 			$this->form_validation->set_rules('phone', 'Phone', 'required|numeric');
+			$this->form_validation->set_rules('country', 'Country', 'required');
+			$this->form_validation->set_rules('state', 'State', 'required');
+			$this->form_validation->set_rules('city', 'City', 'required');
+			$this->form_validation->set_rules('zip', 'Zip', 'required');
 			$this->form_validation->set_rules('address', 'Address', 'required');
 			if ($this->form_validation->run()) {
 				echo json_encode(['status'=>200]);
@@ -62,6 +69,7 @@
         }
 
         function referFriendValidation(){
+            $this->form_validation->set_rules('name', 'Name', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 			if ($this->form_validation->run()) {
 				echo json_encode(['status'=>200]);
@@ -74,6 +82,7 @@
             $dataHtml['name'] = $this->member->loginData->firstname.' '.$this->member->loginData->lastname;
 			$dataHtml['logo'] = base_url(SYSTEM_IMG).$this->system->company_logo;
 			$dataHtml['link'] = $this->input->post('link');
+			$dataHtml['content'] = $this->input->post('content');
 			$html = $this->load->view('mail/refer',$dataHtml,TRUE);
 
 			// echo $html;exit;
@@ -409,6 +418,37 @@
 
             foreach($resultAll as $key=>$val){
                 $result[] = ["text"=>$val->zipcode,"id"=>$val->zipcode];
+            }
+
+            echo json_encode(['result'=>$result]);
+        }
+
+        public function get_country_list_dropdown(){
+            $result = [];
+            if(isset($_POST['search'])){
+                $where = array(["column"=>"c.nicename","op"=>"like","value"=>'%'.$_POST['search'].'%']);
+                $resultAll = $this->Country->get_list('','',$where);
+            }
+
+            foreach($resultAll as $key=>$val){
+                $result[] = ["text"=>$val->nicename,"id"=>$val->id];
+            }
+
+            echo json_encode(['result'=>$result]);
+        }
+
+        public function get_state_list_dropdown($country_id=""){
+            $result = [];
+            if(isset($_POST['search'])){
+                $where = array(["column"=>"s.name","op"=>"like","value"=>'%'.$_POST['search'].'%']);
+                if($country_id != ""){
+                    $where[] = ["column"=>"s.country_id","op"=>"=","value"=>$country_id];
+                }
+                $resultAll = $this->State->get_list('','',$where);
+            }
+
+            foreach($resultAll as $key=>$val){
+                $result[] = ["text"=>$val->name,"id"=>$val->id];
             }
 
             echo json_encode(['result'=>$result]);

@@ -1,6 +1,6 @@
 <div class="row text-right">
 	<div class="col-md-12 text-center mb-20">
-		<a href="#" onClick="load_membership_add()" class="btn-sm btn-secondary">Purchase New Package <i class="fa fa-plus-circle"></i></a>
+		<a href="#" onClick="load_membership_add()" class="btn-sm btn-secondary">Purchase A New Package <i class="fa fa-plus-circle"></i></a>
 	</div>
 </div>
 
@@ -13,7 +13,7 @@
           <div class="col-md-9">
             <?php echo $val->package_name; ?>
             <br/>
-            <i class="fa fa-calendar"></i> <?php echo date('M d, Y H:i',strtotime($val->start_date)) .' - '.date('M d, Y H:i',strtotime($val->end_date)); ?>
+            <i class="fa fa-calendar"></i> <?php echo date('M d, Y',strtotime($val->start_date)) .' - '.date('M d, Y',strtotime($val->end_date)); ?>
           </div>
           <?php
             if($val->validity_status == 'Ongoing'){

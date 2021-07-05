@@ -3920,9 +3920,13 @@ label{
 		height: 36px!important;
 		line-height: 36px!important;
 	}
+	.select2-container{
+		width: 100%!important;
+	}
 
 	/* -------------------- multiple select2 */
 	.select2-container--default .select2-selection--multiple{
 		border: 1px solid #ddd!important;
 		border-radius: 0px!important;
 	}
+	

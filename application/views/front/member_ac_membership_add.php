@@ -52,7 +52,6 @@
 		<?php } ?>
 
 		<div class="row">
-
 			<div class="col-sm-12">
 				<span class="error text-danger validation-message" data-field="package_id"></span>
 			</div>
@@ -64,7 +63,6 @@
 					<span class="error text-danger validation-message" data-field="coupon"></span>
 				</div>
 			</div>
-
 		</div>
 		<input type="hidden" name="customer_id" value="<?php echo $this->member->loginData->id; ?>">
 	</form>

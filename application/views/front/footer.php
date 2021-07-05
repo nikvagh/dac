@@ -48,9 +48,9 @@
 					</div>	
 					<div class="col-md-4 col-sm-12">
 						<div class="flicker-photo">
-							<h2>Login</h2>
-							<a href="<?php echo base_url(); ?>sp_portal/register" target="_blank" class="user">Contractor</a>
-							<a href="<?php echo MEMBER; ?>login" target="_blank" class="manager">Drip Member</a>
+							<h2>Account</h2>
+							<a href="#" target="_blank" class="user">Service Provider</a>
+							<a href="<?php echo base_url(); ?>memberLogin" target="_blank" class="manager">Drip Member</a>
 							<!--- <ul>
 								<li><img src="img/g5.jpg" alt=""/></li>
 								<li><img src="img/g2.jpg" alt=""/></li>
@@ -91,6 +91,7 @@
 	<script src="<?php echo $this->front; ?>js/jquery.meanmenu.min.js"></script>
 	<script src="<?php echo $this->front; ?>js/jquery.sticky.js"></script>
 	<script src="<?php echo $this->front; ?>js/custom.js"></script>
+	<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 
 	<?php if(isset($page) && ($page == 'memberAccount')){ ?>
 		<script src="<?php echo $this->front; ?>plugins/fileStyle/fileStyle.js"></script>

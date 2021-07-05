@@ -14,9 +14,12 @@
 		?>
 
 		<?php if($wrapper){ $cnt = 1; ?> <div class="row flex-row"> <?php } ?>
+		<?php 
+			$number_length = strlen($val->number);
+		?>
 			<div class="col-sm-4 card_box">
 				<div>
-					<div class="md-box md-details"> <?php echo $val->name.' <br/> '.$val->number.' <br/> Expiry - '.$val->expiry_month.'/'.$val->expiry_year.' <br/> CVV - '.$val->cvv; ?> </div>
+					<div class="md-box md-details"> <?php echo $val->name.' <br/> '.str_repeat('*', $number_length - 4).substr($val->number, $number_length - 4, 4).' <br/> Expiry - '.$val->expiry_month.'/'.$val->expiry_year.' <br/> CVV - '.str_repeat("*", strlen($val->cvv)); ?> </div>
 					<div class="md-box"> 
 						<a class="btn1 btn-block btn-default text-center" onClick="load_card_edit('<?php echo $val->id; ?>')">
 							<i class="fa fa-edit"> </i>

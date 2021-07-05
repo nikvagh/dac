@@ -4,6 +4,7 @@ $(document).ready(function(){
 	$(".sidebar-ul li [href='#membership']").trigger("click");
 });
 
+country_id = "";
 $('.sidebar-ul li').on('click', function (e) {
 	var target = $(e.target).attr("href");
 	if(target == "#profile"){
@@ -11,6 +12,112 @@ $('.sidebar-ul li').on('click', function (e) {
 		call.success(function(data) {
 			userAuth(data);
 			$('.member_ac_profile').html(data.result.html);
+
+			// =========================
+			$('#country').select2({
+				ajax: {
+					type: "post",
+					url: base_url+'memberAccount/get_country_list_dropdown',
+					dataType: 'json',
+					data: function (params) {
+						// console.log(params)
+						var query = {
+							search: params.term,
+							type: 'public'
+						}
+						return query;
+					},
+					processResults: function (data) {
+						// console.log(data.result);
+						return {
+							results: data.result
+						};
+					},
+					// cache: true,
+				},
+				placeholder: 'Search for a Country',
+			});
+
+			// $('#state').select2({
+			// 	ajax: {
+			// 		type: "post",
+			// 		url: base_url+'memberAccount/get_state_list_dropdown/'+country_id,
+			// 		dataType: 'json',
+			// 		data: function (params) {
+			// 			// console.log(params)
+			// 			var query = {
+			// 				search: params.term,
+			// 				type: 'public'
+			// 			}
+			// 			return query;
+			// 		},
+			// 		processResults: function (data) {
+			// 			// console.log(data.result);
+			// 			return {
+			// 				results: data.result
+			// 			};
+			// 		},
+			// 		// cache: true,
+			// 	},
+			// 	placeholder: 'Search for a State',
+			// });
+
+			// country_id = $("#country").val();
+			// =====================================
+			// $('body').on('change','#country',function(e){
+			// 	$('#state').val('').trigger('change');
+			// 	country_id = $(this).val();
+
+			// 	$('#state').select2({
+			// 		ajax: {
+			// 			type: "post",
+			// 			url: base_url+'memberAccount/get_state_list_dropdown/'+country_id,
+			// 			dataType: 'json',
+			// 			data: function (params) {
+			// 				// console.log(params)
+			// 				var query = {
+			// 					search: params.term,
+			// 					type: 'public'
+			// 				}
+			// 				return query;
+			// 			},
+			// 			processResults: function (data) {
+			// 				// console.log(data.result);
+			// 				return {
+			// 					results: data.result
+			// 				};
+			// 			},
+			// 			// cache: true,
+			// 		},
+			// 		placeholder: 'Search for a State',
+			// 	});
+			// });
+			
+
+			$('#zip').select2({
+				ajax: {
+					type: "post",
+					url: base_url+'memberAccount/get_list_dropdown',
+					dataType: 'json',
+					data: function (params) {
+						// console.log(params)
+						var query = {
+							search: params.term,
+							type: 'public'
+						}
+						return query;
+					},
+					processResults: function (data) {
+						// console.log(data.result);
+						return {
+							results: data.result
+						};
+					},
+					// cache: true,
+				},
+				placeholder: 'Search for a zip code',
+			});
+			
 		})
 	}
 

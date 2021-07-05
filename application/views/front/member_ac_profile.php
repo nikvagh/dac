@@ -67,10 +67,60 @@
 		</div>
 
 		<div class="col-lg-12">
-			<div class="form-group">
-				<label class="form-control-label">Address *</label>
-				<textarea name="address" id="" cols="30" rows="3" class="form-control"><?php echo $this->member->loginData->address; ?></textarea>
-				<span class="error text-danger validation-message" data-field="address"></span>
+			<h5>Billing Address</h3>
+
+			<!-- <select name="state" id="state" class="form-control select2">
+				<option value="<?php //echo $this->member->loginData->state; ?>"><?php //echo $form_data->state_name; ?></option>
+			</select> -->
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="form-control-label">Country *</label>
+						<select name="country" id="country" class="form-control">
+							<option value="<?php echo $this->member->loginData->country; ?>"><?php echo $form_data->country_name; ?></option>
+						</select>
+						<span class="error text-danger validation-message" data-field="country"></span>
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="form-control-label">State *</label>
+						<input type="text" name="state" class="form-control" placeholder="State" value="<?php echo $this->member->loginData->state; ?>">
+						<span class="error text-danger validation-message" data-field="state"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="form-control-label">City *</label>
+						<input type="text" name="city" class="form-control" placeholder="City" value="<?php echo $this->member->loginData->city; ?>">
+						<span class="error text-danger validation-message" data-field="city"></span>
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="form-control-label">Zip Code *</label>
+						<select name="zip" id="zip" class="form-control select2">
+							<option value="<?php echo $this->member->loginData->zip; ?>"><?php echo $this->member->loginData->zip; ?></option>
+						</select>
+						<span class="error text-danger validation-message" data-field="zip"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label class="form-control-label">Address *</label>
+						<textarea name="address" id="" cols="30" rows="3" class="form-control"><?php echo $this->member->loginData->address; ?></textarea>
+						<span class="error text-danger validation-message" data-field="address"></span>
+					</div>
+				</div>
 			</div>
 		</div>
 

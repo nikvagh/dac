@@ -34,7 +34,7 @@
 
 				<div class="col-md-3 text-center status-box text-white" style="background:<?php echo $bg_theme; ?>;">
 					<!-- <span class="badge badge-lg badge-<?php echo $status_theme; ?>"><?php echo $val->status; ?></span> -->
-					<a class="btn btn-sm btn-pill btn-<?php echo $status_theme; ?>"><?php echo $val->status; ?></a>
+					<a class="btn btn-sm btn-pill btn-<?php echo $status_theme; ?>"><?php echo "Payment ".$val->status; ?></a>
 					<!-- <a class="btn btn-sm btn-pill btn-transparent" onclick="confirmDelete('<?php echo $val->id; ?>','payment')"><i class="fa fa-trash"> </i></a> -->
 				</div>
 			</div>

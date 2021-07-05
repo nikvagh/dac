@@ -49,16 +49,16 @@
 			<div class="col-md-3 col-xs-12 sidebar">
 				<ul class="sidebar-ul">
 					<li class="text-center name-box">
-						<h2 class="text-center">Hello, <?php echo $this->member->loginData->firstname.' '.$this->member->loginData->lastname; ?></h2>
+						<h2 class="text-center">Hello, <?php echo ucwords($this->member->loginData->firstname.' '.$this->member->loginData->lastname); ?></h2>
 						<span class="join_date_span">Account since <?php echo date('M d, Y',strtotime($this->member->loginData->datecreated)); ?></span>
 					</li>
-					<li class="active"><a data-toggle="pill" href="#membership"> My Membership </a></li>
+					<li class="active"><a data-toggle="pill" href="#membership"> My Memberships </a></li>
 					<li><a data-toggle="pill" href="#booking"> Bookings </a></li>
 					<li><a data-toggle="pill" href="#vehicle"> My Vehicles </a></li>
 					<li><a data-toggle="pill" href="#payment"> My Payments </a></li>
 					<li><a data-toggle="pill" href="#refer"> Refer A Friend </a></li>
-					<li><a data-toggle="pill" href="#profile"> Profile </a></li>
-					<li><a href="<?php echo base_url('memberLogin/logout'); ?>"> Sign out </a></li>
+					<li><a data-toggle="pill" href="#profile"> My Profile </a></li>
+					<li><a href="<?php echo base_url('memberLogin/logout'); ?>"> Sign Out </a></li>
 				</ul>
 			</div>
 
@@ -80,7 +80,7 @@
 
 						<div id="vehicle" class="tab-pane fade">
 							<div class="row">
-								<div class="col-sm-9"><h3>vehicle</h3></div>
+								<div class="col-sm-9"><h3>Vehicle</h3></div>
 							</div>
 							<div class="member_ac_vehicle"></div>
 						</div>

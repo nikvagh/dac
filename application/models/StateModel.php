@@ -1,17 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CountryModel extends CI_Model {
+class StateModel extends CI_Model {
     function __construct() {
-        $this->table = 'countries';
+        $this->table = 'states';
         $this->primaryKey = 'id';
     }
-
+    
     function get_list($num="", $offset="", $where = []) {
-        $this->db->select('c.*');
-        $this->db->from('countries as c');
-        $this->db->group_by("c.name");
-        $this->db->order_by("c.name", "ASC");
+        $this->db->select('s.*');
+        $this->db->from('states as s');
+        $this->db->group_by("s.name");
+        $this->db->order_by("s.name", "ASC");
 
         if(!empty($where)){
             foreach($where as $key=>$val){
@@ -23,20 +23,6 @@ class CountryModel extends CI_Model {
             $this->db->limit($num, $offset);
         }
 
-        $query = $this->db->get();
-        $result = $query->result();
-        return $result;
-    }
-
-    function get_currency_list($num="", $offset="") {
-        $this->db->select('c.*');
-        $this->db->from('countries as c');
-        $this->db->where("currency !='' ");
-        $this->db->group_by('currency');
-        $this->db->order_by("name", "ASC");
-        if($num != "" && $offset != ""){
-            $this->db->limit($num, $offset);
-        }
         $query = $this->db->get();
         $result = $query->result();
         return $result;
