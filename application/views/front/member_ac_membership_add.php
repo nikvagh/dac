@@ -41,7 +41,7 @@
 							<?php //echo implode('<br/>', $val->service_names); ?>
 						</div>
 						<div class="md-box md-radio">
-							<div style="">
+							<div>
 								<input type="radio" name="package_id" value="<?php echo $val->id; ?>">
 							</div>
 						</div>
@@ -51,6 +51,9 @@
 			<?php if($cnt == 2){ ?> </div> <?php } ?>
 		<?php } ?>
 
+		<?php if(count($packages) % 4 != 0){ ?> </div> <?php } ?>
+
+		<div class="clearfix"></div>
 		<div class="row">
 			<div class="col-sm-12">
 				<span class="error text-danger validation-message" data-field="package_id"></span>

@@ -26,6 +26,8 @@ class PackageModel extends CI_Model {
             foreach($where as $key=>$val){
                 if($val['op'] == "="){
                     $this->db->where($val['column'],$val['value']);
+                }else{
+                    $this->db->where($val['column'].' '.$val['op'],$val['value']);
                 }
             }
         }

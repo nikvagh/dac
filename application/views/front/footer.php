@@ -101,7 +101,13 @@
 		<?php if($page == 'memberAccount'){ ?>
 			<script src="<?php echo $this->front; ?>js/memberAccount.js"></script>
 		<?php } ?>
-
 	<?php } ?>
-	
+
+	<?php if($this->session->userdata('success')){ ?>
+		<script>
+			$(".alert-success-php").fadeTo(2500, 500).slideUp(500, function() {
+				$(".alert-success-php").slideUp(500);
+			});
+		</script>
+	<?php } ?>
 	<!-- Scripts Js End -->	

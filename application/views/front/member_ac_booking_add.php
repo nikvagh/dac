@@ -59,6 +59,16 @@
 
 		<div class="col-lg-12">
 			<div class="form-group">
+				<label class="form-control-label">Service Booking Type *</label> <br />
+				<label><input type="radio" name="service_type" value="package" checked> With Package </label> &nbsp;&nbsp;
+				<label><input type="radio" name="service_type" value="custom"> Other Services </label>
+				<br />
+				<span class="error text-danger validation-message" data-field="service_type"></span>
+			</div>
+		</div>
+
+		<div class="col-lg-12 package_box">
+			<div class="form-group">
 				<label class="form-control-label">Package *</label>
 				<select name="package_id" id="package_id" class="form-control select2">
 					<option value="">--select--</option>
@@ -70,12 +80,24 @@
 			</div>
 		</div>
 
+		<div class="col-lg-12 service_box">
+			<div class="form-group">
+				<label class="form-control-label">Services *</label>
+				<select name="service[]" id="service" class="form-control select2" multiple>
+					<?php foreach ($services as $val) { ?>
+						<option value="<?php echo $val->id; ?>"><?php echo $val->name.' - ($'.$val->amount.')' ?></option>
+					<?php } ?>
+				</select>
+				<span class="error text-danger validation-message" data-field="service[]"></span>
+			</div>
+		</div>
+
 		<div class="col-lg-12">
 			<div class="form-group">
 				<label class="form-control-label">Add On</label>
 				<select name="addOn[]" id="addOn" class="form-control select2" multiple="">
 					<?php foreach ($addOns as $val) { ?>
-						<option value="<?php echo $val->id; ?>"><?php echo $val->name; ?></option>
+						<option value="<?php echo $val->id; ?>"><?php echo $val->name.' - ($'.$val->amount.')'  ?></option>
 					<?php } ?>
 				</select>
 				<span class="error text-danger validation-message" data-field="addOn[]"></span>

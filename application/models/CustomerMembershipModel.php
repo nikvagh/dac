@@ -56,53 +56,113 @@ class CustomerMembershipModel extends CI_Model {
         return $row;
     }
 
-    function purchaseFromCustomer(){
+    function purchaseFromCustomer($paymentResult){
         $payment_id = 0;
-        $package = $this->Package->getDataById($this->input->post('package_id'));
 
-        $validityAry = package_validity_converter($package->validity);
-        // echo "<prE>";print_r($package);exit;
+        // $package = $this->Package->getDataById($this->input->post('package_id'));
+        // $validityAry = package_validity_converter($package->validity);
+        // $total_amount = $package->amount;
+        // $total_payable = $package->amount;
+        // $discount = 0;
 
-        $total_amount = $package->amount;
-        $total_payable = $package->amount;
-        $discount = 0;
+        // if($this->input->post('coupon')){
+        //     $package_coupon = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
+        //     // print_r($package_coupon);
+        //     // exit;
 
-        if($this->input->post('coupon')){
-            $package_coupon = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
-            // print_r($package_coupon);
-            // exit;
+        //     $discount = $package_coupon['result']['offer']->discount;
 
-            $discount = $package_coupon['result']['offer']->discount;
+        //     $discount = ($total_amount*$discount)/100;
+        //     $total_payable = $total_amount-$discount;
+        // }
 
-            $discount = ($total_amount*$discount)/100;
-            $total_payable = $total_amount-$discount;
-        }
+        // echo "<pre>";
+        // print_r($paymentResult);
+        // print_r($_SESSION);
+        // print_r($this->session->userdata('membershipCreateData'));
+
+        $saveData = $this->session->userdata('membershipCreateData');
+        // exit;
 
         // payment
         $payment = array(
-            'user_id'=>$this->input->post('customer_id'),
+            'user_id'=>$saveData['customer_id'],
             'user_type'=>'customer',
-            'amount' => $total_payable,
+            'amount' => $saveData['total_payable'],
             'transaction_type' => 'Credit',
             'status' => 'Success',
-            'description' => 'membership purchase',
+            'description' => 'Membership purchased',
+            'txn_id' => $paymentResult->balance_transaction,
+            'pg_status' => $paymentResult->status,
         );
         $this->db->insert('payment',$payment);
         $payment_id = $this->db->insert_id();
 
         $data = array(
-            'package_id'=>$this->input->post('package_id'),
-            'customer_id'=>$this->input->post('customer_id'),
+            'package_id'=>$saveData['package']->id,
+            'customer_id'=>$saveData['customer_id'],
             'payment_id'=>$payment_id,
-            'start_date'=>$validityAry['start_date'],
-            'end_date'=>$validityAry['end_date'],
-            'total_amount'=>$total_amount,
-            'total_payable'=>$total_payable,
-            'discount'=>$discount,
+            'start_date'=>$saveData['validityAry']['start_date'],
+            'end_date'=>$saveData['validityAry']['end_date'],
+            'total_amount'=>$saveData['total_amount'],
+            'total_payable'=>$saveData['total_payable'],
+            'discount'=>$saveData['discount'],
             // 'end_date'=>$end_date
         );
         $this->db->insert($this->table,$data);
         $id = $this->db->insert_id();
+        // ================================
+
+        // foreach($package->services as $val){
+        //     $data = array(
+        //         'membership_id'=>$id,
+        //         'service_id'=>$val->id
+        //     );
+        //     $this->db->insert('membership_service',$data);
+        // }
+
+        return $id;
+    }
+
+    function upgradeFromCustomer($paymentResult){
+        $payment_id = 0;
+        $saveData = $this->session->userdata('membershipUpgradeData');
+
+        // payment
+        $payment = array(
+            'user_id'=>$saveData['customer_id'],
+            'user_type'=>'customer',
+            'amount' => $saveData['total_payable'],
+            'transaction_type' => 'Credit',
+            'status' => 'Success',
+            'description' => 'Membership upgraded',
+            'txn_id' => $paymentResult->balance_transaction,
+            'pg_status' => $paymentResult->status,
+        );
+        $this->db->insert('payment',$payment);
+        $payment_id = $this->db->insert_id();
+
+        $data = array(
+            'package_id'=>$saveData['new_package']->id,
+            'customer_id'=>$saveData['customer_id'],
+            'payment_id'=>$payment_id,
+            'start_date'=>curr_date(),
+            'end_date'=>$saveData['ongoing_package']->end_date,
+            'total_amount'=>$saveData['total_amount'],
+            'total_payable'=>$saveData['total_payable'],
+            'discount'=>$saveData['discount'],
+            'upgrade_from_id'=>$saveData['ongoing_package']->id,
+        );
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+
+        // =============================
+        $update_data = array(
+            'end_date' => date('Y-m-d', strtotime('-1 day', strtotime(curr_date())))
+        );
+        $this->db->set($update_data)->where('id',$saveData['ongoing_package']->id);
+        $this->db->update('customer_membership');
+
         // ================================
 
         // foreach($package->services as $val){

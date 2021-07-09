@@ -528,3 +528,19 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+// $config['stripe_key'] = 'pk_live_F6Toapy1e6v42XzozzzY3CAJ00iyqcRqNH';
+// $config['stripe_secret'] = 'sk_live_03M0ypqcmGIAiFxxzIx67htc007nz6UFN4';
+$config['stripe_key'] = 'pk_test_fsurwgaxBhMpt5M1f595Po1R00Fzm5Xw9J';
+$config['stripe_secret'] = 'sk_test_2BUiJyGSspCuIvjuT5MIt6Pm00XWW1SUIs';
+
+
+// $config['stripe_key'] = 'pk_test_51IduU9SCd0ix2VnCkmHbx31iEriEzcz21rA47OG74pY0GsKu8JOESC08UJnZbvHgsXaxzfMjklszovsAeXeU3LZY00BNnXDwaQ';
+// $config['stripe_secret'] = 'sk_test_51IduU9SCd0ix2VnCWVmaJqzABvEVsoqV27NlAXzAzWXJPSgni3JmsSbhkZu54QpPqYebx6cxSmRq5ef9xTV3wHaN00bNfraoWe';
+
+
+
+
+// $config['stripe_api_key']         = 'pk_test_fsurwgaxBhMpt5M1f595Po1R00Fzm5Xw9J'; 
+// $config['stripe_publishable_key'] = 'sk_test_2BUiJyGSspCuIvjuT5MIt6Pm00XWW1SUIs'; 
+// $config['stripe_currency']        = 'usd';

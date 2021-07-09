@@ -64,3 +64,8 @@ $route['sp'] = SP.'/login';
 $route['admin_portal'] = ADMINPATH.'/login';
 $route['member_portal'] = MEMBERPATH.'/login';
 $route['sp_portal'] = SPPATH.'/login';
+
+// =====================
+
+$route['my-stripe'] = "StripeController";
+$route['stripePost']['post'] = "StripeController/stripePost";

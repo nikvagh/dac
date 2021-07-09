@@ -2,6 +2,7 @@ base_url = $('.logo a').attr("href");
 // console.log(base_url);
 $(document).ready(function(){
 	$(".sidebar-ul li [href='#membership']").trigger("click");
+	// $(".alert-success").slideUp(4000);
 });
 
 country_id = "";
@@ -230,7 +231,6 @@ function saveProfile(){
 			$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
 				$("#success-alert").slideUp(500);
 			});
-
 		});
 
 	}
@@ -519,6 +519,14 @@ function load_membership_add(){
 	})
 }
 
+function load_membership_upgrade(){
+	var call = ajaxCall(base_url+'memberAccount/load_membership_upgrade','post','json',[],[]);
+	call.success(function(data) {
+		userAuth(data);
+		$('.member_ac_membership').html(data.result.html);
+	})
+}
+
 function membershipCreate(){
 	var formData = new FormData(document.getElementById("membership_form"));
 	if(membershipValidation(formData) == 'success'){
@@ -528,16 +536,52 @@ function membershipCreate(){
 		call.success(function(data) {
 			userAuth(data);
 			$(".btn-submit").html("Save");
-			load_membership_list();
+			// load_strip_form();
 
-			$(".success_msg").html(data.message);
-			$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
-				$("#success-alert").slideUp(500);
-			});
+			$('.member_ac_membership').html(data.result.html1);
+			
+			// load_membership_list();
+			// $(".success_msg").html(data.message);
+			// $("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
+			// 	$("#success-alert").slideUp(500);
+			// });
 		});
 
 	}
 }
+
+function membershipUpgrade(){
+	var formData = new FormData(document.getElementById("membership_form"));
+	if(membershipValidation(formData) == 'success'){
+
+		$(".btn-submit").html("Saving data, please wait...");
+		var call = ajaxCall(base_url+'memberAccount/membershipUpgrade','post','json',formData,[]);
+		call.success(function(data) {
+			userAuth(data);
+			$(".btn-submit").html("Save");
+			// load_strip_form();
+
+			$('.member_ac_membership').html(data.result.html1);
+		});
+
+	}
+}
+
+$('body').on('change','input[name="payment_card"]',function(e){
+	var card_id = $(this).val();
+	var formData = new FormData();
+	formData.append('id', card_id);
+	var call = ajaxCall(base_url+'memberAccount/getCardDetails','post','json',formData,[]);
+	call.success(function(data) {
+		// console.log(data);
+		$(".card_name").val(data.result.card.name);
+		$(".card_number").val(data.result.card.number);
+		$(".card_cvv").val(data.result.card.cvv);
+		$(".card_month").val(data.result.card.expiry_month);
+		$(".card_year").val(data.result.card.expiry_year);
+	});
+});
+
 
 function membershipValidation(formData){
 	$(".btn-submit").html("Validating data, please wait...");
@@ -578,9 +622,7 @@ function member_ac_booking_list_prev(pageNo){
 
 	call1.success(function(data) {
 		userAuth(data);
-
-		console.log(data);
-
+		// console.log(data);
 		$('.member_ac_booking_prev').html(data.result.html1);
 	})
 }
@@ -677,6 +719,18 @@ function load_booking_add(){
             }
         });
 
+		$(".service_box").hide();
+		$("input[name=service_type]").on('change',function(){
+			if($(this).val() == "package"){
+                $(".package_box").show();
+                $(".service_box").hide();
+            }else{
+                $(".service_box").show();
+                $(".package_box").hide();
+            }
+		});
+		
+
 	})
 }
 
@@ -750,3 +804,5 @@ function load_booking_view(id){
 		$('.member_ac_booking_prev').html('');
 	})
 }
+
+

@@ -16,7 +16,7 @@
 					<div class="page-heading">
 						<h1>Account</h1>
 						<ul>
-							<li><a href="index.php">Home</a></li>
+							<li><a href="<?php echo base_url(); ?>">Home</a></li>
 							<li><a href="#">Account</a></li>
 						</ul>
 					</div>
@@ -27,6 +27,17 @@
 	<!-- Page Heading Section End -->
 
 	<div class="container container-large">
+
+		<?php if($this->session->userdata('success')){ ?>
+			<div class="row flex-row">
+				<div class="col-md-12">
+					<div class="alert alert-success alert-success-php margin-top-15 margin-bottom-0" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<i class="fa-fw fa fa-check"></i> <strong>Success!</strong> <?php echo $this->session->userdata('success'); ?></span>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
 
 		<div class="row flex-row">
 			<div class="col-md-12">

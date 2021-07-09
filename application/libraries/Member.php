@@ -69,7 +69,7 @@ class Member {
 		}
 		
 		function login($username, $password, $member_id = "", $profileUpdate="N")
-		{	
+		{
 			$pass = md5($password);
                         
 			// $query = $this->obj->db->get($this->table, 1);

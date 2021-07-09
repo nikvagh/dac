@@ -16,6 +16,13 @@ class MembershipModel extends CI_Model {
             foreach($result as $key=>$val){
                 $result[$key]->validity_status = get_membership_validity_status($val->start_date,$val->end_date);
                 $result[$key]->service_used_count = $this->service_usage_total($val->id);
+
+                $services = (object) [];
+                $query = $this->db->select('s.*')->from('package_service as ps')->join('service as s','s.id=ps.service_id','left')->where('ps.package_id',$val->package_id)->get();
+                $services = $query->result();
+
+                $result[$key]->services = $services;
+                $result[$key]->services_ids = array_map(function($e) { return is_object($e) ? $e->id : $e['id']; }, $services);
             }
             return $result;
         }else{

@@ -17,6 +17,7 @@
             $this->load->model('CountryModel','Country');
             $this->load->model('StateModel','State');
             $this->load->model('AppointmentModel','Appointment');
+            $this->load->model('ServiceModel','Service');
             $this->load->library('mail');
             $this->load->library('pagination');
         }
@@ -243,7 +244,15 @@
             $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
             $allCount = $this->Membership->get_list('','',$where,'','Y');
             $content['list'] = $this->Membership->get_list($per_page,$offset,$where);
+            $content['isPackage'] = false;
+            if($allCount > 0){
+                $content['isPackage'] = true;
+            }
 
+            // echo "<pre>";
+            // print_r($content['list']);
+            // exit;
+            
             $pageConfig['use_page_numbers'] = TRUE;
             $pageConfig['total_rows'] = $allCount;
             $pageConfig['per_page'] = $per_page;
@@ -263,6 +272,30 @@
 
             $data['html'] = $this->load->view(FRONT.'member_ac_membership_add',$content,TRUE);
             echo json_encode(['status'=>200,'result'=>$data]);
+        }
+
+        function load_membership_upgrade(){
+            $where = [];
+            $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
+            $membership_ongoing = $this->Membership->get_list('','',$where);
+            if(count($membership_ongoing) > 0){
+                $ongoing_package_details = $membership_ongoing[0];
+
+                $content = [];
+                $where2 = [['column'=>'p.status','op'=>'=','value'=>'Enable']];
+                $where2[] = ['column'=>'p.id','op'=>'!=','value'=>$ongoing_package_details->package_id];
+                $where2[] = ['column'=>'p.amount','op'=>'>','value'=>$ongoing_package_details->total_amount];
+                $content['packages'] = $this->Package->get_list('','',$where2);
+                $content['current_package_amount'] = $ongoing_package_details->total_amount;
+                
+                // echo "<pre>";
+                // echo $this->db->last_query();
+                // print_r($content);
+                // exit;
+
+                $data['html'] = $this->load->view(FRONT.'member_ac_membership_upgrade',$content,TRUE);
+                echo json_encode(['status'=>200,'result'=>$data]);
+            }
         }
 
         function membershipValidation(){
@@ -299,9 +332,90 @@
         }
 
         function membershipCreate(){
-            if ($this->CustomerMembership->purchaseFromCustomer()) {
-                echo json_encode(['status'=>200,'result'=>[],'message'=>'Information has been saved successfully.']);
+            // $_POST;
+            // print_r($_POST);
+            // exit;
+
+            // $this->session->userdata('payment_before_post',$_POST);
+            $package = $this->Package->getDataById($this->input->post('package_id'));
+            $validityAry = package_validity_converter($package->validity);
+
+            $total_amount = $package->amount;
+            $total_payable = $package->amount;
+            $discount = 0;
+
+            if($this->input->post('coupon')){
+                $package_coupon = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
+                $discount = $package_coupon['result']['offer']->discount;
+                $discount = ($total_amount*$discount)/100;
+                $total_payable = $total_amount-$discount;
             }
+
+            // ----------------------
+            $membershipCreateData = ['package'=>$package,'validityAry'=>$validityAry,'total_amount'=>$total_amount,'total_payable'=>$total_payable,'discount'=>$discount,'customer_id'=>$this->input->post('customer_id')];
+            $this->session->set_userdata('membershipCreateData',$membershipCreateData);
+            // ----------------------
+
+
+            $where1 = [];
+            $where1[] = ['column'=>'pc.customer_id','op'=>'=','value'=>$this->member->id];
+            $data['card_list'] = $this->PaymentCard->get_list('','',$where1);
+
+            $data['amount'] = number_format((float)$total_payable, 2, '.', '');
+            $data['action'] = base_url().'stripeController/membershipStripePayment';
+            $data1['html1'] = $this->load->view('stripe_member',$data,TRUE);
+            echo json_encode(['status'=>200,'result'=>$data1]);
+
+            // =======================
+
+            // if ($this->CustomerMembership->purchaseFromCustomer()) {
+            //     echo json_encode(['status'=>200,'result'=>[],'message'=>'Information has been saved successfully.']);
+            // }
+        }
+
+        function membershipUpgrade(){
+            $where = [];
+            $where[] = ['column'=>'cm.customer_id','op'=>'=','value'=>$this->member->id];
+            $membership_ongoing = $this->Membership->get_list('','',$where);
+            $ongoing_package = $membership_ongoing[0];
+
+            $new_package = $this->Package->getDataById($this->input->post('package_id'));
+            // $validityAry = package_validity_converter($package->validity);
+
+            // echo "<pre>";
+            // print_r($_POST);
+            // exit;
+            
+            $total_amount = $new_package->amount - $ongoing_package->total_amount;
+            $total_payable = $total_amount;
+            // exit;
+
+            $discount = 0;
+            // if($this->input->post('coupon')){
+            //     $package_coupon = $this->Offer->checkCouponForPackage($this->input->post('package_id'),$this->input->post('coupon'));
+            //     $discount = $package_coupon['result']['offer']->discount;
+            //     $discount = ($total_amount*$discount)/100;
+            //     $total_payable = $total_amount-$discount;
+            // }
+
+            // ----------------------
+            $membershipUpgradeData = ['ongoing_package'=>$ongoing_package,'new_package'=>$new_package,'total_amount'=>$total_amount,'total_payable'=>$total_payable,'discount'=>$discount,'customer_id'=>$this->input->post('customer_id')];
+            $this->session->set_userdata('membershipUpgradeData',$membershipUpgradeData);
+            // ----------------------
+
+            $where1 = [];
+            $where1[] = ['column'=>'pc.customer_id','op'=>'=','value'=>$this->member->id];
+            $data['card_list'] = $this->PaymentCard->get_list('','',$where1);
+
+            $data['amount'] = number_format((float)$total_payable, 2, '.', '');
+            $data['action'] = base_url().'stripeController/membershipUpgradeStripePayment';
+            $data1['html1'] = $this->load->view('stripe_member',$data,TRUE);
+            echo json_encode(['status'=>200,'result'=>$data1]);
+        }
+
+        function getCardDetails(){
+            $data['card'] = $this->PaymentCard->getDataById($this->input->post('id'));
+            echo json_encode(['status'=>200,'result'=>$data]);
         }
 
         function load_booking_list($page){
@@ -375,17 +489,26 @@
             $where3 = [['column'=>'a.status','op'=>'=','value'=>'Enable']];
             $content['addOns'] = $this->AddOn->get_list('','',$where3);
 
+            $where4 = [['column'=>'s.status','op'=>'=','value'=>'Enable']];
+            $content['services'] = $this->Service->get_list('','',$where4);
+
             $data['html'] = $this->load->view(FRONT.'member_ac_booking_add',$content,TRUE);
             echo json_encode(['status'=>200,'result'=>$data]);
         }
 
         function bookingValidation(){
             $this->form_validation->set_rules('appointment_type', 'Time', 'required');
+            $this->form_validation->set_rules('service_type', 'Service Type', 'required');
             $this->form_validation->set_rules('location', 'Location', 'required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'required');
             $this->form_validation->set_rules('longitude', 'Longitude', 'required');
             $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
-            $this->form_validation->set_rules('package_id', 'Package', 'required');
+            
+            if($this->input->post('service_type') == 'package'){
+                $this->form_validation->set_rules('package_id', 'Package', 'required');
+            }else{
+                $this->form_validation->set_rules('service[]', 'Service', 'required');
+            }
 
             $this->form_validation->set_rules('vehicle_id', 'Vehicle', 'callback_vehicle_check');
             // $this->form_validation->set_rules('addOn[]', 'Add On', 'required');
@@ -404,8 +527,17 @@
         }
 
         function bookingCreate(){
-            if ($this->Appointment->bookNowSave()) {
-                echo json_encode(['status'=>200,'result'=>[],'message'=>'Information has been saved successfully.']);
+            // echo "<pre>";
+            // print_r($_POST);
+            // exit;
+
+            if(!empty($this->input->post('addOn')) || ($this->input->post('service') && !empty($this->input->post('service'))) ){
+                // pay for amount addon or services
+
+            }else{
+                if ($this->Appointment->bookNowSave()) {
+                    echo json_encode(['status'=>200,'result'=>[],'message'=>'Information has been saved successfully.']);
+                }
             }
         }
 
