@@ -7,7 +7,7 @@ class AddOnModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="",$where = []) {
+    function get_list($num="", $offset="",$where = [],$where_in = []) {
         $this->db->select('a.*');
         $this->db->from('addon as a');
         $this->db->order_by("id", "Desc");
@@ -20,6 +20,12 @@ class AddOnModel extends CI_Model {
                 if($val['op'] == "="){
                     $this->db->where($val['column'],$val['value']);
                 }
+            }
+        }
+
+        if(!empty($where_in)){
+            foreach($where_in as $key=>$val){
+                $this->db->where_in($val['column'],$val['value']);
             }
         }
 

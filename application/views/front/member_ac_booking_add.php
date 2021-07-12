@@ -4,7 +4,7 @@
 		<div class="col-lg-12">
 			<div class="form-group">
 				<label class="form-control-label">Location *</label>
-				<textarea name="location" id="location" rows="3" class="form-control"></textarea>
+				<textarea name="location" id="location" class="form-control" placeholder="Location"></textarea>
 				<span class="error text-danger validation-message" data-field="location"></span>
 			</div>
 		</div>
@@ -108,7 +108,7 @@
 			<div class="form-group">
 				<label class="form-control-label">Time *</label> <br />
 				<label><input type="radio" name="appointment_type" value="book_now"> Book Now </label> &nbsp;&nbsp;
-				<label><input type="radio" name="appointment_type" value="book_later"> Book Later </label>
+				<label><input type="radio" name="appointment_type" value="schedule_book"> Book Later </label>
 				<br />
 				<span class="error text-danger validation-message" data-field="appointment_type"></span>
 			</div>
@@ -140,3 +140,11 @@
 	<button class="btn btn-default btn-pill" onclick="cancel('booking')">Cancel</button>
 	<button class="btn btn-primary btn-submit btn-pill" onclick="bookingCreate()">Save</button>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->config->item('google_map_api'); ?>&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
+<script type="text/javascript">
+	function initAutocomplete() {
+		const input = document.getElementById("location");
+		const searchBox = new google.maps.places.SearchBox(input);
+	}
+</script>

@@ -1,10 +1,10 @@
 <div class="row text-right">
 	<div class="col-md-12 text-center mb-20">
-    <?php //if($isPackage){ ?>
+    <?php if($isPackage){ ?>
       <a href="#" onClick="load_membership_upgrade()" class="btn-sm btn-secondary">Upgrade A Package <i class="fa fa-refresh"></i></a>
-    <?php //}else{ ?>
+    <?php }else{ ?>
       <a href="#" onClick="load_membership_add()" class="btn-sm btn-secondary">Purchase A New Package <i class="fa fa-plus-circle"></i></a>
-    <?php //} ?>
+    <?php } ?>
 	</div>
 </div>
 

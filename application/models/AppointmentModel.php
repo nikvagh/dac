@@ -8,6 +8,10 @@ class AppointmentModel extends CI_Model {
         $this->load->model('PackageModel','Package');
         $this->load->model('ServiceProviderModel','ServiceProvider');
         $this->load->model('CustomerMembershipModel','CustomerMembership');
+        $this->load->model('ServiceModel','Service');
+        $this->load->model('AddOnModel','AddOn');
+
+        
     }
 
     function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = [], $isTotalQuery = 'N') {
@@ -428,6 +432,143 @@ class AppointmentModel extends CI_Model {
 
         if($this->input->post('addOn')){
             foreach($this->input->post('addOn') as $val){
+                // print_r($val);
+                $addon = $this->AddOn->getDataById($val);
+                $data = array(
+                    'appointment_id'=>$id,
+                    'addon_id'=>$val,
+                    'amount'=>$addon->amount,
+                );
+                $this->db->insert('appointment_addon',$data);
+            }
+        }
+
+        return $id;
+    }
+
+    function bookNowSaveAfterPayment($paymentResult){
+        $saveData = $_SESSION['bookingCreateData'];
+        // echo "<pre>"; print_r($saveData);
+        // exit;
+        $post = $saveData['post'];
+
+        $sp_id = 0;
+        $payment_id = 0;
+        $date = date('Y-m-d');
+        $appointment_type = $post['appointment_type'];
+        $total_amount = $saveData['total_payable'];
+        $total_payable = $saveData['total_payable'];
+        $additional_fee = 0;
+        $discount = 0;
+        $status_id = '1';
+        $customer_id = $post['customer_id'];
+
+        // payment ===========================
+        $payment = array(
+            'user_id'=>$post['customer_id'],
+            'user_type'=>'customer',
+            'amount' => $total_payable,
+            'transaction_type' => 'Credit',
+            'status' => 'Success',
+            'description' => 'Membership purchased',
+            'txn_id' => $paymentResult->balance_transaction,
+            'pg_status' => $paymentResult->status,
+        );
+        $this->db->insert('payment',$payment);
+        $payment_id = $this->db->insert_id();
+
+        // ================= sp_id =================
+        $sps = $this->ServiceProvider->getServiceProviderInRadius($post['latitude'],$post['longitude'],10);
+        if(!empty($sps)){
+            $sort_by_km = array_column($sps, 'distance');
+            array_multisort($sort_by_km, SORT_ASC, $sps);
+            $sp_id = $sps[0]->sp_id;
+        }
+
+        if($sp_id == 0){
+            $spbyZip = $this->ServiceProvider->getDataByZip($post['zipcode']);
+            if($spbyZip){
+                $sp_id = $spbyZip->sp_id;
+            }
+        }
+        // =========================
+
+        // ========================= amount ==========================
+
+        if(isset($post['vehicle_id']) && $post['vehicle_id'] != ""){
+            $vehicle_id = $post['vehicle_id'];
+        }else{
+            $vehicle_data['member_id'] = $customer_id;
+            $vehicle_data['name'] = $post['vehicle_name'];
+            $vehicle_data['year'] = $post['vehicle_year'];
+            $this->db->insert('customer_vehicle',$vehicle_data);
+            $vehicle_id = $this->db->insert_id();
+        }
+
+        if(isset($post['package_id']) && $post['package_id'] != ""){
+            $customer_membership_id = $post['package_id'];
+            $customer_membership = $this->CustomerMembership->getDataById($customer_membership_id);
+            $package_id = $customer_membership->package_id;
+        }else{
+            $package_id = 0;
+            $customer_membership_id = 0;
+        }
+        
+
+        $data = array(
+            'sp_id'=>$sp_id,
+            'customer_id'=>$post['customer_id'],
+            'package_id'=>$package_id,
+            'vehicle_id'=>$vehicle_id,
+            'payment_id'=>$payment_id,
+            'customer_membership_id'=>$customer_membership_id,
+            'date'=>$date,
+            'time'=>$post['time'],
+            'appointment_type'=>$appointment_type,
+            'location'=>$post['location'],
+            'latitude'=>$post['latitude'],
+            'longitude'=>$post['longitude'],
+            'zipcode'=>$post['zipcode'],
+            'total_amount'=>$total_amount,
+            'total_payable'=>$total_payable,
+            'additional_fee'=>$additional_fee,
+            'discount'=>$discount,
+            'status_id'=>$status_id,
+        );
+
+        $this->db->insert($this->table,$data);
+        $id = $this->db->insert_id();
+        // ================================
+
+        if(isset($post['package_id']) && $post['package_id'] != ""){
+            $package = $this->Package->getDataById($package_id);
+            foreach($package->services as $val){
+                $data = array(
+                    'appointment_id'=>$id,
+                    'service_id'=>$val->id,
+                    'service_in'=>'package',
+                    'amount'=>$val->amount,
+                );
+                $this->db->insert('appointment_service',$data);
+            }
+        }
+
+        if(isset($post['service'])){
+            foreach($post['service'] as $val){
+                // print_r($val);
+                $service = $this->Service->getDataById($val);
+                $data = array(
+                    'appointment_id'=>$id,
+                    'service_id'=>$val,
+                    'service_in'=>'extra',
+                    'amount'=>$service->amount,
+                );
+                $this->db->insert('appointment_service',$data);
+            }
+        }
+
+        if(isset($post['addOn'])){
+            foreach($post['addOn'] as $val){
                 // print_r($val);
                 $addon = $this->AddOn->getDataById($val);
                 $data = array(

@@ -135,7 +135,6 @@
                 e.preventDefault();
                 // alert($form.data('stripe-publishable-key'));
                 Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-
                 // const stripe = loadStripe($form.data('stripe-publishable-key'));
 
 

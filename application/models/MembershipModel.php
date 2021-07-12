@@ -36,6 +36,7 @@ class MembershipModel extends CI_Model {
         $this->db->from('customer_membership as cm');
         $this->db->join('customer c','c.id=cm.customer_id','left')
                 ->join('package as p','p.id=cm.package_id','left');
+        $this->db->group_by('cm.id');
         $this->db->order_by("cm.id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);

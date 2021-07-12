@@ -533,6 +533,40 @@
 
             if(!empty($this->input->post('addOn')) || ($this->input->post('service') && !empty($this->input->post('service'))) ){
                 // pay for amount addon or services
+                $total_payable = 0;
+                if(!empty($this->input->post('addOn'))){
+                    $addons = $this->AddOn->get_list('','',[],[['column'=>'a.id','value'=>$this->input->post('addOn')]]);
+                    if(!empty($addons)){
+                        $addon_amount_ary = array_column($addons,'amount');
+                        $total_payable += array_sum($addon_amount_ary);
+                    }
+                }
+
+                if(!empty($this->input->post('service'))){
+                    $service = $this->Service->get_list('','',[],[['column'=>'s.id','value'=>$this->input->post('service')]]);
+
+                    if(!empty($service)){
+                        $service_amount_ary = array_column($service,'amount');
+                        $total_payable += array_sum($service_amount_ary);
+                    }
+                }
+
+                // echo $total_payable;
+                // exit;
+
+                // ----------------------
+                $bookingCreateData = ['post'=>$_POST,'total_payable'=>$total_payable];
+                $this->session->set_userdata('bookingCreateData',$bookingCreateData);
+                // ----------------------
+
+                $where1 = [];
+                $where1[] = ['column'=>'pc.customer_id','op'=>'=','value'=>$this->member->id];
+                $data['card_list'] = $this->PaymentCard->get_list('','',$where1);
+
+                $data['amount'] = number_format((float)$total_payable, 2, '.', '');
+                $data['action'] = base_url().'stripeController/bookingStripePayment';
+                $data1['html1'] = $this->load->view('stripe_member',$data,TRUE);
+                echo json_encode(['status'=>350,'result'=>$data1]);
 
             }else{
                 if ($this->Appointment->bookNowSave()) {
@@ -544,14 +578,15 @@
         public function get_list_dropdown($val = ""){
             $result = [];
             if(isset($_POST['search'])){
-                $where = array(["column"=>"zipcode","op"=>"like","value"=>'%'.$_POST['search'].'%']);
-                $resultAll = $this->Zipcode->get_list('','',$where);
-            }
+                if(strlen($_POST['search']) > 2){
+                    $where = array(["column"=>"zipcode","op"=>"like","value"=>'%'.$_POST['search'].'%']);
+                    $resultAll = $this->Zipcode->get_list('','',$where);
 
-            foreach($resultAll as $key=>$val){
-                $result[] = ["text"=>$val->zipcode,"id"=>$val->zipcode];
+                    foreach($resultAll as $key=>$val){
+                        $result[] = ["text"=>$val->zipcode,"id"=>$val->zipcode];
+                    }
+                }
             }
-
             echo json_encode(['result'=>$result]);
         }
 

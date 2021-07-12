@@ -758,13 +758,25 @@ function bookingCreate(){
 		var call = ajaxCall(base_url+'memberAccount/bookingCreate','post','json',formData,[]);
 		call.success(function(data) {
 			userAuth(data);
-			$(".btn-submit").html("Save");
-			load_booking_list();
 
-			$(".success_msg").html(data.message);
-			$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
-				$("#success-alert").slideUp(500);
-			});
+			// console.log(data);
+			// return false;
+
+			if(data.status == 200){
+				$(".btn-submit").html("Save");
+				load_booking_list();
+
+				$(".success_msg").html(data.message);
+				$("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
+					$("#success-alert").slideUp(500);
+				});
+			}
+
+			if(data.status == 350){
+				$('.member_ac_booking').html(data.result.html1);
+				$('.member_ac_booking_prev').html('');
+			}
+			
 		});
 
 	}

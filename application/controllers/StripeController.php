@@ -9,6 +9,7 @@ class StripeController extends CI_Controller
         $this->load->library("session");
         $this->load->helper('url');
         $this->load->model('CustomerMembershipModel','CustomerMembership');
+        $this->load->model('AppointmentModel','Appointment');
     }
 
     public function index()
@@ -66,6 +67,7 @@ class StripeController extends CI_Controller
         // // redirect('/my-stripe', 'refresh');
         // redirect('/', 'refresh');
     }
+
     public function membershipUpgradeStripePayment()
     {
         $saveData = $this->session->userdata('membershipUpgradeData');
@@ -88,6 +90,35 @@ class StripeController extends CI_Controller
         // exit;
         if ($this->CustomerMembership->upgradeFromCustomer($result)) {
             $this->session->set_flashdata('success','Membership upgrade successfully');
+            redirect('memberAccount');
+        }
+
+        // // redirect('/my-stripe', 'refresh');
+        // redirect('/', 'refresh');
+    }
+
+    public function bookingStripePayment()
+    {
+        $saveData = $this->session->userdata('bookingCreateData');
+        require_once('application/libraries/stripe-php/init.php');
+        \Stripe\Stripe::setApiKey($this->config->item('stripe_secret'));
+
+        $amount = $saveData['total_payable'] * 100;
+        $amount = round($amount);
+        // number_format((float)$amount, 2, '.', '');
+
+        $result = \Stripe\Charge::create([
+            "amount" => $amount,
+            "currency" => "usd",
+            "source" => $this->input->post('stripeToken'),
+            "description" => "Service Booking"
+        ]);
+
+        // echo "<pre>";
+        // print_r($result);
+        // exit;
+        if ($this->Appointment->bookNowSaveAfterPayment($result)) {
+            $this->session->set_flashdata('success','Service booked successfully');
             redirect('memberAccount');
         }
 

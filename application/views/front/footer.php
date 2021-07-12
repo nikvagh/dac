@@ -101,6 +101,7 @@
 		<?php if($page == 'memberAccount'){ ?>
 			<script src="<?php echo $this->front; ?>js/memberAccount.js"></script>
 		<?php } ?>
+		
 	<?php } ?>
 
 	<?php if($this->session->userdata('success')){ ?>

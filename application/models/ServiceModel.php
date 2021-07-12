@@ -7,12 +7,26 @@ class ServiceModel extends CI_Model {
         $this->primaryKey = 'id';
     }
 
-    function get_list($num="", $offset="") {
+    function get_list($num="", $offset="",$where = [],$where_in = []) {
         $this->db->select('s.*');
         $this->db->from('service as s');
         $this->db->order_by("id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
+        }
+
+        if(!empty($where)){
+            foreach($where as $key=>$val){
+                if($val['op'] == "="){
+                    $this->db->where($val['column'],$val['value']);
+                }
+            }
+        }
+
+        if(!empty($where_in)){
+            foreach($where_in as $key=>$val){
+                $this->db->where_in($val['column'],$val['value']);
+            }
         }
 
         $query = $this->db->get();

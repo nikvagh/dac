@@ -8,11 +8,15 @@
 				</tr>
 				<tr>
 					<td>Order Type</td>
-					<td><?php if ($form_data->appointment_type == "book_now") {
-							echo 'Book Now';
-						} else if ($form_data->appointment_type == "book_now") {
-							echo 'Schedule Booking';
-						}; ?></td>
+					<td>
+						<?php
+							if ($form_data->appointment_type == "book_now") {
+								echo 'Book Now';
+							} else if ($form_data->appointment_type == "schedule_book") {
+								echo 'Schedule Booking';
+							} 
+						?>
+					</td>
 				</tr>
 				<tr>
 					<td>Service Provider</td>
@@ -26,6 +30,7 @@
 							}
 						} else {
 							echo '<a href="' . base_url(MEMBER . 'serviceProvider/view/' . $form_data->sp_id) . '">' . $form_data->company_name . '</a>';
+							echo $form_data->company_name;
 						}
 						?>
 					</td>

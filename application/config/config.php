@@ -544,3 +544,6 @@ $config['stripe_secret'] = 'sk_test_2BUiJyGSspCuIvjuT5MIt6Pm00XWW1SUIs';
 // $config['stripe_api_key']         = 'pk_test_fsurwgaxBhMpt5M1f595Po1R00Fzm5Xw9J'; 
 // $config['stripe_publishable_key'] = 'sk_test_2BUiJyGSspCuIvjuT5MIt6Pm00XWW1SUIs'; 
 // $config['stripe_currency']        = 'usd';
+
+
+$config['google_map_api'] = 'AIzaSyDi75arbh4vHsVOfI05MWgDV-O1RiiffKw';
