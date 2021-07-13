@@ -29,7 +29,7 @@
 								echo 'Service Provider is Deleted';
 							}
 						} else {
-							echo '<a href="' . base_url(MEMBER . 'serviceProvider/view/' . $form_data->sp_id) . '">' . $form_data->company_name . '</a>';
+							// echo '<a href="' . base_url(MEMBER . 'serviceProvider/view/' . $form_data->sp_id) . '">' . $form_data->company_name . '</a>';
 							echo $form_data->company_name;
 						}
 						?>

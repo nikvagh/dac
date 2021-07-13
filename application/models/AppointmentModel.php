@@ -10,8 +10,6 @@ class AppointmentModel extends CI_Model {
         $this->load->model('CustomerMembershipModel','CustomerMembership');
         $this->load->model('ServiceModel','Service');
         $this->load->model('AddOnModel','AddOn');
-
-        
     }
 
     function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = [], $isTotalQuery = 'N') {
@@ -355,11 +353,13 @@ class AppointmentModel extends CI_Model {
         $status_id = '1';
 
         // ================= sp_id =================
-        $sps = $this->ServiceProvider->getServiceProviderInRadius($this->input->post('latitude'),$this->input->post('longitude'),10);
-        if(!empty($sps)){
-            $sort_by_km = array_column($sps, 'distance');
-            array_multisort($sort_by_km, SORT_ASC, $sps);
-            $sp_id = $sps[0]->sp_id;
+        if($this->input->post('latitude') != "" && $this->input->post('longitude') != ""){
+            $sps = $this->ServiceProvider->getServiceProviderInRadius($this->input->post('latitude'),$this->input->post('longitude'),10);
+            if(!empty($sps)){
+                $sort_by_km = array_column($sps, 'distance');
+                array_multisort($sort_by_km, SORT_ASC, $sps);
+                $sp_id = $sps[0]->sp_id;
+            }
         }
 
         if($sp_id == 0){
@@ -478,11 +478,13 @@ class AppointmentModel extends CI_Model {
         $payment_id = $this->db->insert_id();
 
         // ================= sp_id =================
-        $sps = $this->ServiceProvider->getServiceProviderInRadius($post['latitude'],$post['longitude'],10);
-        if(!empty($sps)){
-            $sort_by_km = array_column($sps, 'distance');
-            array_multisort($sort_by_km, SORT_ASC, $sps);
-            $sp_id = $sps[0]->sp_id;
+        if($post['latitude'] != "" && $post['longitude'] != ""){
+            $sps = $this->ServiceProvider->getServiceProviderInRadius($post['latitude'],$post['longitude'],10);
+            if(!empty($sps)){
+                $sort_by_km = array_column($sps, 'distance');
+                array_multisort($sort_by_km, SORT_ASC, $sps);
+                $sp_id = $sps[0]->sp_id;
+            }
         }
 
         if($sp_id == 0){

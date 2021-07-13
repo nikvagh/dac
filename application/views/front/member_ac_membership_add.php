@@ -1,12 +1,12 @@
 <div class="form-box">
 	<form id="membership_form" action="" method="post" enctype="multipart/form-data">
 
-		<?php $cnt = 1; foreach ($packages as $key => $val) { ?>
+		<?php $divCnt = 1; foreach ($packages as $key => $val) { ?>
 			<?php 
 				$wrapper = false; if(($key)%3 == 0){ $wrapper = true; }
-				$cnt++;
+				$divCnt++;
 			?>
-			<?php if($wrapper){ $cnt = 1; ?> <div class="row flex-row"> <?php } ?>
+			<?php if($wrapper){ $divCnt = 1; ?> <div class="row flex-row"> <?php } ?>
 
 				<div class="col-md-4 membership_box">
 					<div class="">
@@ -48,10 +48,13 @@
 					</div>
 				</div>
 
-			<?php if($cnt == 2){ ?> </div> <?php } ?>
+			<?php 
+				// $wrapper_end = false; if(((($key)%3)-1) == 0){ $wrapper_end = true; }
+			?>
+			<?php if($divCnt == 3){ ?> </div> <?php } ?>
 		<?php } ?>
 
-		<?php if(count($packages) % 4 != 0){ ?> </div> <?php } ?>
+		<?php if(count($packages) % 3 != 0){ ?> </div> <?php } ?>
 
 		<div class="clearfix"></div>
 		<div class="row">

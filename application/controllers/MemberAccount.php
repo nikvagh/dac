@@ -505,8 +505,8 @@
             $this->form_validation->set_rules('appointment_type', 'Time', 'required');
             $this->form_validation->set_rules('service_type', 'Service Type', 'required');
             $this->form_validation->set_rules('location', 'Location', 'required');
-            $this->form_validation->set_rules('latitude', 'Latitude', 'required');
-            $this->form_validation->set_rules('longitude', 'Longitude', 'required');
+            // $this->form_validation->set_rules('latitude', 'Latitude', 'required');
+            // $this->form_validation->set_rules('longitude', 'Longitude', 'required');
             $this->form_validation->set_rules('zipcode', 'Zip Code', 'required');
             
             if($this->input->post('service_type') == 'package'){
