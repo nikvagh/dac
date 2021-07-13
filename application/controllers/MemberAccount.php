@@ -5,6 +5,7 @@
             parent::__construct();
             checkLogin('member');
             $this->load->model('VehicleModel','Vehicle');
+            $this->load->model('VehicleColorModel','VehicleColor');
             $this->load->model('CustomerModel','Customer');
             $this->load->model('PaymentModel','Payment');
             $this->load->model('PaymentCardModel','PaymentCard');
@@ -106,6 +107,7 @@
 
         function load_vehicle_add(){
             $content = [];
+            $content['vehicle_colors'] = $this->VehicleColor->get_list();
             $data['html'] = $this->load->view(FRONT.'member_ac_vehicle_add',$content,TRUE);
             echo json_encode(['status'=>200,'result'=>$data]);
         }
@@ -117,6 +119,7 @@
         }
 
         function load_vehicle_edit(){
+            $content['vehicle_colors'] = $this->VehicleColor->get_list();
             $content['form_data'] = $form_data = $this->Vehicle->getDataById($this->input->post('id'));
             $data['html'] = $this->load->view(FRONT.'member_ac_vehicle_edit',$content,TRUE);
             echo json_encode(['status'=>200,'result'=>$data]);
@@ -129,8 +132,10 @@
         }
 
         function vehicleValidation(){
-            $this->form_validation->set_rules('name', 'Name', 'required');
+            $this->form_validation->set_rules('make', 'Vehicle Make', 'required');
+            $this->form_validation->set_rules('name', 'Model', 'required');
             $this->form_validation->set_rules('year', 'Year', 'required');
+            $this->form_validation->set_rules('color', 'Color', 'required');
 			if ($this->form_validation->run()) {
 				echo json_encode(['status'=>200]);
 			} else {

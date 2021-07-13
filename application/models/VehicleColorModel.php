@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class VehicleModel extends CI_Model {
+class VehicleColorModel extends CI_Model {
     function __construct() {
-        $this->table = 'customer_vehicle';
+        $this->table = 'vehicle_color';
         $this->primaryKey = 'id';
     }
 
     function get_list($num="", $offset="",$where = []) {
-        $this->db->select('cv.*');
-        $this->db->from('customer_vehicle as cv');
-        $this->db->order_by("id", "Desc");
+        $this->db->select('vc.*');
+        $this->db->from('vehicle_color as vc');
+        // $this->db->order_by("vc.id", "Desc");
         if($num != "" && $offset != ""){
             $this->db->limit($num, $offset);
         }
@@ -25,7 +25,6 @@ class VehicleModel extends CI_Model {
 
         $query = $this->db->get();
         $result = $query->result();
-
         return $result;
     }
 
@@ -39,13 +38,8 @@ class VehicleModel extends CI_Model {
 
     function create(){
         $data = array(
-            'make'=>$this->input->post('make'),
             'name'=>$this->input->post('name'),
             'year'=>$this->input->post('year'),
-            'color'=>$this->input->post('color'),
-            'license'=>$this->input->post('license'),
-            'odometer'=>$this->input->post('odometer'),
-            'vin'=>$this->input->post('vin'),
             'member_id'=>$this->input->post('member_id'),
         );
         $this->db->insert($this->table,$data);
@@ -55,13 +49,8 @@ class VehicleModel extends CI_Model {
 
     function update(){
         $data = array(
-            'make'=>$this->input->post('make'),
             'name'=>$this->input->post('name'),
             'year'=>$this->input->post('year'),
-            'color'=>$this->input->post('color'),
-            'license'=>$this->input->post('license'),
-            'odometer'=>$this->input->post('odometer'),
-            'vin'=>$this->input->post('vin'),
             'member_id'=>$this->input->post('member_id'),
         );
         $this->db->set($data)->where('id',$this->input->post('id'));
@@ -132,24 +121,5 @@ class VehicleModel extends CI_Model {
             return true;
         else
             return false;
-    }
-
-    function getTotalVehicleCount($where=[]){
-        $this->db->select("COUNT(cv.id) AS total");
-
-        if(!empty($where)){
-            foreach($where as $key=>$val){
-                if($val['op'] == "="){
-                    $this->db->where($val['column'],$val['value']);
-                }
-            }
-        }
-        
-        $query = $this->db->from($this->table .' as cv')->get();
-        if($query){
-            return $query->row()->total;
-        }else{
-            return 0;
-        }
     }
 }
