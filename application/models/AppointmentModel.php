@@ -12,9 +12,9 @@ class AppointmentModel extends CI_Model {
         $this->load->model('AddOnModel','AddOn');
     }
 
-    function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = [], $isTotalQuery = 'N') {
+    function get_list($num="", $offset="",$where = [],$where_or = [],$where_in = [], $isTotalQuery = 'N', $order = "", $dir = "") {
 
-        $query = $this->list_query($num,$offset,$where,$where_or,$where_in);
+        $query = $this->list_query($num,$offset,$where,$where_or,$where_in,$isTotalQuery, $order, $dir);
         if($isTotalQuery == "N"){
             $result = $query->result();
             foreach($result as $key=>$val){
@@ -46,12 +46,14 @@ class AppointmentModel extends CI_Model {
         }
     }
 
-    function list_query($num="", $offset="",$where = [],$where_or = [],$where_in = [], $filterCheck = 'N'){
-        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_past_txt,ss.status_txt,ss.bgColor,ss.color');
+    function list_query($num="", $offset="",$where = [],$where_or = [],$where_in = [], $filterCheck = 'N', $order = "", $dir = ""){
+        $this->db->select('a.*,sp.company_name,cr.id as customer_id,cr.firstname,cr.lastname,ss.status_past_txt,ss.status_txt,ss.bgColor,ss.color,
+                            cv.name as vehicle_model,cv.make as vehicle_make,cv.year as vehicle_year,CONCAT(cv.year, " ", cv.make, " ", cv.name ) AS vehicle_name');
         $this->db->from('appointment as a')
             ->join('customer as cr','cr.id = a.customer_id','left')
             ->join('sp','sp.sp_id = a.sp_id','left')
-            ->join('service_status as ss','ss.id = a.status_id','left');
+            ->join('service_status as ss','ss.id = a.status_id','left')
+            ->join('customer_vehicle as cv','cv.id = a.vehicle_id','left');
 
         if(!empty($where)){
             foreach($where as $key=>$val){
@@ -60,18 +62,28 @@ class AppointmentModel extends CI_Model {
                 }
             }
         }
+
         if(!empty($where_or)){
             foreach($where_or as $key=>$val){
                 $this->db->where($val);
             }
         }
+        
         if(!empty($where_in)){
             foreach($where_in as $key=>$val){
                 $this->db->where_in($val['column'],$val['value']);
             }
         }
 
-        $this->db->order_by("a.id", "desc");
+        if($order != ""){
+            if($dir != ""){
+                $this->db->order_by($order, $dir);
+            }else{
+                $this->db->order_by($order);
+            }
+        }else{
+            $this->db->order_by("a.id", "desc");
+        }
 
         if($num != ""){
             $this->db->limit($num, $offset);

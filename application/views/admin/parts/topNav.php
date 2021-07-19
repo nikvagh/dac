@@ -16,6 +16,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </form> -->
+            <button class="buttonToggleSidebar btn btn-md btn-white" onclick="toggleNav()"><i class="fa fa-bars"></i></button>  
             <!-- Navbar links -->
             <ul class="navbar-nav align-items-center  ml-md-auto ">
                 <li class="nav-item d-xl-none">

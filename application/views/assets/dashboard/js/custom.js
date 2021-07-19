@@ -160,3 +160,17 @@ function isNumber(evt) {
 	}
 	return true;
 }
+
+function toggleNav(){
+	if($("#sidenav-main").hasClass("toggleShow")){
+		$(".sidenav").addClass('toggleHide');
+		$(".sidenav").removeClass('toggleShow');
+
+		$('.main-content').css('margin-left','0px');
+	}else{
+		$(".sidenav").addClass('toggleShow');
+		$(".sidenav").removeClass('toggleHide');
+
+		$('.main-content').css('margin-left','250px');
+	}
+}

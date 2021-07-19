@@ -19,10 +19,14 @@
     <?php if($page == 'category_list' || $page == 'serviceProvider_list' || $page == 'coWorker_list' || $page == 'service_list' || $page == 'offer_list' || 
             $page == 'appointment_list' || $page == 'adminUser_list' || $page == 'customer_list' || $page == 'faq_list' || $page == 'zone_list' || $page == 'branch_list' ||
             $page == 'driver_list' || $page == 'role_list' || $page == 'package_list' || $page == 'vehicleType_list' ||
-            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list'){ ?>
+            $page == 'membership_list' || $page == 'dispatch_list' || $page == 'payment_list' || $page == 'addOn_list' || $page == 'dispatching'){ ?>
             <!-- dataTable -->
             <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <?php } ?>
+
+    <?php if($page == 'dispatching'){ ?>
+        <script src="https://cdn.datatables.net/scroller/2.0.4/js/dataTables.scroller.min.js"></script>
     <?php } ?>
 
     <?php if($page == 'category_add' || $page == 'category_edit' || $page == 'serviceProvider_add' || $page == 'serviceProvider_edit' || 
@@ -2051,6 +2055,95 @@
             }
         }
         
+    <?php } ?>
+
+    <?php if($page == 'dispatching'){ ?>
+
+        $('.buttonToggleSidebar').trigger('click');
+
+        // $(".currentJobTbl").dataTable({
+        //     language: {
+        //         paginate: {
+        //             next: '<i class="fa fa-angle-right"></i>',
+        //             previous: '<i class="fa fa-angle-left"></i>'
+        //         },
+        //         emptyTable: "No data available in table"
+        //     }
+        // });
+
+        $('#current').DataTable({
+            serverSide: true,
+            // ordering: false,
+            // searching: false,
+
+            ajax:{
+                "url": admin_base+'dispatching/getData',
+                // "dataType": "json",
+                "type": "POST",
+                // "columns": [
+                //     { "data": "id" },
+                //     { "data": "vehicle_name" },
+                //     { "data": "location" },
+                //     { "data": "company_name" },
+                //     { "data": "created_at" },
+                //     { "data": "id" },
+                // ],
+                
+                // "success": function (data, callback, settings) {
+                //     var out = [];
+        
+                //     for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
+                //         out.push([ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5']);
+                //     }
+        
+                //     setTimeout(function () {
+                //         callback( {
+                //             draw: data.draw,
+                //             data: out,
+                //             recordsTotal: 5000000,
+                //             recordsFiltered: 5000000
+                //         } );
+                //     }, 50);
+                // },	
+                
+                // "columns": [
+                //     { "data": "id" },
+                //     { "data": "vehicle_name" },
+                //     { "data": "location" },
+                //     { "data": "company_name" }
+                // ],
+
+            },
+            // ajax: function (data, callback, settings) {
+            //     var out = [];
+    
+            //     for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
+            //         out.push([ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5']);
+            //     }
+    
+            //     setTimeout(function () {
+            //         callback( {
+            //             draw: data.draw,
+            //             data: out,
+            //             recordsTotal: 5000000,
+            //             recordsFiltered: 5000000
+            //         } );
+            //     }, 50);
+            // },
+            // scrollY: 200,
+            // scroller: {
+            //     loadingIndicator: true
+            // },
+
+            "columnDefs": [{ 
+                "targets": [0],
+                "orderable": false
+            }]
+            
+        });
+        
+        
+
     <?php } ?>
 
 // You can get calendar instance

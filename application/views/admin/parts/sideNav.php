@@ -1,5 +1,7 @@
+
 <!-- Sidenav -->
-<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+<nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white position-relative1 toggleShow" id="sidenav-main">
+<!-- <nav class="sidenav navbar navbar-vertical navbar-expand-xs navbar-light bg-white position-relative" id="sidenav-main"> -->
     <div class="scrollbar-inner">
         <!-- Brand -->
         <div class="sidenav-header align-items-center">
@@ -21,12 +23,12 @@
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
-                        <a class="nav-link <?php if($activeTab == 'category'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'category'); ?>">
+                    <li class="nav-item">
+                        <a class="nav-link <?php if($activeTab == 'dispatching'){ echo 'active'; } ?>" href="<?php echo base_url(ADMIN.'dispatching'); ?>">
                             <i class="fas fa-paste text-danger"></i>
-                            <span class="nav-link-text">Category</span>
+                            <span class="nav-link-text">Dispatching</span>
                         </a>
-                    </li> -->
+                    </li>
 
                     <?php
                         $crm_t = false;

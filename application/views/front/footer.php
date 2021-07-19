@@ -100,6 +100,8 @@
 
 		<?php if($page == 'memberAccount'){ ?>
 			<script src="<?php echo $this->front; ?>js/memberAccount.js"></script>
+
+			<script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyDi75arbh4vHsVOfI05MWgDV-O1RiiffKw"></script>
 		<?php } ?>
 		
 	<?php } ?>

@@ -637,32 +637,31 @@ function load_booking_add(){
 		// ===================================
 		$('.select2').select2();
 
-        $('#zipcode').select2({
-            ajax: {
-                type: "post",
-                url: base_url+'memberAccount/get_list_dropdown',
-                dataType: 'json',
-                data: function (params) {
-                    // console.log(params)
-                    var query = {
-                        search: params.term,
-                        type: 'public'
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    // console.log(data.result);
-                    return {
-                        results: data.result
-                    };
-                },
-                // cache: true,
-            },
-            placeholder: 'Search for a zip code',
-        });
+        // $('#zipcode').select2({
+        //     ajax: {
+        //         type: "post",
+        //         url: base_url+'memberAccount/get_list_dropdown',
+        //         dataType: 'json',
+        //         data: function (params) {
+        //             // console.log(params)
+        //             var query = {
+        //                 search: params.term,
+        //                 type: 'public'
+        //             }
+        //             return query;
+        //         },
+        //         processResults: function (data) {
+        //             // console.log(data.result);
+        //             return {
+        //                 results: data.result
+        //             };
+        //         },
+        //         // cache: true,
+        //     },
+        //     placeholder: 'Search for a zip code',
+        // });
 
 		var date = new Date();
-
         var setTime = function(currentDateTime){
             if(date.getHours() >= 7){
                 var minTime = date.getHours()+":"+date.getMinutes();
@@ -706,7 +705,7 @@ function load_booking_add(){
         });
 
         // handlePermission();
-        getLocation();
+        // getLocation();
 
 		$(".date_time_box").hide();
         $("input[name=appointment_type]").on('change',function(){

@@ -56,3 +56,17 @@
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
     border-right: 0px;
 }
+
+/* ================ toggle sidebar */
+.g-sidenav-pinned .sidenav.toggleShow{
+    max-width: 250px!important;
+}
+
+.g-sidenav-pinned .sidenav.toggleHide{
+    width: 0px;
+}
+
+/* ==================== dispatch */
+.dispatch_block{
+    font-size:13px!important;
+}
